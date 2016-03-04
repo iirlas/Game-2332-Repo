@@ -2,17 +2,13 @@
 
 02/23/2016:
 Name suggestions, pick a name!
-Our Choice for title: "Atomic Penguin Smackdown"
+Our Choice for title: "Atomic Pawnguin Smackdown"
 
 ## *The Idea*
-Military penguin civil war, scientist just discovered the Atomic Penguin, their leaders begin fighting over a fish and thus the war begins on a tile map in a 1v1 turn based game.
-    
-    The game will have 2 players, 2 different  sizes of 16x16 and 32x32
-    The game is simple, *player one will always go first*...
+Military pawnguin civil war, scientist just discovered the Atomic Pawnguin, their leaders begin fighting over a fish and thus the war begins on a tile map in a 1v1 turn based game.
 
 ## Making The Game
 We are using a custom engine created in another class by 2 of our memebers.
-
 
 ## Mechanics
 
@@ -20,7 +16,6 @@ We are using a custom engine created in another class by 2 of our memebers.
     The round begins with 20? turns
     Player one will go first then two
     each complete turn (both players move) the counter will decrement one until it reaches zero
-
 ##### Unit mechanics
     pawnguin **pawn**
         movements: moves in any direction 3 spaces
@@ -42,20 +37,19 @@ We are using a custom engine created in another class by 2 of our memebers.
         movements: moves in any direction 1 space
         attack: light damage
         health: high health (5hp)
-###Win conditions & Lose conditions
+##### Win conditions & Lose conditions
     One side loses all their units
     animation plays of the winner sides pawnguin getting the fish
-###Draw conditions
+##### Draw conditions
     both sides have pawnguins remaining and run out of turns
-###Environment
+##### Environment
     map size 16x16 or 32x32
     Tile Types:
     snow: normal movement values
     ice: increase movement value
     Rock: cannot move past this tile
     Water: reduces movement value
-
-##Classes
+##### Classes
 **Unit**
 
 **Player**
