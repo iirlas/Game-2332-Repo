@@ -4,5 +4,22 @@
 Name suggestions, pick a name!
 Our Choice for title: "Atomic Penguin Smackdown"
 
-Game idea, we are going to build turn based tile map game
-There will be 2 players, 2 different map sizes, 16x16, 32x32
+## *The Idea*
+Military penguins at war fighting it out on a tile map in a 1v1 turn based game.
+    
+    The game will have 2 players, 2 different  sizes of 16x16 and 32x32
+    The game is simple, *player one will always go first*...
+
+## Making The Game
+We are using a custom engine created in another class by 2 of our memebers.
+
+##Classes
+**Unit**
+
+**Player**
+
+**Game**
+
+**Map**
+
+**TILETYPE**
