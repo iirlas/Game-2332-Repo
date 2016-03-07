@@ -271,6 +271,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Miscellaneous.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Point.cpp"
 				>
 			</File>
@@ -294,6 +298,10 @@
 			</File>
 			<File
 				RelativePath=".\Logger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Miscellaneous.h"
 				>
 			</File>
 			<File

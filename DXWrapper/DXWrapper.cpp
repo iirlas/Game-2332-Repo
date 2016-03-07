@@ -1,26 +1,25 @@
-// DXWrapper.cpp : The Application Class.
+// DxWrapper.cpp : The Application Class.
 //
 
 #include "stdafx.h"
-#include "DXWrapper.h"
 #include <assert.h>
-#pragma comment(lib,"d3d9.lib")
-#pragma comment(lib,"d3dx9.lib")
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxWrapper.h"
 
 //=======================================================================
-DXWrapper::DXWrapper ( )
+DxWrapper::DxWrapper ( )
 :myD3D(NULL), myD3DDevice(NULL), myBackBuffer()
 {
 }
 
 //=======================================================================
-DXWrapper::~DXWrapper ( )
+DxWrapper::~DxWrapper ( )
 {
 }
 
 //=======================================================================
 //protected
-bool DXWrapper::postInit ( )
+bool DxWrapper::postInit ( )
 {
    HRESULT result;
    myD3D = Direct3DCreate9(D3D_SDK_VERSION);
@@ -73,7 +72,7 @@ bool DXWrapper::postInit ( )
 
 //=======================================================================
 //protected
-void DXWrapper::update ( )
+void DxWrapper::update ( )
 {
    assert( !!myD3DDevice && "Trying to use an invalid DirectX device!" );
    gameRun( );  
@@ -81,7 +80,7 @@ void DXWrapper::update ( )
 
 //=======================================================================
 //protected
-void DXWrapper::preDestroy ( )
+void DxWrapper::preDestroy ( )
 {
    gameExit( );
    if ( spriteInterface() )

@@ -11,16 +11,16 @@
 #include "WinWrapper/Application.h"
 #include "Utilities/TType.h"
 
-class DXWrapper : public Application
+class DxWrapper : public Application
 {
 public:
    //=======================================================================
    // Default Constructor
-   DXWrapper ( );
+   DxWrapper ( );
 
    //=======================================================================
    // Default Overridable Deconstructor
-   virtual ~DXWrapper ( );
+   virtual ~DxWrapper ( );
 
 protected:
    //=======================================================================
@@ -65,7 +65,6 @@ protected:
    {
       return mySpriteobj;
    }
-
 
    //=======================================================================
    // Overrided to serive as the directX initializer and calls gameInit

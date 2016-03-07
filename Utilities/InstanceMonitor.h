@@ -6,7 +6,7 @@
 #if !defined(_INSTANCEMONITOR_H_)
 #define _INSTANCEMONITOR_H_
 #include <windows.h>
-#include "NonCopyable.h"
+#include "Utilities/NonCopyable.h"
 
 // Used to check for other instances of an application.
 class InstanceMonitor : public NonCopyable

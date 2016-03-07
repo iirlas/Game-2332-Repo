@@ -1,4 +1,4 @@
-#include "Point.h"
+#include "Utilities/Point.h"
 
 //=======================================================================
 Point::Point ( )
@@ -21,7 +21,7 @@ Point::Point ( const POINT& other )
 //=======================================================================
 Point::Point ( LONG x, LONG y )
 {
-    (*this)( x, y );
+    set( x, y );
 }
 
 //=======================================================================
@@ -42,14 +42,6 @@ LPPOINT Point::operator& ( )
 }
 
 //=======================================================================
-Point& Point::operator() ( LONG x, LONG y )
-{
-    myPoint.x = x;
-    myPoint.y = y;
-    return *this;
-}
-
-//=======================================================================
 Point& Point::operator= ( const Point& other )
 {
     myPoint = other.myPoint;
@@ -61,6 +53,13 @@ Point& Point::operator= ( const POINT& other )
 {
     myPoint = other;
     return *this;
+}
+
+//=======================================================================
+void Point::set( LONG x, LONG y )
+{
+    myPoint.x = x;
+    myPoint.y = y;
 }
 
 //=======================================================================

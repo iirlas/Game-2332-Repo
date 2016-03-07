@@ -1,30 +1,44 @@
-#if !defined(_TEXTURE_H_)
-#define _TEXTURE_H_
+
+
+#pragma once
+
+#if !defined(_DXTEXTURE_H_)
+#define _DXTEXTURE_H_
+
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "ImageInfo.h"
-#include "DxTypes.h"
 #include "Utilities/NonCopyable.h"
 #include "Utilities/TType.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/ImageInfo.h"
+#include "DxWrapper/DxTypes.h"
+
+namespace DxWrapper
+{
+
 class Texture : public ImageInfo
 {
 public:
-   Texture ( );
-   ~Texture ( );
-   operator dxTexture ( );
+   Texture ( void );
+   Texture ( const Texture& other );
+   ~Texture ( void );
+   Texture& operator= ( const Texture& other );
+   operator IDxTexture ( void );
 
    UINT width ( void ) { return myTextureInfo.Width; }
    UINT height ( void ) { return myTextureInfo.Height; }
    
-   bool create ( dxDevice device, const tstring& filename, dxColor transcolor = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL );
+   bool create ( IDxDevice device, const tstring& filename, D3DCOLOR transcolor = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL );
    void destroy ( void );
 
-   void draw ( dxSprite spriteobj, dxVector3* position, dxColor color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL );
-   void drawEx ( dxSprite spriteobj, dxVector3* position, dxVector2* scale, float rotation, dxVector2* center, dxColor color = D3DCOLOR_XRGB( 0, 0, 0 ), RECT* crop = NULL );
+   void draw ( IDxSprite spriteobj, D3DXVECTOR3* position, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL );
+   void draw ( IDxSprite spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color = D3DCOLOR_XRGB( 0, 0, 0 ), RECT* crop = NULL );
 
 private:  
-   dxTexture   myTexture;
-   dxImageInfo myTextureInfo;
+   IDxTexture      myTexture;
+   D3DXIMAGE_INFO myTextureInfo;
 };
 
-#endif //_TEXTURE_H_
+}
+
+#endif //_DXTEXTURE_H_

@@ -1,29 +1,57 @@
 #include "stdafx.h"
 #include <cassert>
-#include "DxTypes.h"
-#include "Texture.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxTypes.h"
+#include "DxWrapper/Texture.h"
+
+using namespace DxWrapper;
 
 //=======================================================================
-Texture::Texture ( )
+Texture::Texture ( void )
 :myTexture(NULL)
 {
    ZeroMemory( &myTextureInfo, sizeof(myTextureInfo) );
 }
 
 //=======================================================================
-Texture::~Texture ( )
+Texture::Texture ( const Texture& other )
+:ImageInfo(other), myTexture(NULL)
+{
+   ZeroMemory( &myTextureInfo, sizeof(myTextureInfo) );
+   *this = other;
+}
+
+//=======================================================================
+Texture::~Texture ( void )
 {
    destroy();
 }
 
 //=======================================================================
-Texture::operator dxTexture ( )
+Texture& Texture::operator= ( const Texture& other )
+{
+   ImageInfo::operator=( other );
+   if ( myTexture )
+   {
+      destroy();
+   }
+   if ( other.myTexture )
+   {
+      other.myTexture->AddRef();
+      myTexture = other.myTexture;
+      myTextureInfo = other.myTextureInfo;
+   }
+   return *this;
+}
+
+//=======================================================================
+Texture::operator IDxTexture ( void )
 {
    return myTexture;
 }
 
 //=======================================================================
-bool Texture::create ( dxDevice device, const tstring& filename, D3DCOLOR transcolor, RECT* crop )
+bool Texture::create ( IDxDevice device, const tstring& filename, D3DCOLOR transcolor, RECT* crop )
 {
    HRESULT result;
    assert( getInfoFromFile( filename ) );
@@ -46,29 +74,27 @@ bool Texture::create ( dxDevice device, const tstring& filename, D3DCOLOR transc
 }
 
 //=======================================================================
-void Texture::destroy ( )
+void Texture::destroy ( void )
 {
    removeFileInfo();
-   assert( myTexture );
-   myTexture->Release();
-   myTexture = NULL;
+   INFRELEASE( myTexture );
+   ZeroMemory( &myTextureInfo, sizeof(myTextureInfo) );
 }
 
-
 //=======================================================================
-void Texture::draw ( dxSprite spriteobj, dxVector3* position, dxColor color, RECT* crop )
+void Texture::draw ( IDxSprite spriteobj, D3DXVECTOR3* position, D3DCOLOR color, RECT* crop )
 {
 	HRESULT result = spriteobj->Draw( myTexture, crop, NULL, position, color);
 	assert( SUCCEEDED( result ) );
 }
 
 //=======================================================================
-void Texture::drawEx ( dxSprite spriteobj, dxVector3* position, dxVector2* scale, float rotation, dxVector2* center, dxColor color, RECT* crop )
+void Texture::draw ( IDxSprite spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color, RECT* crop )
 {
 	D3DXMATRIX matrix, lastMatrix;
 	HRESULT result;	
 	
-	dxVector3 center3d( (center ? center->x : 0), (center ? center->y : 0), 0.0f ); 
+	D3DXVECTOR3 center3d( (center ? center->x : 0), (center ? center->y : 0), 0.0f ); 
 	D3DXMatrixTransformation2D( &matrix, center, 0, scale, center, rotation, NULL );
    
    result = spriteobj->GetTransform( &lastMatrix );

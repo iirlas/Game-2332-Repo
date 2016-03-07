@@ -3,7 +3,7 @@
 
 #include "Utilities\Logger.h"
 #include "DxWrapper\DxWrapper.h"
-class Game : public DXWrapper
+class Game : public DxWrapper
 {
 public:
    Game ();

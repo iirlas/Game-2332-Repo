@@ -16,13 +16,3 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-
-
-// Direct x
-#include <d3d9.h>
-#include <d3dx9.h>
-#include <DxErr.h>
-
-#pragma comment(lib,"d3d9.lib")
-#pragma comment(lib,"d3dx9.lib")
-#pragma comment(lib, "dxerr.lib")

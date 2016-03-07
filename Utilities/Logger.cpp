@@ -1,6 +1,8 @@
-#include "Logger.h"
-#include "TType.h"
 #include <tchar.h>
+#include "Utilities/TType.h"
+#include "Utilities/Logger.h"
+
+
 
 //=======================================================================
 void log ( LPCTSTR format, ... )

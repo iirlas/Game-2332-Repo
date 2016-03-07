@@ -1,4 +1,4 @@
-#include "Rect.h"
+#include "Utilities/Rect.h"
 
 //=======================================================================
 Rect::Rect ( )
@@ -24,24 +24,16 @@ Rect::Rect ( const RECT& other )
 }
 
 //=======================================================================
-Rect::Rect ( LONG x, LONG y, LONG width, LONG height )
+Rect::Rect ( LONG left, LONG top, LONG right, LONG bottom )
 {
-    (*this)( x, y, width, height );
+   set( left, top, right, bottom );
 }
 
 //=======================================================================
 Rect::Rect ( POINT topLeft, LONG width, LONG height )
 {
-    (*this)( topLeft.x, topLeft.y, width, height);
+   set( topLeft, width, height );
 }
-
-
-//=======================================================================
-Rect::Rect ( POINT topLeft, POINT bottomRight )
-{
-    (*this)( topLeft, bottomRight );
-}
-
 
 //=======================================================================
 Rect::~Rect ( )
@@ -52,29 +44,6 @@ Rect::~Rect ( )
 Rect::operator RECT& ( )
 {
     return myRect;
-}
-
-//=======================================================================
-Rect& Rect::operator() ( LONG x, LONG y, LONG width, LONG height )
-{
-    myRect.left = x;
-    myRect.top = y;
-    myRect.right = x + width;
-    myRect.bottom = y + height;
-    normalize( );
-    return *this;
-}
-
-
-//=======================================================================
-Rect& Rect::operator() ( POINT topLeft, POINT bottomRight )
-{
-    myRect.left = topLeft.x;
-    myRect.top = topLeft.y;
-    myRect.right = bottomRight.x;
-    myRect.bottom = bottomRight.y;
-    normalize( );
-    return *this;
 }
 
 //=======================================================================
@@ -125,7 +94,7 @@ bool Rect::collidesWith ( const RECT& other, Rect& intersect ) const
         return true;
     }
 
-    intersect( 0, 0, 0, 0 );
+    intersect;
     return false;
 }
 
@@ -157,6 +126,26 @@ void Rect::normalize ( )
         myRect.bottom^= myRect.top;
         myRect.top   ^= myRect.bottom;
     }
+}
+
+//=======================================================================
+void Rect::set ( LONG left, LONG top, LONG right, LONG bottom )
+{
+   myRect.left = left;
+   myRect.top = top;
+   myRect.right = right;
+   myRect.bottom = bottom;
+   normalize( );
+}
+
+//=======================================================================
+void Rect::set ( POINT topLeft, LONG width, LONG height )
+{
+   myRect.left = topLeft.x;
+   myRect.top = topLeft.y;
+   myRect.right = topLeft.x + width;
+   myRect.bottom = topLeft.y + height;
+   normalize( );
 }
 
 //=======================================================================

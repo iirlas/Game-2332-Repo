@@ -1,12 +1,29 @@
 #include "stdafx.h"
 #include <cassert>
 #include <windows.h>
-#include "ImageInfo.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/ImageInfo.h"
+
+using namespace DxWrapper;
 
 //=======================================================================
 ImageInfo::ImageInfo ( )
 {
    ZeroMemory( &myFileInfo, sizeof(myFileInfo) );
+}
+
+//=======================================================================
+ImageInfo::ImageInfo ( const ImageInfo& other )
+:myFilename(other.myFilename), myFileInfo(other.myFileInfo)
+{
+}
+
+//=======================================================================
+ImageInfo& ImageInfo::operator= ( const ImageInfo& other )
+{
+   myFilename = other.myFilename;
+   myFileInfo = other.myFileInfo;
+   return *this;
 }
 
 //=======================================================================

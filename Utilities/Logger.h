@@ -1,7 +1,8 @@
 #pragma once
 #if !defined(_LOGGER_H_)
-#include "TType.h"
 #include <windows.h>
+#include "Utilities/TType.h"
+
 
 //=======================================================================
 // Logs a formated message to the debug console.

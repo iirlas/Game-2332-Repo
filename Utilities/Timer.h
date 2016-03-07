@@ -1,7 +1,8 @@
 #if !defined(_TIMER_H_)
 #define _TIMER_H_
+#include "Utilities/NonCopyable.h"
 #include <windows.h>
-#include "NonCopyable.h"
+
 
 class Timer : public NonCopyable
 {
@@ -13,9 +14,10 @@ public:
     unsigned long long restart ( );
     unsigned long long elapsedTime ( );
     unsigned long long systemTick ( );
+    bool isRunning ( ) { return myTimerIsRunning; }
 
 private:
-    bool               isRunning;
+    bool               myTimerIsRunning;
     unsigned long long myStartingTime;
 };
 
