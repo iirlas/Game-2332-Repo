@@ -10,8 +10,8 @@ public:
    ~Game ();
 
 protected:
-   bool gameInit ( );
-   void gameRun ( );
+   bool gameInit ();
+   void gameRun ();
    void gameExit ();
 private:
    D3DCOLOR bgColor;

@@ -5,18 +5,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinWrapper", "WinWrapper.vc
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug - Unicode|Win32 = Debug - Unicode|Win32
 		Debug|Win32 = Debug|Win32
-		Release - Unicode|Win32 = Release - Unicode|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD990464-4056-4715-92C5-EC6BE75A4E50}.Debug - Unicode|Win32.ActiveCfg = Debug - Unicode|Win32
-		{DD990464-4056-4715-92C5-EC6BE75A4E50}.Debug - Unicode|Win32.Build.0 = Debug - Unicode|Win32
 		{DD990464-4056-4715-92C5-EC6BE75A4E50}.Debug|Win32.ActiveCfg = Debug|Win32
 		{DD990464-4056-4715-92C5-EC6BE75A4E50}.Debug|Win32.Build.0 = Debug|Win32
-		{DD990464-4056-4715-92C5-EC6BE75A4E50}.Release - Unicode|Win32.ActiveCfg = Release - Unicode|Win32
-		{DD990464-4056-4715-92C5-EC6BE75A4E50}.Release - Unicode|Win32.Build.0 = Release - Unicode|Win32
 		{DD990464-4056-4715-92C5-EC6BE75A4E50}.Release|Win32.ActiveCfg = Release|Win32
 		{DD990464-4056-4715-92C5-EC6BE75A4E50}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection

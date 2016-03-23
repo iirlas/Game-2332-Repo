@@ -1,15 +1,16 @@
 #pragma once
 
-#if !defined(_ANIMATION_H_)
-#define _ANIMATION_H_
-
+#if !defined(_DXANIMATION_H_)
+#define _DXANIMATION_H_
+#define ANIMATION_MAX_LENGTH 256
 #include <vector>
 #include <map>
 #include "Utilities/Rect.h"
-#include "Utilities/TType.h"
+#include "Utilities\TTypes.h"
 #include "Utilities/Timer.h"
-#include "DxWrapper/DxCommon.h"
-#include "DxWrapper/Texture.h"
+#include "DxWrapper\DxAnimationInfo.h"
+#include "DxWrapper\DxCommon.h"
+#include "DxWrapper\DxTexture.h"
 
 //
 // The animation can be described in two ways: In line with a string for a animation script file.
@@ -17,59 +18,72 @@
 //    "RECT(xoffset yoffset width height) RECT(xoffset yoffset width height)"
 //
 // In the second version of init use the following from a file:
-//    ## Animation example ##
-//    # file: 'example.animation' 
+//# Base read file. This file will call any sprite sheets needed, 
+//# load them, and allow us to create animations from specified
+//# frames
 //
-//    # Define constants
-//    # Note: Only WIDTH and HEIGHT are valid constants.
-//    @WIDTH 20
-//    @HEIGHT 20
-//    
-//    # Load image files
-//    LOAD(../../Game Art/image1.png) 
-//    LOAD(../../Game Art/image2.png) 
-//    
-//    # Selects the image to use.
-//    USE[image1.png]
-//    
-//    # Inserts a frame with constants.
-//    POINT(64 0) 
-//    POINT(128 0) 
-//    POINT(192 0)
-//    
-//    # Selects another image. 
-//    USE[image2.png]
-//    
-//    # Inserts a frame without constants.
-//    RECT(0 0 100 100)
+//
+//
+//
+//# all items following this are in this file.
+//@spritesheet.png
+//
+//# Type		- The type of animatio, this can be the following:
+//#			0 - Looping
+//#			1 - Rocking
+//#			2 - Single loop
+//
+//
+//# ALL LINES MUST BE IN THE FOLLOWING FORMAT:
+//# symbol			type	x y width height	{more x y width height's}
+//#
+//CANDYCORN-LOOP		0		916 646 32 36		948 646 32 36		980 646 32 36		1012 646 32 36
+//SMILEYFACE-ROCK		1		1076 580 32 30		1110 576 28 34		1144 574 24 36
+//ROCKCROC-ROCK		1		884  538 32 36   	918 538 32 36       948 538 32 36
+//
+//
+//# allows multiple files.
+//# @otherfile.ext
+//
 
-namespace DxWrapper
-{
-
-class Animation
+class DxAnimation
 {
 public:
-   Animation ( );
-   ~Animation ( );
+   typedef enum 
+   {
+      LOOP,
+      ROCKER,
+      SINGLE
+   } ANIMATION;
 
-   bool init ( IDxDevice device, const tstring& textureFilename, const tstring& animDescrStr, float speed );
-   bool init ( IDxDevice device, const tstring& scriptFilename, float speed );
+   DxAnimation ( );
+   ~DxAnimation ( );
+
+   bool init ( IDXDEVICE device, const tstring& animationName, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
    void update ( );
    void shutdown ( );
 
-   void drawFrame ( IDxSprite spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color );
+   ANIMATION animation ( ANIMATION type );
+   ANIMATION animation ( ) { return myAnimation; }
+
+   float speed ( float value );
+   float speed ( ) { return mySpeed; }
+
+   void drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color );
+   unsigned int getFrameCount(){ return myFrameCount; }
+private:
+   bool parse ( DxAnimationInfo animInfo );
 
 private:
-   bool parse ( IDxDevice device, const tstring& animDescrStr );
+   float        mySpeed;
+   int          myCurrentFrame;
+   D3DXCOLOR    myExcludeColor;
+   ANIMATION    myAnimation;
+   Timer        myTimer;
+   DxTexture*   myTexture;
+   unsigned int myFrameCount;
+   Rect         myFrames[UCHAR_MAX];
 
-private:
-   float                                 mySpeed;
-   int                                   myCurrentFrame;
-   Timer                                 myTimer;
-   std::map<tstring,Texture>             myTextures;
-   std::vector<std::pair<Rect,Texture*>> myFrames;
 };
 
-}
-
-#endif //_ANIMATION_H_
+#endif //_DXANIMATION_H_

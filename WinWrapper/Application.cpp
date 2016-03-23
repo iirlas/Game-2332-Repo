@@ -41,21 +41,21 @@ LRESULT CALLBACK WndProc ( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 
 //=======================================================================
 //private
-bool Application::registerClass ( )
+bool Application::registerClass ()
 {
     WNDCLASSEX wcex;
     wcex.cbSize             = sizeof(WNDCLASSEX);
-    wcex.style			    = resourceStyle( );
+    wcex.style			    = resourceStyle();
     wcex.lpfnWndProc	    = WndProc;
-    wcex.cbClsExtra	        = resourceCLSExtra( );
-    wcex.cbWndExtra	        = resourceWndExtra( );
-    wcex.hInstance		    = instance( );
-    wcex.hIcon			    = resourceIcon( );//LoadIcon( instance(), MAKEINTRESOURCE(  ) );
-    wcex.hCursor		    = resourceCursor( );//LoadCursor( NULL, MAKEINTRESOURCE(  ) );
-    wcex.hbrBackground	    = resourceBackground( );
-    wcex.lpszMenuName	    = resourceMenu( );//MAKEINTRESOURCE(  );
-    wcex.lpszClassName      = resourceClassName( );
-    wcex.hIconSm		    = resourceIconSmall( );//LoadIcon( instance(), MAKEINTRESOURCE(  ) );
+    wcex.cbClsExtra	        = resourceCLSExtra();
+    wcex.cbWndExtra	        = resourceWndExtra();
+    wcex.hInstance		    = instance();
+    wcex.hIcon			    = resourceIcon();//LoadIcon( instance(), MAKEINTRESOURCE(  ) );
+    wcex.hCursor		    = resourceCursor();//LoadCursor( NULL, MAKEINTRESOURCE(  ) );
+    wcex.hbrBackground	    = resourceBackground();
+    wcex.lpszMenuName	    = resourceMenu();//MAKEINTRESOURCE(  );
+    wcex.lpszClassName      = resourceClassName();
+    wcex.hIconSm		    = resourceIconSmall();//LoadIcon( instance(), MAKEINTRESOURCE(  ) );
     return (RegisterClassEx(&wcex) != NULL);
 }
 
@@ -68,32 +68,32 @@ bool Application::setupWindow ( DWORD style )
         log( _T("A window was already created.") );
         return false;
     }
-    myHWnd = CreateWindowEx ( 0, resourceClassName( ), startTitle( ), style, 
-                              startTransX( ), startTransY( ), 
-                              startTransWidth( ), startTransHeight( ),
-                              NULL, NULL, instance( ), NULL );
+    myHWnd = CreateWindowEx ( 0, resourceClassName(), startTitle(), style, 
+                              startTransX(), startTransY(), 
+                              startTransWidth(), startTransHeight(),
+                              NULL, NULL, instance(), NULL );
     if ( !myHWnd )
     {
         log( _T("Unable to create window.") );
         return false;
     }
     SetWindowLongPtr( myHWnd, GWLP_USERDATA, (LONG)this );
-    GetWindowRect( window( ), &myTransform );
-    GetClientRect( window( ), &myViewport );
-    resizeViewportToTransform( );
+    GetWindowRect( window(), &myTransform );
+    GetClientRect( window(), &myViewport );
+    resizeViewportToTransform();
     return true;
 }
 
 //=======================================================================
-Application::Application ( )
-:mySignature(ourSignature), myHWnd(NULL), myInstanceMonitor( ), myViewport( ), myTransform( )
+Application::Application ()
+:mySignature(ourSignature), myHWnd(NULL), myInstanceMonitor(), myViewport(), myTransform()
 {
     ZeroMemory( myMessageProcessors, USHRT_MAX * sizeof(*myMessageProcessors) );  
 }
 //=======================================================================
-Application::~Application ( )
+Application::~Application ()
 {
-    //destroy( );
+    //destroy();
 }
 
 //=======================================================================
@@ -112,8 +112,8 @@ int Application::winMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 //protected
 bool Application::init ( HINSTANCE hInstance, DWORD style )
 {
-    myInstanceMonitor.create( resourceClassName( ) );
-    if ( !myInstanceMonitor.isThisTheOnlyInstance( )  )
+    myInstanceMonitor.create( resourceClassName() );
+    if ( !myInstanceMonitor.isThisTheOnlyInstance()  )
     {
         log( _T("More then one type of this application is running.") );
         return false;
@@ -127,10 +127,10 @@ bool Application::init ( HINSTANCE hInstance, DWORD style )
     if ( !ourClassIsRegistered )
     {
         Application::ourHInstance = hInstance;
-        ourClassIsRegistered = registerClass( );
+        ourClassIsRegistered = registerClass();
     }
     
-    if ( !preWindow( ) || !setupWindow( style ) || !postInit( ) )
+    if ( !preWindow() || !setupWindow( style ) || !postInit() )
     {
         return false;
     }
@@ -145,7 +145,7 @@ bool Application::init ( HINSTANCE hInstance, DWORD style )
 int Application::start ( int nShowCmd )
 {
     MSG msg = {0};
-    HACCEL hAccelTable = resourceAccelTable( );
+    HACCEL hAccelTable = resourceAccelTable();
     ShowWindow( myHWnd, nShowCmd );
     UpdateWindow( myHWnd );
     myAppIsRunning = true;
@@ -154,60 +154,60 @@ int Application::start ( int nShowCmd )
         if ( PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) && 
             !TranslateAccelerator(msg.hwnd, hAccelTable, &msg) )
         {
-            preMessage( );
+            preMessage();
             TranslateMessage(&msg);
             DispatchMessage(&msg);
-            postMessage( );
+            postMessage();
         }
 
         if ( myAppIsRunning )
         {
-            update( );
+            update();
         }
     }
-    end( );
+    end();
     return (int) msg.wParam;
 }
 
 //=======================================================================
 //protected
-void Application::end ( )
+void Application::end ()
 {
     if ( myHWnd != NULL )
     {
-        preEnd( );
+        preEnd();
         SetWindowLongPtr( myHWnd, GWLP_USERDATA, NULL );
         DestroyWindow( myHWnd );
         myHWnd = NULL;
-        UnregisterClass( resourceClassName( ), instance( ) );
-        postEnd( );
+        UnregisterClass( resourceClassName(), instance() );
+        postEnd();
     }
 }
 
 //=======================================================================
 //protected
-HINSTANCE Application::instance ( )
+HINSTANCE Application::instance ()
 { 
     return ourHInstance;
 }
 
 //=======================================================================
 //protected
-HWND Application::window ( )
+HWND Application::window ()
 { 
     return myHWnd; 
 }
 
 //=======================================================================
 //protected
-const Rect& Application::transform ( )
+const Rect& Application::transform ()
 { 
     return myTransform; 
 }
 
 //=======================================================================
 //protected
-const Rect& Application::viewport ( )
+const Rect& Application::viewport ()
 { 
     return myViewport; 
 }
@@ -222,45 +222,45 @@ bool Application::preInit ( HINSTANCE hInstance )
 
 //=======================================================================
 //protected
-bool Application::preWindow ( )
+bool Application::preWindow ()
 {
     return true;
 }
 
 //=======================================================================
 //protected
-bool Application::postInit ( )
+bool Application::postInit ()
 {
     return true; 
 }
 
 //=======================================================================
 //protected
-void Application::preMessage ( )
+void Application::preMessage ()
 {
 }
 
 //=======================================================================
 //protected
-void Application::postMessage ( )
+void Application::postMessage ()
 {
 }
 
 //=======================================================================
 //protected
-void Application::update ( )
+void Application::update ()
 {
 }
 
 //=======================================================================
 //protected
-void Application::preEnd ( )
+void Application::preEnd ()
 {
 }
 
 //=======================================================================
 //protected
-void Application::postEnd ( )        
+void Application::postEnd ()        
 {
 }
 
@@ -277,14 +277,14 @@ bool Application::bind ( MsgProc messageProcessor, UINT messageType )
 
 //=======================================================================
 //protected
-void Application::resizeViewportToTransform ( )
+void Application::resizeViewportToTransform ()
 {
     POINT differ;
-    differ.x = transform( ).width( ) - viewport( ).width( );
-    differ.y = transform( ).height( ) - viewport( ).height( );
-    MoveWindow( window( ), transform( ).x( ), transform( ).y( ),
-                transform( ).width( ) + differ.x, 
-                transform( ).height( ) + differ.y, TRUE );
+    differ.x = transform().width() - viewport().width();
+    differ.y = transform().height() - viewport().height();
+    MoveWindow( window(), transform().x(), transform().y(),
+                transform().width() + differ.x, 
+                transform().height() + differ.y, TRUE );
 }
 
 //=======================================================================
@@ -293,18 +293,18 @@ void Application::resizeViewportTo ( int x, int y, int width, int height )
 {
     if ( x == CW_USEDEFAULT )
     {
-        x = transform( ).x( );
-        y = transform( ).y( );
+        x = transform().x();
+        y = transform().y();
     }
-    MoveWindow( window( ), x, y, width, height, TRUE );
-    GetWindowRect( window( ), &myTransform );
-    GetClientRect( window( ), &myViewport );
-    resizeViewportToTransform( );
+    MoveWindow( window(), x, y, width, height, TRUE );
+    GetWindowRect( window(), &myTransform );
+    GetClientRect( window(), &myViewport );
+    resizeViewportToTransform();
 }
 
 //=======================================================================
 //protected
-void Application::quit ( )
+void Application::quit ()
 {
     myAppIsRunning = false;
 }
@@ -313,6 +313,6 @@ void Application::quit ( )
 //protected
 LRESULT Application::onClose ( WPARAM wParam, LPARAM lParam )
 {
-    quit( );
+    quit();
     return wParam;
 }

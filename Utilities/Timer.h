@@ -7,14 +7,14 @@
 class Timer : public NonCopyable
 {
 public:
-    Timer ( );
-    ~Timer ( );
-    bool start ( );
-    unsigned long long stop ( );
-    unsigned long long restart ( );
-    unsigned long long elapsedTime ( );
-    unsigned long long systemTick ( );
-    bool isRunning ( ) { return myTimerIsRunning; }
+    Timer ();
+    ~Timer ();
+    bool start ();
+    unsigned long long stop ();
+    unsigned long long restart ();
+    unsigned long long elapsedTime ();
+    unsigned long long systemTick ();
+    bool isRunning () { return myTimerIsRunning; }
 
 private:
     bool               myTimerIsRunning;

@@ -14,44 +14,44 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 }
 
 //=======================================================================
-Game::Game ( )
+Game::Game ()
 {
 }
 
 //=======================================================================
-Game::~Game ( )
+Game::~Game ()
 {
 }
 
 //=======================================================================
-bool Game::gameInit ( )
+bool Game::gameInit ()
 {
    bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
    return true;
 }
 
 //=======================================================================
-void Game::gameRun ( )
+void Game::gameRun ()
 {
    // pre-render
 
    // clear the backbuffer
-   dxDevice()->ColorFill( backBuffer( ), NULL, bgColor );
+   device()->ColorFill( backBuffer(), NULL, bgColor );
 
    // start rendering
-   if ( dxDevice()->BeginScene() )
+   if ( device()->BeginScene() )
    {
       //render
 
       // stop rendering
-      dxDevice( )->EndScene();
+      device()->EndScene();
 
       //switch screen to the next backbuffer
-      dxDevice( )->Present( NULL, NULL, NULL, NULL );
+      device()->Present( NULL, NULL, NULL, NULL );
    }
 }
 
 //=======================================================================
-void Game::gameExit ( )
+void Game::gameExit ()
 {
 }

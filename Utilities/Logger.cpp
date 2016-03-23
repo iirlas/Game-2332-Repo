@@ -1,5 +1,5 @@
 #include <tchar.h>
-#include "Utilities/TType.h"
+#include "Utilities\TTypes.h"
 #include "Utilities/Logger.h"
 
 
@@ -11,8 +11,21 @@ void log ( LPCTSTR format, ... )
 
     va_list listArgs;
     va_start( listArgs, format );
-    TSPRINTF_S( cstrMessage, UCHAR_MAX, format, listArgs );
+    VTSPRINTF_S( cstrMessage, UCHAR_MAX, format, listArgs );
     va_end( listArgs );
  
     OutputDebugString( cstrMessage );
+}
+
+//=======================================================================
+void logln ( LPCTSTR format, ... )
+{
+    TCHAR cstrMessage[UCHAR_MAX] = {0};
+
+    va_list listArgs;
+    va_start( listArgs, format );
+    VTSPRINTF_S( cstrMessage, UCHAR_MAX, format, listArgs );
+    va_end( listArgs );
+ 
+    OutputDebugString( (cstrMessage + tstring(_T("\n"))).c_str() );
 }

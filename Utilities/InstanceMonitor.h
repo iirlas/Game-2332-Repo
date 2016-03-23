@@ -14,7 +14,7 @@ class InstanceMonitor : public NonCopyable
 public:
     //======================================================================
     // Default Constuctor
-    InstanceMonitor ( );
+    InstanceMonitor ();
 
     //======================================================================
     // Constuctor that is created with a mutex.
@@ -22,7 +22,7 @@ public:
 
     //======================================================================
     // Default Destuctor
-    ~InstanceMonitor ( );
+    ~InstanceMonitor ();
 
     //======================================================================
     // Creates a mutex if one has not been created.
@@ -30,7 +30,7 @@ public:
 
     //======================================================================
     // True if the mutex created did not return ERROR_ALREADY_EXISTS.
-    bool isThisTheOnlyInstance ( );
+    bool isThisTheOnlyInstance ();
 private:
     HANDLE myMutex;
     DWORD myLastError;

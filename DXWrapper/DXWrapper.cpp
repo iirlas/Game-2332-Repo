@@ -4,30 +4,37 @@
 #include "stdafx.h"
 #include <assert.h>
 #include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxAssetManager.h"
 #include "DxWrapper/DxWrapper.h"
 
+IDXDEVICE DxWrapper::ourDevice = NULL;
+IDXINTERFACE DxWrapper::ourInterface = NULL;
+IDXSPRITE DxWrapper::ourSpriteInterface = NULL;
+
 //=======================================================================
-DxWrapper::DxWrapper ( )
-:myD3D(NULL), myD3DDevice(NULL), myBackBuffer()
+DxWrapper::DxWrapper ()
+:myBackBuffer(NULL)
 {
 }
 
 //=======================================================================
-DxWrapper::~DxWrapper ( )
+DxWrapper::~DxWrapper ()
 {
 }
 
 //=======================================================================
 //protected
-bool DxWrapper::postInit ( )
+bool DxWrapper::postInit ()
 {
    HRESULT result;
-   myD3D = Direct3DCreate9(D3D_SDK_VERSION);
-   if ( myD3D == NULL )
+   ourInterface = Direct3DCreate9(D3D_SDK_VERSION);
+
+   if ( dxInterface() == NULL )
    {
       log( _T("Error when initailizing DirectX.") );
       return false;
    }
+
    ZeroMemory(&myD3Dpp, sizeof(myD3Dpp));
    myD3Dpp.Windowed = !fullscreen();
    myD3Dpp.SwapEffect = swapEffect();
@@ -43,27 +50,31 @@ bool DxWrapper::postInit ( )
                                          window(),
                                          D3DCREATE_SOFTWARE_VERTEXPROCESSING,
                                          &myD3Dpp, 
-                                         &myD3DDevice );
+                                         &ourDevice );
 
-   if ( FAILED(result) || myD3DDevice == NULL )
+   if ( FAILED(result) || ourDevice == NULL )
    {
       log( _T("Could not create DirectX device.") );
       return false;
    }
 
-   result = D3DXCreateSprite( dxDevice(), &mySpriteobj );
-
-   if ( FAILED(result) || mySpriteobj == NULL )
+   result = D3DXCreateSprite( device(), &ourSpriteInterface );
+   if ( FAILED(result) || ourSpriteInterface == NULL )
    {
-      log( _T("Unable to create sprite!") );
+      log( _T("Unable to create sprite Interface!") );
       return false;
    }
 
-   result = dxDevice()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &myBackBuffer );
-
+   result = device()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &myBackBuffer );
    if ( FAILED(result) || myBackBuffer == NULL )
    {
       log( _T("Could not retrieve back buffer.") );
+      return false;
+   }
+
+   if ( !DxAssetManager::getInstance().init( assetConfiguration() ) )
+   {
+      log( _T("Unable to initialize asset manager!") );
       return false;
    }
 
@@ -72,30 +83,30 @@ bool DxWrapper::postInit ( )
 
 //=======================================================================
 //protected
-void DxWrapper::update ( )
+void DxWrapper::update ()
 {
-   assert( !!myD3DDevice && "Trying to use an invalid DirectX device!" );
-   gameRun( );  
+   assert( !!ourDevice && "Trying to use an invalid DirectX device!" );
+   gameRun();  
 }
 
 //=======================================================================
 //protected
-void DxWrapper::preDestroy ( )
+void DxWrapper::preDestroy ()
 {
-   gameExit( );
+   gameExit();
    if ( spriteInterface() )
    {
-      mySpriteobj->Release();
-      mySpriteobj = NULL;
+      ourSpriteInterface->Release();
+      ourSpriteInterface = NULL;
    }
-   if ( dxDevice() )
+   if ( device() )
    {
-      myD3DDevice->Release();
-      myD3DDevice = NULL;
+      ourDevice->Release();
+      ourDevice = NULL;
    }
    if ( dxInterface() )
    {
-      myD3D->Release();
-      myD3D = NULL;
+      ourInterface->Release();
+      ourInterface = NULL;
    }
 }

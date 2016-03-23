@@ -5,35 +5,33 @@
 #include "Utilities/Logger.h"
 #include "DxWrapper/DxCommon.h"
 #include "DxWrapper/DxTypes.h"
-#include "DxWrapper/Surface.h"
-
-using namespace DxWrapper;
+#include "DxWrapper/DxSurface.h"
 
 //=======================================================================
-Surface::Surface ( void )
+DxSurface::DxSurface ( void )
 :mySurface( NULL )
 {
    ZeroMemory( &mySurfaceDescription, sizeof(mySurfaceDescription) );
 }
 
 //=======================================================================
-Surface::Surface ( const Surface& other )
-:ImageInfo(other), mySurface(NULL)
+DxSurface::DxSurface ( const DxSurface& other )
+:DxImage(other), mySurface(NULL)
 {
    ZeroMemory( &mySurfaceDescription, sizeof(mySurfaceDescription) );
    *this = other;
 }
 
 //=======================================================================
-Surface::~Surface ( void )
+DxSurface::~DxSurface ( void )
 {
    destroy();
 }
 
 //=======================================================================
-Surface& Surface::operator= ( const Surface& other )
+DxSurface& DxSurface::operator= ( const DxSurface& other )
 {
-   ImageInfo::operator=( other );
+   DxImage::operator=( other );
    if ( mySurface )
    {
       destroy();
@@ -48,25 +46,25 @@ Surface& Surface::operator= ( const Surface& other )
 }
 
 //=======================================================================
-Surface::operator IDxSurface ( void )
+DxSurface::operator IDXSURFACE ( void )
 {
    return mySurface;
 }
 
 //=======================================================================
-IDxSurface* Surface::operator& ( void )
+IDXSURFACE* DxSurface::operator& ( void )
 {
    return &mySurface;
 }
 
 //=======================================================================
-Surface::operator bool ( void )
+DxSurface::operator bool ( void )
 {
    return mySurface != NULL;
 }
 
 //=======================================================================
-bool Surface::create ( IDxDevice device, unsigned width, unsigned height )
+bool DxSurface::create ( IDXDEVICE device, unsigned width, unsigned height )
 {
    HRESULT result = device->CreateOffscreenPlainSurface( width, height, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &mySurface, NULL );
    if ( FAILED( result ) )
@@ -79,7 +77,7 @@ bool Surface::create ( IDxDevice device, unsigned width, unsigned height )
 }
 
 //=======================================================================
-bool Surface::createFromFile ( IDxDevice device, LPCTSTR filepath, RECT* rCrop )
+bool DxSurface::createFromFile ( IDXDEVICE device, LPCTSTR filepath, RECT* rCrop )
 {
    if ( !getInfoFromFile( filepath ) )
    {
@@ -97,7 +95,7 @@ bool Surface::createFromFile ( IDxDevice device, LPCTSTR filepath, RECT* rCrop )
 }
 
 //=======================================================================
-void Surface::destroy ( void )
+void DxSurface::destroy ( void )
 {
    removeFileInfo();
    INFRELEASE( mySurface );
@@ -105,13 +103,13 @@ void Surface::destroy ( void )
 }
 
 //=======================================================================
-HRESULT Surface::setToBackBuffer ( IDxDevice device, UINT iSwapChain, UINT iBackBuffer, D3DBACKBUFFER_TYPE type )
+HRESULT DxSurface::setToBackBuffer ( IDXDEVICE device, UINT iSwapChain, UINT iBackBuffer, D3DBACKBUFFER_TYPE type )
 {
    return device->GetBackBuffer( iSwapChain, iBackBuffer, type, &mySurface );
 }
 
 //=======================================================================
-void Surface::draw ( IDxDevice device, LPRECT sRect, LPDIRECT3DSURFACE9 target, LPRECT tRect, D3DTEXTUREFILTERTYPE filter )
+void DxSurface::draw ( IDXDEVICE device, LPRECT sRect, LPDIRECT3DSURFACE9 target, LPRECT tRect, D3DTEXTUREFILTERTYPE filter )
 {
    D3DVIEWPORT9 viewport = {0};
    device->GetViewport( &viewport );
@@ -141,7 +139,7 @@ void Surface::draw ( IDxDevice device, LPRECT sRect, LPDIRECT3DSURFACE9 target, 
 }
 
 //=======================================================================
-bool Surface::setColor( IDxDevice device, D3DCOLOR color )
+bool DxSurface::setColor( IDXDEVICE device, D3DCOLOR color )
 {
 	HRESULT result = device->ColorFill( mySurface, NULL, color );
 

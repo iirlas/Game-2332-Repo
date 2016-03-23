@@ -1,7 +1,7 @@
 #include "Utilities/Rect.h"
 
 //=======================================================================
-Rect::Rect ( )
+Rect::Rect ()
 {
     myRect.left = 
         myRect.top = 
@@ -13,14 +13,14 @@ Rect::Rect ( )
 Rect::Rect ( const Rect& other )
     :myRect(other.myRect)
 {
-    normalize( );
+    normalize();
 }
 
 //=======================================================================
 Rect::Rect ( const RECT& other )
     :myRect(other)
 {
-    normalize( );
+    normalize();
 }
 
 //=======================================================================
@@ -36,18 +36,18 @@ Rect::Rect ( POINT topLeft, LONG width, LONG height )
 }
 
 //=======================================================================
-Rect::~Rect ( )
+Rect::~Rect ()
 {
 }
 
 //=======================================================================
-Rect::operator RECT& ( )
+Rect::operator RECT& ()
 {
     return myRect;
 }
 
 //=======================================================================
-LPRECT Rect::operator& ( )
+LPRECT Rect::operator& ()
 {
     return &myRect;
 }
@@ -67,9 +67,9 @@ Rect& Rect::operator= ( const RECT &other )
 }
 
 //=======================================================================
-LONG Rect::area ( ) const
+LONG Rect::area () const
 {
-    return (width( ) * height( ));
+    return (width() * height());
 }
 
 //=======================================================================
@@ -90,7 +90,7 @@ bool Rect::collidesWith ( const RECT& other, Rect& intersect ) const
     if ( intersect.myRect.left < intersect.myRect.right &&
          intersect.myRect.top < intersect.myRect.bottom )
     {
-        intersect.normalize( );
+        intersect.normalize();
         return true;
     }
 
@@ -112,7 +112,7 @@ bool Rect::contains ( LONG x, LONG y ) const
 }
 
 //=======================================================================
-void Rect::normalize ( )
+void Rect::normalize ()
 {
     if ( myRect.left > myRect.right )
     {
@@ -135,7 +135,7 @@ void Rect::set ( LONG left, LONG top, LONG right, LONG bottom )
    myRect.top = top;
    myRect.right = right;
    myRect.bottom = bottom;
-   normalize( );
+   normalize();
 }
 
 //=======================================================================
@@ -145,7 +145,7 @@ void Rect::set ( POINT topLeft, LONG width, LONG height )
    myRect.top = topLeft.y;
    myRect.right = topLeft.x + width;
    myRect.bottom = topLeft.y + height;
-   normalize( );
+   normalize();
 }
 
 //=======================================================================
@@ -153,7 +153,7 @@ LONG Rect::x ( LONG value, bool relative )
 {
     myRect.right += (relative)? (value):(value - myRect.left);
     myRect.left = (relative)? (myRect.left + value):(value);
-    normalize( );
+    normalize();
     return myRect.left;
 }
 
@@ -162,7 +162,7 @@ LONG Rect::y ( LONG value, bool relative )
 {
     myRect.bottom += (relative)? (value):(value - myRect.top);
     myRect.top = (relative)? (myRect.top + value):(value);
-    normalize( );
+    normalize();
     return myRect.top;
 }
 
@@ -170,7 +170,7 @@ LONG Rect::y ( LONG value, bool relative )
 LONG Rect::width ( LONG value )
 {
     myRect.right = myRect.left + value;
-    normalize( );
+    normalize();
     return (myRect.right - myRect.left);
 }
 
@@ -178,7 +178,7 @@ LONG Rect::width ( LONG value )
 LONG Rect::height ( LONG value )
 {    
     myRect.bottom = myRect.top + value;
-    normalize( );
+    normalize();
     return (myRect.bottom - myRect.top);
 }
 
@@ -186,7 +186,7 @@ LONG Rect::height ( LONG value )
 LONG Rect::left ( LONG value )
 {
     myRect.left = value;
-    normalize( );
+    normalize();
     return myRect.left;
 }
 
@@ -194,7 +194,7 @@ LONG Rect::left ( LONG value )
 LONG Rect::top ( LONG value )
 {
     myRect.top = value;
-    normalize( );
+    normalize();
     return myRect.top;
 }
 
@@ -202,7 +202,7 @@ LONG Rect::top ( LONG value )
 LONG Rect::right ( LONG value )
 {
     myRect.right = value;
-    normalize( );
+    normalize();
     return myRect.right;
 }
 
@@ -210,7 +210,7 @@ LONG Rect::right ( LONG value )
 LONG Rect::bottom ( LONG value )
 {
     myRect.bottom = value;
-    normalize( );    
+    normalize();    
     return myRect.bottom;
 }
 

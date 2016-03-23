@@ -4,8 +4,8 @@
 class NonCopyable
 {
 public:
-   NonCopyable ( ) { }
-   virtual ~NonCopyable ( ) { };
+   NonCopyable () { }
+   virtual ~NonCopyable () { };
 private:
    NonCopyable ( const NonCopyable& other );
    NonCopyable& operator= ( const NonCopyable& other );

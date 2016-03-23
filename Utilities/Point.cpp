@@ -1,7 +1,7 @@
 #include "Utilities/Point.h"
 
 //=======================================================================
-Point::Point ( )
+Point::Point ()
 {
     myPoint.x = myPoint.y = 0;
 }
@@ -25,18 +25,18 @@ Point::Point ( LONG x, LONG y )
 }
 
 //=======================================================================
-Point::~Point ( )
+Point::~Point ()
 {
 }
 
 //=======================================================================
-Point::operator POINT& ( )
+Point::operator POINT& ()
 {
     return myPoint;
 }
 
 //=======================================================================
-LPPOINT Point::operator& ( )
+LPPOINT Point::operator& ()
 {
     return &myPoint;
 }

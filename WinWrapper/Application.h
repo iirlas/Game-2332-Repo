@@ -9,7 +9,7 @@
 #define WS_LOCKEDWINDOW     (WS_OVERLAPPEDWINDOW&~WS_THICKFRAME)
 #include "Utilities\InstanceMonitor.h"
 #include "Utilities\Rect.h"
-#include "Utilities\TType.h"
+#include "Utilities\TTypes.h"
 #include "Utilities\Logger.h"
 
 // Window framework class
@@ -31,7 +31,7 @@ private:
     // Registers the windows class with this class's resources. 
     // Note: Methods with the prefix of "resource" are used in registation;
     //       exception for resourceAccelTable() which is call in start().
-    bool registerClass ( );
+    bool registerClass ();
 
     //=======================================================================
     // Creates the window and setup the window size, client size, and assigns 
@@ -41,11 +41,11 @@ private:
 public:
     //=======================================================================
     // Default Constructor.
-    Application ( );
+    Application ();
     
     //=======================================================================
     // Default Destructor the is propery inheritable.
-    virtual ~Application ( );
+    virtual ~Application ();
 
     //=======================================================================
     // The entry point for the application.
@@ -76,23 +76,23 @@ protected:
     // Ends the Application by destroying the window and unregistering the
     // window class. When called, preEnd, and postEnd will be called at 
     // thier respected times.
-    void end ( );
+    void end ();
 
     //=======================================================================
     // The hInstance for this application
-    HINSTANCE instance ( );
+    HINSTANCE instance ();
     
     //=======================================================================
     // The current opened window for this application
-    HWND window ( );
+    HWND window ();
     
     //=======================================================================
     // The size and position of the current window.
-    const Rect& transform ( );
+    const Rect& transform ();
     
     //=======================================================================
     // The size and position of the current window's client area.
-    const Rect& viewport ( );
+    const Rect& viewport ();
 
     //=======================================================================
     // An overridable method that is called prior to initialization.
@@ -102,20 +102,20 @@ protected:
     
     //=======================================================================
     // An overridable method that is called prior to window creation.
-    virtual bool preWindow ( );
+    virtual bool preWindow ();
 
     //=======================================================================
     // An overridable method that is called after initialization and window
     // creation.
-    virtual bool postInit ( );
+    virtual bool postInit ();
     
     //=======================================================================
     // An overridable method that is called prior to processing a message.
-    virtual void preMessage ( );
+    virtual void preMessage ();
     
     //=======================================================================
     // An overridable method that is called after processing a message.
-    virtual void postMessage ( );
+    virtual void postMessage ();
     
     //=======================================================================
     // An overridable method that is called on the idle time of 
@@ -123,15 +123,15 @@ protected:
     // Note: This method is called any idle time, so any functionilty in this
     //       method will be called continiously without delay. 
     //       Use Timer in "Utilities\Timer.h" to handle this.
-    virtual void update ( );
+    virtual void update ();
     
     //=======================================================================
     // An overridable method that is called prior to the application exiting.
-    virtual void preEnd ( );
+    virtual void preEnd ();
     
     //=======================================================================
     // An overridable method that is called prior to the application exiting.
-    virtual void postEnd ( );
+    virtual void postEnd ();
 
     //=======================================================================
     // Binds a message processor method to a window's message.
@@ -146,7 +146,7 @@ protected:
     //=======================================================================
     // Resizes the viewport to the transform.
     // Note: This also resizes the transform to the current window size.
-    void resizeViewportToTransform ( );
+    void resizeViewportToTransform ();
     
     //=======================================================================
     // Resizes the viewport to the given position and size.
@@ -157,7 +157,7 @@ protected:
     // Used to exit the message loop and quit the application.
     // Note: Use this instead of DestoryWindow beause the window is destroyed 
     //       before preExit is called.
-    void quit ( );
+    void quit ();
 
     //=======================================================================
     // An overridable method that is call on the WM_CLOSE window's message.
@@ -165,35 +165,35 @@ protected:
     
     //=======================================================================
     // The starting title for the window.
-    virtual inline LPCTSTR startTitle ( )
+    virtual inline LPCTSTR startTitle ()
     {
         return _T("Default Application Title");
     }
 
     //=======================================================================
     // The starting x position of the window.
-    virtual inline int startTransX ( )
+    virtual inline int startTransX ()
     {
         return CW_USEDEFAULT;
     }
 
     //=======================================================================
     // The starting y position of the window.
-    virtual inline int startTransY ( )
+    virtual inline int startTransY ()
     {
         return 0;
     }
 
     //=======================================================================
     // The starting width of the window's client area.
-    virtual inline int startTransWidth ( )
+    virtual inline int startTransWidth ()
     {
         return CW_USEDEFAULT;
     }
 
     //=======================================================================
     // The starting height of the window's client area.
-    virtual inline int startTransHeight ( )
+    virtual inline int startTransHeight ()
     {
         return 0;
     }
@@ -202,7 +202,7 @@ protected:
     // The resource for the class's style.
     // Used during class registration.
     // For more information view Win32 API WNDCLASS structure: style.
-    virtual inline UINT resourceStyle ( )
+    virtual inline UINT resourceStyle ()
     { 
         return CS_HREDRAW | CS_VREDRAW; 
     }
@@ -211,7 +211,7 @@ protected:
     // The resource for the class's number of extra bytes in the window's class.
     // Used during class registration. 
     // For more information view Win32 API WNDCLASS structure: cbClsExtra.
-    virtual inline int resourceCLSExtra ( )
+    virtual inline int resourceCLSExtra ()
     { 
         return 0; 
     }
@@ -220,7 +220,7 @@ protected:
     // The resource for the class's number of extra bytes in the hWnd.
     // Used during class registration.
     // For more information view Win32 API WNDCLASS structure: cbWndExtra.
-    virtual inline int resourceWndExtra ( )
+    virtual inline int resourceWndExtra ()
     { 
         return 0;
     }
@@ -229,7 +229,7 @@ protected:
     // The resource for the window's main Icon.
     // Used during class registration.
     // For more information view Win32 API WNDCLASS structure: hIcon.
-    virtual inline HICON resourceIcon ( )
+    virtual inline HICON resourceIcon ()
     { 
         return 0; 
     }
@@ -238,7 +238,7 @@ protected:
     // The resource for the mouse's cursor.
     // Used during class registration.
     // For more information view Win32 API WNDCLASS structure: hCursor.
-    virtual inline HCURSOR resourceCursor ( )
+    virtual inline HCURSOR resourceCursor ()
     { 
         return LoadCursor( NULL, IDC_ARROW );
     }
@@ -247,7 +247,7 @@ protected:
     // The resource for the window's client area background.
     // Used during class registration.
     // For more information view Win32 API WNDCLASS structure: hbrBackground.
-    virtual inline HBRUSH resourceBackground ( )  
+    virtual inline HBRUSH resourceBackground ()  
     { 
         return (HBRUSH)(COLOR_WINDOW+1);
     }
@@ -256,7 +256,7 @@ protected:
     // The resource for the window's menu.
     // Used during class registration.
     // For more information view Win32 API WNDCLASS structure: lpszMenuName.
-    virtual inline LPCTSTR resourceMenu ( )
+    virtual inline LPCTSTR resourceMenu ()
     { 
         return 0;
     }
@@ -266,7 +266,7 @@ protected:
     // Used during class registration.
     // For more information view Win32 API WNDCLASS structure: lpszClassName.
     // Note: Recommend to override for any derived application.
-    virtual inline LPCTSTR resourceClassName ( )
+    virtual inline LPCTSTR resourceClassName ()
     {
         return _T("DEFAULT_WINDOWS_WRAPPER_CLASS");
     }
@@ -275,7 +275,7 @@ protected:
     // The resource for the window's icon(small).
     // Used during class registration.
     // For more information view Win32 API WNDCLASS structure: hIconSm.
-    virtual inline HICON resourceIconSmall ( )
+    virtual inline HICON resourceIconSmall ()
     { 
         return 0;
     }
@@ -283,7 +283,7 @@ protected:
     //=======================================================================
     // The resource for the window's Accel Table.
     // For more information view Win32 API TranslateAccelerator.
-    virtual inline HACCEL resourceAccelTable ( ) 
+    virtual inline HACCEL resourceAccelTable () 
     { 
         return 0; 
     }

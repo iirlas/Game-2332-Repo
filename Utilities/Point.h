@@ -4,23 +4,23 @@
 class Point
 {
 public:
-   Point ( );
+   Point ();
    Point ( const Point& other ); 
    Point ( const POINT& other );  
    Point ( LONG x, LONG y );
-   ~Point ( );
+   ~Point ();
 
-   operator POINT& ( );
-   LPPOINT operator& ( );
+   operator POINT& ();
+   LPPOINT operator& ();
    Point& operator= ( const Point& other );
    Point& operator= ( const POINT& other );
 
-   inline LONG x ( ) const 
+   inline LONG x () const 
    {
       return myPoint.x;
    }
 
-   inline LONG y ( ) const
+   inline LONG y () const
    {
       return myPoint.y;
    }

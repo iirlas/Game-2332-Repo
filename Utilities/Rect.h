@@ -5,62 +5,62 @@
 class Rect
 {
 public:
-   Rect ( );
+   Rect ();
    Rect ( const Rect& other ); 
    Rect ( const RECT& other );  
    Rect ( LONG left, LONG top, LONG right, LONG bottom );
    Rect ( POINT topleft, LONG width, LONG height );
-   ~Rect ( );
+   ~Rect ();
 
-   operator RECT& ( );
-   LPRECT operator& ( );
+   operator RECT& ();
+   LPRECT operator& ();
 
    Rect& operator= ( const Rect& other );
    Rect& operator= ( const RECT& other );
 
-   LONG area ( ) const;
+   LONG area () const;
    bool collidesWith ( const RECT& other ) const;
    bool collidesWith ( const RECT& other, Rect& intersect ) const;
    bool contains ( const POINT& point ) const;
    bool contains ( LONG x, LONG y ) const;
-   void normalize ( );
+   void normalize ();
 
-   inline LONG x ( ) const 
+   inline LONG x () const 
    {
       return myRect.left;
    }
 
-   inline LONG y ( ) const
+   inline LONG y () const
    {
       return myRect.top;
    }
 
-   inline LONG width ( ) const
+   inline LONG width () const
    {
       return (myRect.right - myRect.left);
    }    
 
-   inline LONG height ( ) const
+   inline LONG height () const
    {
       return (myRect.bottom - myRect.top);
    }
 
-   inline LONG left ( ) const
+   inline LONG left () const
    {
       return myRect.left;
    }
 
-   inline LONG top ( ) const
+   inline LONG top () const
    {
       return myRect.top;
    }
 
-   inline LONG right ( ) const
+   inline LONG right () const
    {
       return myRect.right;
    }
 
-   inline LONG bottom ( ) const
+   inline LONG bottom () const
    {
       return myRect.bottom;
    }
