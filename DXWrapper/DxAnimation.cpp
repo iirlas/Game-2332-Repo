@@ -2,17 +2,16 @@
 #include <cassert>
 #include <map>
 #include <fstream>
-#include "Utilities\TTypes.h"
+#include "Utilities/TTypes.h"
 #include "Utilities/Rect.h"
 #include "Utilities/Point.h"
-#include "Utilities/Miscellaneous.h"
-#include "DxWrapper\DxAnimationInfo.h"
-#include "DxWrapper\DxTexture.h"
-#include "DxWrapper\DxAssetManager.h"
-#include "DxWrapper\DxAnimation.h"
+#include "Utilities/TStringRoutines.h"
+#include "DxWrapper/DxAssetManager.h"
+#include "DxWrapper/DxTexture.h"
+#include "DxWrapper/DxAnimation.h"
 //=======================================================================
-DxAnimation::DxAnimation ( )
-:myCurrentFrame(0), myFrameCount(0), myTexture(NULL)
+DxAnimation::DxAnimation ()
+:myName(), myCurrentFrame(0), myFrameCount(0)
 {  
 }
 
@@ -44,17 +43,18 @@ DxAnimation::~DxAnimation ( )
 //=======================================================================
 bool DxAnimation::init ( IDXDEVICE device, const tstring& animationName, float speed, D3DCOLOR excludeColor )
 {
-   DxAssetManager& assetManager = DxAssetManager::getInstance();
-   DxAnimationInfo animInfo = assetManager.getAnimationInfo( animationName );
-
+   DxAnimation* animation = DxAssetManager::getInstance().getAnimation( animationName );
+   if ( animation != NULL )
+   {
+      *this = *animation;
+   }
    mySpeed = speed;
-   ZeroMemory( &myFrames, sizeof(myFrames) );
-   
-   return parse( animInfo );
+   myExcludeColor = excludeColor;
+   return true;
 }
 
 //=======================================================================
-void DxAnimation::update ( )
+void DxAnimation::update ()
 {
    if ( !myTimer.isRunning() )
    {
@@ -67,10 +67,21 @@ void DxAnimation::update ( )
 }
 
 //=======================================================================
-void DxAnimation::shutdown ( )
+void DxAnimation::shutdown ()
 {
-   myTexture = NULL;
+   for ( unsigned int index = 0; index < ourMaxAnimationFrames; index++ )
+   {
+      myFrames[index].texture = NULL;
+   }
 }
+
+//=======================================================================
+void DxAnimation::reset() //added for resetting animation so it doesn't start mid frame
+{
+   myCurrentFrame = 0;
+   myTimer.restart();
+}
+
 
 //=======================================================================
 DxAnimation::ANIMATION DxAnimation::animation ( ANIMATION type )
@@ -91,51 +102,49 @@ float DxAnimation::speed ( float value )
 void DxAnimation::drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position, 
                               D3DXVECTOR2* scale, float rotation, 
                               D3DXVECTOR2* center, D3DCOLOR color )
-{
-   myTexture->draw ( spriteobj, position, scale, 
-                     rotation, center, color, 
-                     &myFrames[myCurrentFrame] );
+ {
+   myFrames[myCurrentFrame].texture->draw ( spriteobj, position, scale, 
+                                            rotation, center, color, 
+                                            &myFrames[myCurrentFrame].rect );
 }
 
 //=======================================================================
 //private
-
-bool DxAnimation::parse ( DxAnimationInfo animInfo )
-{
-   tstring parseStr( animInfo.information );
-   TCHAR state = _T('\0');
-   tstringstream ss( parseStr );
-   int animationType = -1;
-
-   myTexture = animInfo.texture;
-
-   ss >> animationType;
-   animation( (ANIMATION)animationType );
-
-   while ( true )
-   {
-      int x = -1, y = -1, width = -1, height = -1;
-      Rect rect;
-
-      ss >> x >> y >> width >> height;
-      if ( ss.fail() )
-      {
-         break;
-      }
-
-      assert( width != -1 && height != -1 );
-      rect.set( Point( x, y ), width, height );
-
-      if ( myFrameCount >= ANIMATION_MAX_LENGTH )
-      {
-         return false;
-      }
-
-      myFrames[myFrameCount] = rect;
-      myFrameCount++;
-   }
-   return true;
-}
+//
+//bool DxAnimation::parse ( DxAnimationInfo animInfo )
+//{
+//   tstring parseStr( animInfo.information );
+//   TCHAR state = _T('\0');
+//   tstringstream ss( parseStr );
+//   int animationType = -1;
+//
+//   ss >> myName >> animationType;
+//   animation( (ANIMATION)animationType );
+//
+//   while ( true )
+//   {
+//      int x = -1, y = -1, width = -1, height = -1;
+//      Rect rect;
+//
+//      ss >> x >> y >> width >> height;
+//      if ( ss.fail() )
+//      {
+//         break;
+//      }
+//
+//      assert( width != -1 && height != -1 );
+//      rect.set( Point( x, y ), width, height );
+//
+//      if ( myFrameCount >= ANIMATION_MAX_LENGTH )
+//      {
+//         return false;
+//      }
+//
+//      myFrames[myFrameCount] = rect;
+//      myFrameCount++;
+//   }
+//   return true;
+//}
 
 //=======================================================================
 //private

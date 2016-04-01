@@ -16,6 +16,8 @@ typedef std::wstringstream tstringstream;
 #define VTSPRINTF_S vsprintf_s
 typedef std::string tstring;
 typedef std::fstream tfstream;
+typedef std::ifstream tifstream;
+typedef std::ofstream tofstream;
 typedef std::stringstream tstringstream;
 #endif // UNICODE
 

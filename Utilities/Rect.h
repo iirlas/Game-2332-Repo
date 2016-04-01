@@ -2,68 +2,32 @@
 #define _RECT_H_
 #include <windows.h>
 
-class Rect
+class Rect : public RECT
 {
 public:
-   Rect ();
-   Rect ( const Rect& other ); 
-   Rect ( const RECT& other );  
+   Rect ( );  
    Rect ( LONG left, LONG top, LONG right, LONG bottom );
    Rect ( POINT topleft, LONG width, LONG height );
-   ~Rect ();
+   ~Rect ( );
 
-   operator RECT& ();
-   LPRECT operator& ();
+   LONG area ( ) const;
 
-   Rect& operator= ( const Rect& other );
-   Rect& operator= ( const RECT& other );
+   //todo GET RID OF THESE (for now)
+   //bool collidesWith ( const RECT& other ) const;
+   //bool collidesWith ( const RECT& other, Rect& intersect ) const;
+   //bool contains ( const POINT& point ) const;
+   //bool contains ( LONG x, LONG y ) const;
 
-   LONG area () const;
-   bool collidesWith ( const RECT& other ) const;
-   bool collidesWith ( const RECT& other, Rect& intersect ) const;
-   bool contains ( const POINT& point ) const;
-   bool contains ( LONG x, LONG y ) const;
-   void normalize ();
+   void normalize ( );
 
-   inline LONG x () const 
-   {
-      return myRect.left;
-   }
+   //todo: and make it readable like this first one!!!!
+   inline LONG x ( ) const { return left; }
 
-   inline LONG y () const
-   {
-      return myRect.top;
-   }
+   inline LONG y ( ) const { return top; }
 
-   inline LONG width () const
-   {
-      return (myRect.right - myRect.left);
-   }    
+   inline LONG width ( ) const { return (right - left); }
 
-   inline LONG height () const
-   {
-      return (myRect.bottom - myRect.top);
-   }
-
-   inline LONG left () const
-   {
-      return myRect.left;
-   }
-
-   inline LONG top () const
-   {
-      return myRect.top;
-   }
-
-   inline LONG right () const
-   {
-      return myRect.right;
-   }
-
-   inline LONG bottom () const
-   {
-      return myRect.bottom;
-   }
+   inline LONG height ( ) const { return (bottom - top); }
 
    void set ( LONG left, LONG top, LONG right, LONG bottom );
    void set ( POINT topleft, LONG width, LONG height );
@@ -71,12 +35,5 @@ public:
    LONG y ( LONG value, bool relative = false );
    LONG width ( LONG value );
    LONG height ( LONG value );
-   LONG left ( LONG value );
-   LONG top ( LONG value );
-   LONG right ( LONG value );
-   LONG bottom ( LONG value );
-
-private:
-   RECT myRect;
 };
 #endif //_RECT_H_

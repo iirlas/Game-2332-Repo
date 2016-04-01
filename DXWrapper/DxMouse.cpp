@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "DXWrapper/DxCommon.h"
-#include "DXWrapper/DxMouse.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxMouse.h"
 
 DxMouse::DxMouse()
 {

@@ -6,12 +6,9 @@
 #if !defined(_DXSURFACE_H_)
 #define _DXSURFACE_H_
 
-#include <d3d9.h>
-#include <d3dx9.h>
-#include <windows.h>
-#include "DxWrapper\DxCommon.h"
-#include "DxWrapper\DxTypes.h"
-#include "DxWrapper\DxImage.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxTypes.h"
+#include "DxWrapper/DxImage.h"
 
 
 //===================================================================================================
@@ -22,18 +19,20 @@ public:
    DxSurface ( const DxSurface& other );
    ~DxSurface ( void );
    DxSurface& operator= ( const DxSurface& other );
-   operator IDXSURFACE ( void );
-   operator bool ( void );
-   IDXSURFACE* operator& ( void );
+   operator IDXSURFACE ( void ) { return mySurface; }
+   operator bool ( void ) { return mySurface != NULL; }
 
    UINT width ( void ) { return mySurfaceDescription.Width; }
    UINT height ( void ) { return mySurfaceDescription.Height; }
 
-   bool create ( IDXDEVICE device, unsigned width, unsigned height );
-   bool createFromFile ( IDXDEVICE device, LPCTSTR filepath, RECT* rCrop = NULL );
+   bool createEmpty ( IDXDEVICE device, unsigned width, unsigned height );
+
+   bool createFromFile ( IDXDEVICE device, const tstring& filepath, RECT* srcRect = NULL );
+
    void destroy ( void );
+
    HRESULT setToBackBuffer ( IDXDEVICE device, UINT iSwapChain, UINT iBackBuffer, D3DBACKBUFFER_TYPE type );
-   void draw ( IDXDEVICE device, LPRECT sRect, IDXSURFACE target, LPRECT tRect, D3DTEXTUREFILTERTYPE filter = D3DTEXF_NONE );
+   HRESULT draw ( IDXDEVICE device, LPRECT sRect, IDXSURFACE target, LPRECT tRect, D3DTEXTUREFILTERTYPE filter = D3DTEXF_NONE );
 
    // Set surface's color
    bool setColor( IDXDEVICE device, D3DCOLOR color );

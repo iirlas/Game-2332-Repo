@@ -152,7 +152,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Miscellaneous.cpp"
+				RelativePath=".\PathUtilities.cpp"
 				>
 			</File>
 			<File
@@ -167,12 +167,20 @@
 				RelativePath=".\Timer.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\TStringRoutines.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\ConfigParser.h"
+				>
+			</File>
 			<File
 				RelativePath=".\InstanceMonitor.h"
 				>
@@ -182,11 +190,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Miscellaneous.h"
+				RelativePath=".\NonCopyable.h"
 				>
 			</File>
 			<File
-				RelativePath=".\NonCopyable.h"
+				RelativePath=".\PathUtilities.h"
 				>
 			</File>
 			<File
@@ -199,6 +207,10 @@
 			</File>
 			<File
 				RelativePath=".\Timer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TStringRoutines.h"
 				>
 			</File>
 			<File

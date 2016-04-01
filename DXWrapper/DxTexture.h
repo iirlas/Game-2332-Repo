@@ -7,11 +7,11 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "Utilities\NonCopyable.h"
-#include "Utilities\TTypes.h"
-#include "DxWrapper\DxCommon.h"
-#include "DxWrapper\DxImage.h"
-#include "DxWrapper\DxTypes.h"
+#include "Utilities/NonCopyable.h"
+#include "Utilities/TTypes.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxImage.h"
+#include "DxWrapper/DxTypes.h"
 
 //===================================================================================================
 class DxTexture : public DxImage
@@ -26,19 +26,22 @@ public:
    UINT width ( void ) { return myTextureInfo.Width; }
    UINT height ( void ) { return myTextureInfo.Height; }
    
-   bool create ( IDXDEVICE device, int width, int height );
+   bool create ( IDXDEVICE device, int width, int height, DWORD usage = 0 );
    bool create ( IDXDEVICE device, LPCVOID pData, UINT dataSize, D3DCOLOR transcolor );
    bool create ( IDXDEVICE device, const tstring& filename, D3DCOLOR transcolor, POINT* srcSize = NULL );
    void destroy ( void );
 
-   void stretchRectToTexture ( IDXDEVICE device, const RECT* srcRect, DxTexture destTexture, const RECT* destRect );
-   void stretchRectToSurface ( IDXDEVICE device, const RECT* srcRect, IDXSURFACE desSurface, const RECT* desRect );
+   void stretchRect ( IDXDEVICE device, RECT* srcRect, IDXTEXTURE dstTexture, RECT* dstRect );
 
-   void draw ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL );
-   void draw ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color = D3DCOLOR_XRGB( 0, 0, 0 ), RECT* crop = NULL );
+   HRESULT draw ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL, D3DXVECTOR3* center = NULL );
+   HRESULT draw ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL );
+   
+   inline const tstring& name ( ) { return myName; }
+   inline const tstring& name ( const tstring& name ) { return (myName = name); }
 
 private:  
-   IDXTEXTURE      myTexture;
+   tstring        myName;
+   IDXTEXTURE     myTexture;
    D3DXIMAGE_INFO myTextureInfo;
 };
 

@@ -4,8 +4,17 @@
 #if !defined(_DXCOMMON_H_)
 #define _DXCOMMON_H_
 
-#define DIRECTINPUT_VERSION (0x0800)
-#define INFRELEASE(INTERFACE) if(INTERFACE){INTERFACE->Release();INTERFACE = NULL;}
+#if defined(DIRECTINPUT_VERSION) 
+   #if (DIRECTINPUT_VERSION != 0x0800)
+      #error Unexpected Condition: DIRECTINPUT_VERSION != 0x0800
+   #endif
+
+   #undef DIRECTINPUT_VERSION // warning on undef undefined allowed.
+#endif
+
+#if !defined(DIRECTINPUT_VERSION)
+   #define DIRECTINPUT_VERSION (0x0800)
+#endif
 
 #include <windows.h>
 #include <d3d9.h>
@@ -17,6 +26,12 @@
 #include <dinput.h>
 #include <xinput.h>
 
+#include "Utilities/TStringRoutines.h"
+#include "Utilities/Logger.h"
+#include "Utilities/NonCopyable.h"
+#include "Utilities/TTypes.h"
+
+
 // libraries
 #pragma comment( lib, "winmm.lib" )
 #pragma comment( lib, "user32.lib" )
@@ -25,5 +40,16 @@
 #pragma comment( lib, "d3d9.lib" )
 #pragma comment( lib, "d3dx9.lib" )
 #pragma comment( lib, "Dinput8.lib" )
+
+template<typename ITYPE> bool IfRelease ( ITYPE** interfaceInstance  )
+{
+   if ( *interfaceInstance )
+   {
+      (*interfaceInstance)->Release();
+      (*interfaceInstance) = NULL;
+      return true;
+   }
+   return false;
+}
 
 #endif //_DXCOMMON_H_

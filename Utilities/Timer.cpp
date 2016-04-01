@@ -1,56 +1,56 @@
 #include "Utilities/Timer.h"
 
 //=======================================================================
-Timer::Timer ()
+Timer::Timer ( )
 :myTimerIsRunning(false), myStartingTime(0)
 {
 }
 
 //=======================================================================
-Timer::~Timer ()
+Timer::~Timer ( )
 {
 }
 
 //=======================================================================
-bool Timer::start ()
+bool Timer::start ( )
 {
    if ( !myTimerIsRunning )
    {
       myTimerIsRunning = true;
-      myStartingTime = GetTickCount64();
+      myStartingTime = GetTickCount64( );
    }
    return myTimerIsRunning;
 }
 
 //=======================================================================
-unsigned long long Timer::stop ()
+unsigned long long Timer::stop ( )
 {
    if ( myTimerIsRunning )
    {
-      return GetTickCount64() - myStartingTime;
+      return GetTickCount64( ) - myStartingTime;
       myTimerIsRunning = false;
    }
    return 0;
 }
 
 //=======================================================================
-unsigned long long Timer::restart ()
+unsigned long long Timer::restart ( )
 {
    if ( myTimerIsRunning )
    {
-      unsigned long long delta = GetTickCount64() - myStartingTime;
-      myStartingTime = GetTickCount64 ();
+      unsigned long long delta = GetTickCount64( ) - myStartingTime;
+      myStartingTime = GetTickCount64 ( );
       return delta;
    }
    return 0;
 }
 
 //=======================================================================
-unsigned long long Timer::elapsedTime ()
+unsigned long long Timer::elapsedTime ( )
 {
    if ( myTimerIsRunning )
    {
-      return GetTickCount64 () - myStartingTime;
+      return GetTickCount64 ( ) - myStartingTime;
    }
    return 0;
 }

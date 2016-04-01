@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include <cassert>
 #include <windows.h>
-#include "DXWrapper/DxCommon.h"
-#include "DXWrapper/DxImage.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxImage.h"
 
 //=======================================================================
-DxImage::DxImage ()
+DxImage::DxImage ( )
 {
    ZeroMemory( &myFileInfo, sizeof(myFileInfo) );
 }
@@ -43,8 +43,9 @@ bool DxImage::getInfoFromFileInMemory ( LPCVOID pFileData, UINT fileDataSize )
 }
 
 //=======================================================================
-void DxImage::removeFileInfo ()
+void DxImage::removeFileInfo ( )
 {
+   //todo sas: WTF????
    myFilename = _T("");
    ZeroMemory( &myFileInfo, sizeof(myFileInfo) );
 }

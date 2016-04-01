@@ -17,7 +17,7 @@ public:
    virtual ~DxImage ( void ) { };
    DxImage& operator= ( const DxImage& other );
 
-   const D3DXIMAGE_INFO& fileInfo ( void )  { return myFileInfo; }
+   const D3DXIMAGE_INFO& fileInfo ( void )  { return myFileInfo; }   //todo sas: this isn't working.
    const tstring& filename ( void ) { return myFilename; }
    
 protected:

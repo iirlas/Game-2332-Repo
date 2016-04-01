@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "DxWrapper/DxAssetManager.h"
 #include "TestApp.h"
 
 
@@ -26,6 +27,10 @@ Game::~Game ()
 //=======================================================================
 bool Game::gameInit ()
 {
+   if ( !DxAssetManager::getInstance().init( "config.txt" ) )
+   {
+      return false;
+   }
    bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
    return true;
 }

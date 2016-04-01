@@ -1,19 +1,19 @@
 #pragma once
 
-#if !defined(_DXANIMATIONINFO_H_)
-#define _DXANIMATIONINFO_H_
-#include "Utilities\TTypes.h"
-#include "DxWrapper\DxTexture.h"
+#if !defined(_DXANIMATIONFRAME_H_)
+#define _DXANIMATIONFRAME_H_
+#include "Utilities/TTypes.h"
+#include "Utilities/Rect.h"
+#include "DxWrapper/DxTexture.h"
 
-struct DxAnimationInfo
+struct DxAnimationFrame
 {
-   DxAnimationInfo ()
-   :texture(NULL), name(), information()
+   DxAnimationFrame ()
+      :texture(NULL), rect()
    {
    }
    DxTexture* texture;
-   tstring name;
-   tstring information;
+   Rect       rect;
 };
 
-#endif //_DXANIMATIONINFO_H_
+#endif //_DXANIMATIONFRAME_H_

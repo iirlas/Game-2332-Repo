@@ -69,6 +69,10 @@ protected:
    }
 
    //=======================================================================
+   // An overridable method that is called prior to window creation.
+   bool preWindow ();
+
+   //=======================================================================
    // Overrided to serive as the directX initializer and calls gameInit
    // after initialization.
    bool postInit ();

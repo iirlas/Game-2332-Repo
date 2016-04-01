@@ -2,44 +2,49 @@
 
 #if !defined(_DXASSETMANAGER_H_)
 #define _DXASSETMANAGER_H_
-#define ANIMATION_MAX_COUNT UCHAR_MAX
-#define TEXTURE_MAX_COUNT UCHAR_MAX
+
 #include <windows.h>
 #include <vector>
-#include "Utilities\NonCopyable.h"
-#include "Utilities\TTypes.h"
-#include "DxWrapper\DxCommon.h"
-#include "DxWrapper\DxTypes.h"
-#include "DxWrapper\DxTexture.h"
-#include "DxWrapper\DxAnimationInfo.h"
+#include "Utilities/TTypes.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxTypes.h"
+#include "DxWrapper/DxSurface.h"
+#include "DxWrapper/DxTexture.h"
+#include "DxWrapper/DxAnimation.h"
 
-class DxAssetManager : NonCopyable
+class DxAssetManager : private NonCopyable
 {
 public:
-   
+   static const unsigned ourMaxCachedItemsCount = 256;
+
    static DxAssetManager& getInstance ();
-   bool init ( const tstring& filedata ); 
+   bool init ( const tstring& configFilename, const TCHAR* rootPath = NULL,  bool createIfNotFound = false );
+   bool parseConfig ( const tstring& name );
    void shutdown ();
    
-   tstring getAsset ( const tstring& name );   // asset name
-   DxAnimationInfo getAnimationInfo ( const tstring& name );
+   //tstring getAssetPath ( const tstring& name );
+   tstring getConfigAssetPath ( const tstring& name );
    DxTexture* getTexture ( const tstring& name );
-   //tstring getImageAsset(const tstring& imageName);   // image name
-   //tstring getSoundAsset(const tstring& soundName);   // sound name
-   tstring getConfiguration(const tstring& fileInfo); // configuration info from files.
+   DxAnimation* getAnimation ( const tstring& name );
+
+   //[SoundType] getSoundAsset(const tstring& soundFilename);
 
 private:
 
    DxAssetManager ();
    ~DxAssetManager ();
-   bool parse ( const tstring& filedata );
-   bool parseAnimation ( const tstring& filename );
+   bool parse ( const tstring& configFile );
+   bool addTextureAsset ( const tstring& name, POINT* srcSize = NULL );
 
+   unsigned int    myConfigFileCount;
    unsigned int    myTextureCount;
+   unsigned int    mySurfaceCount;
    unsigned int    myAnimationCount;
    tstring         myAssetPath;
-   DxTexture       myTextures[TEXTURE_MAX_COUNT];
-   DxAnimationInfo myAnimations[ANIMATION_MAX_COUNT];
+   tstring         myConfigFiles[ourMaxCachedItemsCount];
+   DxTexture       myTextures[ourMaxCachedItemsCount];
+   DxSurface       mySurfaces[ourMaxCachedItemsCount];
+   DxAnimation     myAnimations[ourMaxCachedItemsCount];
 };
 
 #endif

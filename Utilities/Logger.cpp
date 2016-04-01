@@ -27,5 +27,5 @@ void logln ( LPCTSTR format, ... )
     VTSPRINTF_S( cstrMessage, UCHAR_MAX, format, listArgs );
     va_end( listArgs );
  
-    OutputDebugString( (cstrMessage + tstring(_T("\n"))).c_str() );
+    OutputDebugString( (cstrMessage + tstring("\n")).c_str() );
 }

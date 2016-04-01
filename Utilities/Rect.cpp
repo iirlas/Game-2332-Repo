@@ -1,26 +1,12 @@
 #include "Utilities/Rect.h"
 
 //=======================================================================
-Rect::Rect ()
+Rect::Rect ( )
 {
-    myRect.left = 
-        myRect.top = 
-        myRect.right = 
-        myRect.bottom = 0;
-}
-
-//=======================================================================
-Rect::Rect ( const Rect& other )
-    :myRect(other.myRect)
-{
-    normalize();
-}
-
-//=======================================================================
-Rect::Rect ( const RECT& other )
-    :myRect(other)
-{
-    normalize();
+    left = 
+        top = 
+        right = 
+        bottom = 0;
 }
 
 //=======================================================================
@@ -36,181 +22,122 @@ Rect::Rect ( POINT topLeft, LONG width, LONG height )
 }
 
 //=======================================================================
-Rect::~Rect ()
+Rect::~Rect ( )
 {
 }
 
 //=======================================================================
-Rect::operator RECT& ()
+LONG Rect::area ( ) const
 {
-    return myRect;
+    return (width( ) * height( ));
 }
 
-//=======================================================================
-LPRECT Rect::operator& ()
-{
-    return &myRect;
-}
+////=======================================================================
+//bool Rect::collidesWith ( const RECT& other ) const
+//{
+//    Rect intersect;
+//    return collidesWith( other, intersect );
+//}
+//
+////=======================================================================
+//bool Rect::collidesWith ( const RECT& other, Rect& intersect ) const
+//{
+//    intersect.left =    max( left, other.left );
+//    intersect.top =     max( top, other.top );
+//    intersect.right =   min( right, other.right );
+//    intersect.bottom =  min( bottom, other.bottom );
+//
+//    if ( intersect.left < intersect.right &&
+//         intersect.top < intersect.bottom )
+//    {
+//        intersect.normalize( );
+//        return true;
+//    }
+//
+//    intersect;
+//    return false;
+//}
+//
+////=======================================================================
+//bool Rect::contains ( const POINT& point ) const
+//{
+//    return contains( point.x, point.y );
+//}
+//
+////=======================================================================
+//bool Rect::contains ( LONG x, LONG y ) const
+//{
+//    return ( x >= left && x < right && 
+//             y >= top && y < bottom );
+//}
 
 //=======================================================================
-Rect& Rect::operator= ( const Rect &other )
+void Rect::normalize ( )
 {
-    myRect = other.myRect;
-    return *this;
-}
-
-//=======================================================================
-Rect& Rect::operator= ( const RECT &other )
-{
-    myRect = other;
-    return *this;
-}
-
-//=======================================================================
-LONG Rect::area () const
-{
-    return (width() * height());
-}
-
-//=======================================================================
-bool Rect::collidesWith ( const RECT& other ) const
-{
-    Rect intersect;
-    return collidesWith( other, intersect );
-}
-
-//=======================================================================
-bool Rect::collidesWith ( const RECT& other, Rect& intersect ) const
-{
-    intersect.myRect.left =    max( myRect.left, other.left );
-    intersect.myRect.top =     max( myRect.top, other.top );
-    intersect.myRect.right =   min( myRect.right, other.right );
-    intersect.myRect.bottom =  min( myRect.bottom, other.bottom );
-
-    if ( intersect.myRect.left < intersect.myRect.right &&
-         intersect.myRect.top < intersect.myRect.bottom )
+    if ( left > right )
     {
-        intersect.normalize();
-        return true;
+        left ^= right;
+        right^= left;
+        left ^= right;
     }
-
-    intersect;
-    return false;
-}
-
-//=======================================================================
-bool Rect::contains ( const POINT& point ) const
-{
-    return contains( point.x, point.y );
-}
-
-//=======================================================================
-bool Rect::contains ( LONG x, LONG y ) const
-{
-    return ( x >= myRect.left && x < myRect.right && 
-             y >= myRect.top && y < myRect.bottom );
-}
-
-//=======================================================================
-void Rect::normalize ()
-{
-    if ( myRect.left > myRect.right )
+    if ( top > bottom )
     {
-        myRect.left ^= myRect.right;
-        myRect.right^= myRect.left;
-        myRect.left ^= myRect.right;
-    }
-    if ( myRect.top > myRect.bottom )
-    {
-        myRect.top   ^= myRect.bottom;
-        myRect.bottom^= myRect.top;
-        myRect.top   ^= myRect.bottom;
+        top   ^= bottom;
+        bottom^= top;
+        top   ^= bottom;
     }
 }
 
 //=======================================================================
 void Rect::set ( LONG left, LONG top, LONG right, LONG bottom )
 {
-   myRect.left = left;
-   myRect.top = top;
-   myRect.right = right;
-   myRect.bottom = bottom;
-   normalize();
+   this->left = left;
+   this->top = top;
+   this->right = right;
+   this->bottom = bottom;
+   normalize( );
 }
 
 //=======================================================================
 void Rect::set ( POINT topLeft, LONG width, LONG height )
 {
-   myRect.left = topLeft.x;
-   myRect.top = topLeft.y;
-   myRect.right = topLeft.x + width;
-   myRect.bottom = topLeft.y + height;
-   normalize();
+   left = topLeft.x;
+   top = topLeft.y;
+   right = topLeft.x + width;
+   bottom = topLeft.y + height;
+   normalize( );
 }
 
 //=======================================================================
 LONG Rect::x ( LONG value, bool relative )
 {
-    myRect.right += (relative)? (value):(value - myRect.left);
-    myRect.left = (relative)? (myRect.left + value):(value);
-    normalize();
-    return myRect.left;
+    right += (relative)? (value):(value - left);
+    left = (relative)? (left + value):(value);
+    normalize( );
+    return left;
 }
 
 //=======================================================================
 LONG Rect::y ( LONG value, bool relative )
 {
-    myRect.bottom += (relative)? (value):(value - myRect.top);
-    myRect.top = (relative)? (myRect.top + value):(value);
-    normalize();
-    return myRect.top;
+    bottom += (relative)? (value):(value - top);
+    top = (relative)? (top + value):(value);
+    normalize( );
+    return top;
 }
 
 //=======================================================================
 LONG Rect::width ( LONG value )
 {
-    myRect.right = myRect.left + value;
-    normalize();
-    return (myRect.right - myRect.left);
+    right = left + value;
+    normalize( );
+    return (right - left);
 }
 
 //=======================================================================
 LONG Rect::height ( LONG value )
 {    
-    myRect.bottom = myRect.top + value;
-    normalize();
-    return (myRect.bottom - myRect.top);
+    bottom = top + value;
+    normalize( );
+    return (bottom - top);
 }
-
-//=======================================================================
-LONG Rect::left ( LONG value )
-{
-    myRect.left = value;
-    normalize();
-    return myRect.left;
-}
-
-//=======================================================================
-LONG Rect::top ( LONG value )
-{
-    myRect.top = value;
-    normalize();
-    return myRect.top;
-}
-
-//=======================================================================
-LONG Rect::right ( LONG value )
-{
-    myRect.right = value;
-    normalize();
-    return myRect.right;
-}
-
-//=======================================================================
-LONG Rect::bottom ( LONG value )
-{
-    myRect.bottom = value;
-    normalize();    
-    return myRect.bottom;
-}
-

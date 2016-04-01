@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include <windows.h>
-#include "DXWrapper/DxCommon.h"
+#include "DxWrapper/DxCommon.h"
 
 class DxKeyboard
 {
@@ -19,6 +19,7 @@ public:
    char getKeys(int key);
 	static bool keyPressed(int key);
 	static bool keyDown(int key);
+   static bool keyUp(int key);
 
 
 

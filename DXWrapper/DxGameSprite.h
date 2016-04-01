@@ -5,10 +5,11 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "Utilities\NonCopyable.h"
+#include "Utilities/NonCopyable.h"
 #include "Utilities\TTypes.h"
-#include "DxWrapper\DxTexture.h"
-#include "DxWrapper\DxTypes.h"
+#include "DxWrapper/DxTexture.h"
+#include "DxWrapper/DxTypes.h"
+#include "DxWrapper/DxAnimation.h"
 
 class DxGameSprite
 {
@@ -17,12 +18,23 @@ public:
 	~DxGameSprite ( void );
 
 public:
-	bool create ( IDXDEVICE device, const tstring& filename, D3DCOLOR transcolor, POINT* srcSize = NULL );
+	void init();
+	void update();
+void textureUpdate();
+	void shutdown();
+
+	bool create ( IDXDEVICE device, const tstring& filename, D3DCOLOR transcolor, POINT* srcSize  );
+	
+	//////////////////////////////////////
+	bool create ( IDXDEVICE device, const tstring& animationName );
+	
+	
 	void destroy ( void );
 
 	void transform ( float x, float y, D3DXVECTOR2 center, float rotation, D3DXVECTOR2 scale, D3DCOLOR color );
-	inline float getXPosition () const { return myPosition.x; }
-	inline float getYPosition () const { return myPosition.y; }
+	inline float getXPosition ( ) const { return myPosition.x; }
+	inline float getYPosition ( ) const { return myPosition.y; }
+	void setPosition ( float x, float y );
 	void setXPosition ( float value );
 	void setYPosition ( float value );
 
@@ -40,10 +52,15 @@ public:
 	void setLastXVel(float xV);
 	void setLastYVel(float yV);
 
+	RECT getCollisionArea(){return myCollisionArea;}
+	void setCollisionArea(RECT collisionArea);
+
 	void draw ( IDXSPRITE spriteobj );
    void draw( IDXSPRITE spriteobj, D3DCOLOR color);
+	
+	////////////////////////////
+	void drawAnim(IDXSPRITE spriteObj);
 
-	void update();
 
 	void toggleVisible();
 	bool isVisible(){return myVisible;}
@@ -64,6 +81,11 @@ private:
 	D3DXVECTOR3    myVelocity;
 	D3DXVECTOR3    myLastVelocity;
 	D3DXVECTOR3    myAccel;
+	RECT		      myCollisionArea;
+
+	//////////////////////////
+	DxAnimation    myAnimation;
+	//DxAnimation    myAnimations[10];       //TODO: fix this const size.
 
 
 };

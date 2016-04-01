@@ -2,7 +2,7 @@
 #include "Utilities/InstanceMonitor.h"
 
 //=======================================================================
-InstanceMonitor::InstanceMonitor ()
+InstanceMonitor::InstanceMonitor ( )
    :myMutex(NULL), myLastError(0)
 {
 }
@@ -16,7 +16,7 @@ InstanceMonitor::InstanceMonitor ( LPCTSTR mutexName )
 }
 
 //=======================================================================
-InstanceMonitor::~InstanceMonitor ()
+InstanceMonitor::~InstanceMonitor ( )
 {
    if ( myMutex )
    {
@@ -36,7 +36,7 @@ bool InstanceMonitor::create ( LPCTSTR mutexName )
 }
 
 //=======================================================================
-bool InstanceMonitor::isThisTheOnlyInstance ()
+bool InstanceMonitor::isThisTheOnlyInstance ( )
 {
    return (myLastError != ERROR_ALREADY_EXISTS);
 }

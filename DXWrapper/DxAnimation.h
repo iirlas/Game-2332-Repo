@@ -8,9 +8,9 @@
 #include "Utilities/Rect.h"
 #include "Utilities\TTypes.h"
 #include "Utilities/Timer.h"
-#include "DxWrapper\DxAnimationInfo.h"
-#include "DxWrapper\DxCommon.h"
-#include "DxWrapper\DxTexture.h"
+#include "DxWrapper/DxAnimationInfo.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxTexture.h"
 
 //
 // The animation can be described in two ways: In line with a string for a animation script file.
@@ -49,6 +49,7 @@
 class DxAnimation
 {
 public:
+   static const int ourMaxAnimationFrames = 256;
    typedef enum 
    {
       LOOP,
@@ -58,10 +59,55 @@ public:
 
    DxAnimation ( );
    ~DxAnimation ( );
+   DxAnimation ( const DxAnimation& other )
+   {
+      myName =         other.myName;
+      mySpeed =        other.mySpeed;
+      myCurrentFrame = other.myCurrentFrame;
+      myExcludeColor = other.myExcludeColor;
+      myAnimation =    other.myAnimation;
+      myFrameCount =   other.myFrameCount;
+      for ( int index = 0; index < ourMaxAnimationFrames; index++ )
+      {
+         myFrames[index] = other.myFrames[index];
+      }
+   }
+
+   DxAnimation& operator= ( const DxAnimation& other )
+   {
+      myName =         other.myName;
+      mySpeed =        other.mySpeed;
+      myCurrentFrame = other.myCurrentFrame;
+      myExcludeColor = other.myExcludeColor;
+      myAnimation =    other.myAnimation;
+      myFrameCount =   other.myFrameCount;
+      for ( int index = 0; index < ourMaxAnimationFrames; index++ )
+      {
+         myFrames[index] = other.myFrames[index];
+      }
+      return *this;
+   }
 
    bool init ( IDXDEVICE device, const tstring& animationName, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
    void update ( );
    void shutdown ( );
+   void reset ( );
+
+   inline void addFrame ( DxAnimationFrame& frame )
+   {
+      myFrames[myFrameCount] = frame;
+      myFrameCount++;
+   }
+
+   inline const tstring& name ( )
+   {
+      return myName;
+   }
+
+   inline const tstring& name ( const tstring& name )
+   {
+      return (myName = name);
+   }
 
    ANIMATION animation ( ANIMATION type );
    ANIMATION animation ( ) { return myAnimation; }
@@ -72,17 +118,17 @@ public:
    void drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color );
    unsigned int getFrameCount(){ return myFrameCount; }
 private:
-   bool parse ( DxAnimationInfo animInfo );
+   bool parse ( const tstring& animationDesc );
 
 private:
-   float        mySpeed;
-   int          myCurrentFrame;
-   D3DXCOLOR    myExcludeColor;
-   ANIMATION    myAnimation;
-   Timer        myTimer;
-   DxTexture*   myTexture;
-   unsigned int myFrameCount;
-   Rect         myFrames[UCHAR_MAX];
+   tstring          myName;
+   float            mySpeed;
+   int              myCurrentFrame;
+   D3DXCOLOR        myExcludeColor;
+   ANIMATION        myAnimation;
+   Timer            myTimer;
+   unsigned int     myFrameCount;
+   DxAnimationFrame myFrames[ourMaxAnimationFrames];
 
 };
 

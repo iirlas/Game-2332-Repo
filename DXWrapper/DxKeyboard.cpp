@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "DXWrapper/DxCommon.h"
-#include "DXWrapper/DxKeyboard.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxKeyboard.h"
 using namespace std;
 
 DxKeyboard::DxKeyboard()
@@ -63,6 +63,19 @@ bool DxKeyboard::keyDown(int key)
 	
 	return false;
 }
+
+//bool DxKeyboard::keyUp(int key)
+//{
+//   short state = GetAsyncKeyState(key);
+//
+//   if(state & 0x0101)
+//
+//   {
+//      return !(GetAsyncKeyState(key) & ~0x8000) != 0;
+//   }
+//
+//   return false;
+//}
 
 void DxKeyboard::shutdown()
 {

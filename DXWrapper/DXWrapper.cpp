@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include <assert.h>
+#include "Utilities/PathUtilities.h"
 #include "DxWrapper/DxCommon.h"
 #include "DxWrapper/DxAssetManager.h"
 #include "DxWrapper/DxWrapper.h"
@@ -20,6 +21,13 @@ DxWrapper::DxWrapper ()
 //=======================================================================
 DxWrapper::~DxWrapper ()
 {
+}
+
+//=======================================================================
+//protected
+bool DxWrapper::preWindow ()
+{
+   return PathUtilities::init();
 }
 
 //=======================================================================
@@ -72,12 +80,6 @@ bool DxWrapper::postInit ()
       return false;
    }
 
-   if ( !DxAssetManager::getInstance().init( assetConfiguration() ) )
-   {
-      log( _T("Unable to initialize asset manager!") );
-      return false;
-   }
-
    return gameInit();
 }
 
@@ -94,6 +96,7 @@ void DxWrapper::update ()
 void DxWrapper::preDestroy ()
 {
    gameExit();
+   DxAssetManager::getInstance().shutdown();
    if ( spriteInterface() )
    {
       ourSpriteInterface->Release();
@@ -109,4 +112,5 @@ void DxWrapper::preDestroy ()
       ourInterface->Release();
       ourInterface = NULL;
    }
+   PathUtilities::shutdown();
 }
