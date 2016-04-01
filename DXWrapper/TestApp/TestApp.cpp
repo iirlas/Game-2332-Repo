@@ -44,7 +44,7 @@ void Game::gameRun ()
    device()->ColorFill( backBuffer(), NULL, bgColor );
 
    // start rendering
-   if ( device()->BeginScene() )
+   if ( SUCCEEDED(device()->BeginScene()) )
    {
       //render
 
