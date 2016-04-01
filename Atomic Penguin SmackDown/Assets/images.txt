@@ -1,0 +1,14 @@
+#images and animations to load to the asset manager.
+@file penguinos.png
+
+#Symbol:
+#the identifier
+
+#Type:
+#   0 - LOOP animation
+#   1 - ROCKING animation
+#   2 - SINGLE animation
+#   3 - Texture
+
+#symbol type    x       y      width   height  x   y   width   height...
+HULK    3       930     0      280     280
