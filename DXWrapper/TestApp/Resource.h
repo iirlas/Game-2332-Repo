@@ -12,7 +12,15 @@
 #define IDI_SMALL                       108
 #define IDC_TESTAPP                     109
 #define IDR_MAINFRAME                   128
-#define ID_HOWTO_GAMEGUIDE              32771
+#define IDR_HTML1                       129
+#define IDR_MENU1                       130
+#define ID_FILE_CONTROLS                32772
+#define ID_FILE_LOAD                    32773
+#define ID_HELP_GAMEGUIDE               32774
+#define ID_Menu                         32775
+#define ID_FILE_EXIT                    32776
+#define ID_CONTROLS_HOWTOPLAY           32777
+#define ID_HELP_CONTROLS                32778
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -20,8 +28,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        129
-#define _APS_NEXT_COMMAND_VALUE         32772
+#define _APS_NEXT_RESOURCE_VALUE        131
+#define _APS_NEXT_COMMAND_VALUE         32779
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

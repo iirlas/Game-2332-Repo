@@ -41,19 +41,19 @@ IDI_SMALL               ICON                    "small.ico"
 // Menu
 //
 
-IDC_TESTAPP MENU 
+IDR_MENU1 MENU 
 BEGIN
-    POPUP "&File"
+    POPUP "File"
     BEGIN
-        MENUITEM "E&xit",                       IDM_EXIT
+        MENUITEM "Save",                        ID_FILE_CONTROLS
+        MENUITEM "Load",                        ID_FILE_LOAD
+        MENUITEM SEPARATOR
+        MENUITEM "Exit",                        ID_FILE_EXIT
     END
-    POPUP "&Help"
+    POPUP "Help"
     BEGIN
-        MENUITEM "&About ...",                  IDM_ABOUT
-    END
-    POPUP "How To"
-    BEGIN
-        MENUITEM "Game Guide",                  ID_HOWTO_GAMEGUIDE
+        MENUITEM "Game Guide",                  ID_HELP_GAMEGUIDE
+        MENUITEM "Controls",                    ID_HELP_CONTROLS
     END
 END
 
@@ -135,6 +135,12 @@ BEGIN
 END
 
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
 
 
 /////////////////////////////////////////////////////////////////////////////

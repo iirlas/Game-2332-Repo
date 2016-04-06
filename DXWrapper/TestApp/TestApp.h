@@ -12,7 +12,7 @@ public:
    ~Game ();
 //WINDOW
 protected:
-   LPCTSTR resourceMenu (){return MAKEINTRESOURCE(IDC_TESTAPP); }//MAKEINTRESOURCE() creates a string ID from a resourcce ID
+   LPCTSTR resourceMenu (){return MAKEINTRESOURCE(IDR_MENU1);}//MAKEINTRESOURCE() creates a string ID from a resourcce ID
    bool gameInit ();
    void gameRun ();
    void gameExit ();
