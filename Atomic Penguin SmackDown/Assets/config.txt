@@ -1,2 +1,0 @@
-#list of configuration files used in the game
-@images.txt
