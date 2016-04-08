@@ -14,6 +14,10 @@ struct DxAnimationFrame
    }
    DxTexture* texture;
    Rect       rect;
+
+   int width() const { return rect.width(); }
+
+   int height() const { return rect.height(); }
 };
 
 #endif //_DXANIMATIONFRAME_H_

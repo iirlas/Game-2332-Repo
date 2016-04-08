@@ -7,7 +7,9 @@
 
 //=======================================================================
 DxGameSprite::DxGameSprite ( )
-:myRotation(0)
+:myRotation(0), isCollidable(true), myVisible(true), myCenter( 0, 0 ), 
+myVelocity( 0, 0, 0 ), myLastVelocity( 0, 0, 0 ), myAccel( 0, 0, 0 ), 
+myLastAccel( 0, 0, 0 ),myScale( 1, 1 ), myPosition( 0, 0, 0 ), myLastPosition ( 0, 0, 0 )
 {
 
 }
@@ -64,17 +66,16 @@ bool DxGameSprite::create ( IDXDEVICE device, const tstring& filename, D3DCOLOR 
 	myRotation = 0;
 
 	myCollisionArea.top  = (long)myPosition.y;
-	myCollisionArea.bottom = (long)myCollisionArea.top + myHeight;
+	myCollisionArea.bottom = (long)myCollisionArea.top + getHeight();
 	myCollisionArea.left = (long)myPosition.x;
-	myCollisionArea.right = (long)myCollisionArea.left + myWidth;
+	myCollisionArea.right = (long)myCollisionArea.left + getWidth();
 
 	return result;
 }
 
 //=======================================================================
 //make create that takes in width, height, and x+y positions
-bool DxGameSprite::create( IDXDEVICE device,
-						         const tstring& animationName )
+bool DxGameSprite::create( DxTexture* texture, D3DCOLOR transcolor )
 {
    myColor =  D3DCOLOR_XRGB( 255, 255, 255 );
 
@@ -104,9 +105,9 @@ bool DxGameSprite::create( IDXDEVICE device,
 	myRotation = 0;
 
 	myCollisionArea.top  = (long)myPosition.y;
-	myCollisionArea.bottom = (long)myCollisionArea.top + myHeight;
+	myCollisionArea.bottom = (long)myCollisionArea.top + getHeight();
 	myCollisionArea.left = (long)myPosition.x;
-	myCollisionArea.right = (long)myCollisionArea.left + myWidth;
+	myCollisionArea.right = (long)myCollisionArea.left + getWidth();
 
  	return true;
 }
@@ -115,7 +116,16 @@ bool DxGameSprite::create( IDXDEVICE device,
 //=======================================================================
 void DxGameSprite::destroy ( )
 {
-	myTexture.destroy();
+   myAnimation.shutdown();
+   myCollisionArea.set( 0, 0, 0, 0 );
+}
+
+
+//=======================================================================
+bool DxGameSprite::changeAnimation( DxAnimation& newAnimation )
+{
+   myAnimation = newAnimation;
+   return true;
 }
 
 //=======================================================================
@@ -142,8 +152,7 @@ void DxGameSprite::setXPosition ( float value )
 	myPosition.x = value;
 
 	//update collision Area to new XPOS
-	myCollisionArea.left =(long)myPosition.x;
-	myCollisionArea.right =(long)myCollisionArea.left + myWidth;
+   myCollisionArea.x( (long)myPosition.x );
 
 }
 
@@ -154,59 +163,55 @@ void DxGameSprite::setYPosition ( float value )
 	myPosition.y = value;
 
 	//update Collision Area to new YPOS
-	myCollisionArea.top  = (long)myPosition.y;
-	myCollisionArea.bottom =(long) myCollisionArea.top + myHeight;
-}
-
-//=======================================================================
-void DxGameSprite::draw ( IDXSPRITE spriteobj )
-{
-	//draw the sprite
-	if(myVisible)
-		myTexture.draw( spriteobj, &myPosition/*, &myScale, myRotation, &myCenter*/, myColor );
-}
-
-//=======================================================================
-
-void DxGameSprite::draw(IDXSPRITE spriteobj, D3DCOLOR color)
-{
-	if(myVisible)
-		myTexture.draw( spriteobj, &myPosition/*, &myScale, myRotation, &myCenter*/, color );
-
+   myCollisionArea.y( (long)myPosition.y );
 }
 
 //===========================================================================
-void DxGameSprite::drawAnim(IDXSPRITE spriteObj)
+void DxGameSprite::setScale ( float scaleX, float scaleY )
 {
-	if(myVisible)
-		myAnimation.drawFrame ( spriteObj, &myPosition, &myScale, 
-								  myRotation, &myCenter,  myColor );
+   myScale.x = scaleX;
+   myScale.y = scaleY;
+}
+//===========================================================================
+void DxGameSprite::draw (IDXSPRITE spriteObj, D3DCOLOR color)
+{
+   myAnimation.drawFrame ( spriteObj, &myPosition, &myScale, 
+								    myRotation, &myCenter,  color );
 }
 
 //=======================================================================
 
-void DxGameSprite::setXVel(float xV)
+void DxGameSprite::setXVel (float xV)
 {
 	myVelocity.x = xV;
 }
 
 //=======================================================================
 
-void DxGameSprite::setYVel(float yV)
+void DxGameSprite::setYVel (float yV)
 {
 	myVelocity.y = yV;
 }
 
 //=======================================================================
 
-void DxGameSprite::setLastXVel(float xV)
+void DxGameSprite::evaluateCenter ()
+{
+   myCenter = D3DXVECTOR2( ( myPosition.x + ( getWidth() / 2 ) ), myPosition.y + ( ( getHeight() / 2 ) ) );
+}
+
+
+
+//=======================================================================
+
+void DxGameSprite::setLastXVel ( float xV )
 {
 	myLastVelocity.x = xV;
 }
 
 //=======================================================================
 
-void DxGameSprite::setLastYVel(float yV)
+void DxGameSprite::setLastYVel ( float yV )
 {
 	myLastVelocity.y = yV;
 }
@@ -224,51 +229,78 @@ void DxGameSprite::update()
 	myPosition     += myVelocity;
 
 	// update collision area
-	myCollisionArea.top  = (long)myPosition.y;
-	myCollisionArea.bottom = (long)myCollisionArea.top + myHeight;
-	myCollisionArea.left = (long)myPosition.x;
-	myCollisionArea.right = (long)myCollisionArea.left + myWidth;
+   myCollisionArea.x( (long)myPosition.x );
+   myCollisionArea.y( (long)myPosition.y );
 
    myAnimation.update();
 
 }
 
-
-
-
-void DxGameSprite::textureUpdate()
+//=======================================================================
+bool DxGameSprite::collidesWith ( const DxGameSprite& other )
 {
-	myLastPosition = myPosition;
+   return myCollisionArea.collidesWith( other.myCollisionArea );
+}
 
-	// Velocity Updates
-	myVelocity     += myAccel;
-	// Position Updates
-	myPosition     += myVelocity;
+//=======================================================================
+bool DxGameSprite::radialCollidesWith ( const DxGameSprite& other  )
+{
+   D3DXVECTOR2 centerOne, centerTwo;
+   double radiusOne, radiusTwo;
 
-	// update collision area
-	myCollisionArea.top  = (long)myPosition.y;
-	myCollisionArea.bottom = (long)myCollisionArea.top + myHeight;
-	myCollisionArea.left = (long)myPosition.x;
-	myCollisionArea.right = (long)myCollisionArea.left + myWidth;
 
-   //myTexture.update();
+   //Get the radius for the first sprite using the longest dimension
+   //    because wouldn't want to have it collide with you and do nothing
+   //    just because the sprite is skinny or fat or short or tall
+   if( getWidth() > getHeight() )
+      radiusOne = getWidth() / 2;
+   else
+      radiusOne = getHeight() / 2;
+
+   centerOne.x = getXPosition() + radiusOne;
+   centerOne.y = getYPosition() + radiusOne;
+
+   if( other.getWidth() > other.getHeight() )
+      radiusTwo = other.getWidth() / 2.0;
+   else
+      radiusTwo = other.getHeight() / 2.0;
+
+   centerTwo.x = other.getXPosition() + radiusTwo;
+   centerTwo.y = other.getYPosition() + radiusTwo;
+
+   double deltaX = centerOne.x - centerTwo.x;
+   double deltaY = centerTwo.y - centerOne.y;
+   double distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+
+
+   return (distance < radiusOne + radiusTwo);
+
+   //other.getHeight() - centerTwo.y;
+   //other.getWidth() - centerTwo.x;
+
+   ////Gives center but need radius
+   //evaluateCenter();
+   //centerOne = getCenter();
+
+   //Gives center but need radius
+   //other.evaluateCenter();
+   //centerTwo = other.getCenter();
+
+
+   //Calculate distance
+
 
 }
 
 //=======================================================================
 
-void DxGameSprite::toggleVisible()
+void DxGameSprite::toggleVisible ()
 {
-	if(myVisible)
-		myVisible = false;
-	else
-		myVisible = true;
-
+   myVisible = !myVisible;
 }
 
 //=======================================================================
-
-void DxGameSprite::setCollisionArea(RECT collisionArea)
+void DxGameSprite::setCollisionArea (RECT collisionArea)
 {
 	myCollisionArea = collisionArea;
 }

@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include "Utilities/Rect.h"
-#include "Utilities\TTypes.h"
+#include "Utilities/TTypes.h"
 #include "Utilities/Timer.h"
 #include "DxWrapper/DxAnimationInfo.h"
 #include "DxWrapper/DxCommon.h"
@@ -57,8 +57,8 @@ public:
       SINGLE
    } ANIMATION;
 
-   DxAnimation ( );
-   ~DxAnimation ( );
+   DxAnimation ();
+   ~DxAnimation ();
    DxAnimation ( const DxAnimation& other )
    {
       myName =         other.myName;
@@ -88,7 +88,8 @@ public:
       return *this;
    }
 
-   bool init ( IDXDEVICE device, const tstring& animationName, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
+   bool init ( DxTexture* texture, const tstring& animationDesc, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
+   bool init ( DxTexture* texture, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
    void update ( );
    void shutdown ( );
    void reset ( );
@@ -99,24 +100,31 @@ public:
       myFrameCount++;
    }
 
-   inline const tstring& name ( )
-   {
-      return myName;
-   }
+   inline const tstring& name () { return myName; }
 
-   inline const tstring& name ( const tstring& name )
-   {
-      return (myName = name);
-   }
+   inline const tstring& name ( const tstring& name ) { return (myName = name); }
+
+   inline const D3DCOLOR excludeColor () { return myExcludeColor; }
+
+   inline const D3DCOLOR excludeColor ( D3DCOLOR color ) { return (myExcludeColor = color); }
 
    ANIMATION animation ( ANIMATION type );
    ANIMATION animation ( ) { return myAnimation; }
 
+
+   //TODO: Add conditional to make sure they don't blow up the game when called before a frame is made
+   int width() const { return (myFrameCount > 0) ? myFrames[myCurrentFrame].width() : -1; }
+   int height() const { return (myFrameCount > 0) ? myFrames[myCurrentFrame].height() : -1; }
+
+
+   //TODO: Add pause() function ????
+
+
    float speed ( float value );
-   float speed ( ) { return mySpeed; }
+   float speed () { return mySpeed; }
 
    void drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color );
-   unsigned int getFrameCount(){ return myFrameCount; }
+   unsigned int getFrameCount() { return myFrameCount; }
 private:
    bool parse ( const tstring& animationDesc );
 

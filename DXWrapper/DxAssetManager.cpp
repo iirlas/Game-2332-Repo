@@ -67,7 +67,9 @@ bool DxAssetManager::init ( const TCHAR* rootPath,  bool createIfNotFound )
    }
 
    myAssetPath = assetDir;
-   return true;
+   tstring configFilepath = myAssetPath;
+   PathUtilities::pathAppend( configFilepath, configFilename );
+   return parseConfig( configFilepath );
 }
 
 //=======================================================================
@@ -97,32 +99,7 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
       }
       else if ( myAnimationCount < ourMaxCachedItemsCount )
       {
-         int type = 0;
-         ss >> type;
-
-         myAnimations[myAnimationCount].animation( (DxAnimation::ANIMATION)type );
-
-         while ( true )
-         {
-            DxAnimationFrame frame;
-            Point pos;            
-            int width = -1, height = -1;
-            frame.texture = currentTexture;
-
-            ss >> pos.x >> pos.y >> width >> height;
-
-            if ( ss.fail() )
-            {
-               break;
-            }
-
-            assert( width != -1 && height != -1 );
-
-            frame.rect.set( pos, width, height );
-
-            myAnimations[myAnimationCount].name( token );
-            myAnimations[myAnimationCount].addFrame( frame );
-         }
+         myAnimations[myAnimationCount].init( currentTexture, line, 0 );
          myAnimationCount++;
       }
    }
@@ -185,6 +162,23 @@ DxAnimation* DxAssetManager::getAnimation ( const tstring& name )
    return NULL;
 }
 
+//=======================================================================
+DxAnimation DxAssetManager::getAnimationCopy ( const tstring& name, float speed, D3DCOLOR excludeColor )
+{
+   DxAnimation animation;
+   for ( unsigned int index = 0; index < myAnimationCount; index++ )
+   {
+      if ( myAnimations[index].name() == name )
+      {
+         animation = myAnimations[index];
+         break;
+      }
+   }
+   animation.speed( speed );
+   animation.excludeColor( excludeColor );
+   return animation;
+}
+
 ////=======================================================================
 //tstring DxAssetManager::getSoundAsset ( const tstring& soundName )
 //{
@@ -193,7 +187,7 @@ DxAnimation* DxAssetManager::getAnimation ( const tstring& name )
 
 //=======================================================================
 DxAssetManager::DxAssetManager ()
-:mySurfaceCount(0), myTextureCount(0), myAnimationCount(0)
+:myConfigFileCount(0), mySurfaceCount(0), myTextureCount(0), myAnimationCount(0)
 {
 }
 

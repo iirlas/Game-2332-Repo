@@ -33,8 +33,8 @@ public:
 
    void stretchRect ( IDXDEVICE device, RECT* srcRect, IDXTEXTURE dstTexture, RECT* dstRect );
 
-   HRESULT draw ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL, D3DXVECTOR3* center = NULL );
-   HRESULT draw ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* crop = NULL );
+   HRESULT draw ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* srcRect = NULL, D3DXVECTOR3* center = NULL );
+   HRESULT draw ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ), RECT* srcRect = NULL );
    
    inline const tstring& name ( ) { return myName; }
    inline const tstring& name ( const tstring& name ) { return (myName = name); }

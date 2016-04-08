@@ -26,7 +26,7 @@ public:
    tstring getConfigAssetPath ( const tstring& name );
    DxTexture* getTexture ( const tstring& name );
    DxAnimation* getAnimation ( const tstring& name );
-
+   DxAnimation getAnimationCopy ( const tstring& name, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
    //[SoundType] getSoundAsset(const tstring& soundFilename);
 
 private:

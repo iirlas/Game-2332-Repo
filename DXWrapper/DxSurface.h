@@ -27,7 +27,7 @@ public:
 
    bool createEmpty ( IDXDEVICE device, unsigned width, unsigned height );
 
-   bool createFromFile ( IDXDEVICE device, const tstring& filepath, RECT* srcRect = NULL );
+   bool createFromFile ( IDXDEVICE device, const tstring& filepath, const RECT* srcRect = NULL );
 
    void destroy ( void );
 

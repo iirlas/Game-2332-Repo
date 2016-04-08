@@ -41,13 +41,48 @@ DxAnimation::~DxAnimation ( )
 //}
 
 //=======================================================================
-bool DxAnimation::init ( IDXDEVICE device, const tstring& animationName, float speed, D3DCOLOR excludeColor )
+bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float speed, D3DCOLOR excludeColor )
 {
-   DxAnimation* animation = DxAssetManager::getInstance().getAnimation( animationName );
-   if ( animation != NULL )
+   Point pos;
+   int width = -1, height = -1;
+   tstringstream ss( animationDesc );
+   int type = -1;  
+
+   ss >> myName >> type;
+   if ( ss.fail() )
    {
-      *this = *animation;
+      return false;
    }
+
+   myAnimation =  (ANIMATION)type;
+
+   while ( true )
+   {
+      DxAnimationFrame frame;
+      ss >> pos.x >> pos.y >> width >> height;
+      if ( ss.fail() )
+      {
+         break;
+      }
+      frame.rect.set( pos, width, height );
+      frame.texture = texture;
+      myFrames[myFrameCount] = frame;
+      myFrameCount++;
+   }
+   mySpeed = speed;
+   myExcludeColor = excludeColor;
+   return true;
+}
+
+//=======================================================================
+bool DxAnimation::init ( DxTexture* texture, float speed, D3DCOLOR excludeColor )
+{
+   Point pos;
+   DxAnimationFrame frame;
+   frame.rect.set( 0, 0, texture->width(), texture->height() );
+   frame.texture = texture;
+   myFrames[myFrameCount] = frame;
+   myFrameCount++; 
    mySpeed = speed;
    myExcludeColor = excludeColor;
    return true;

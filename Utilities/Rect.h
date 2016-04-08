@@ -10,11 +10,20 @@ public:
    Rect ( POINT topleft, LONG width, LONG height );
    ~Rect ( );
 
+   Rect& operator= ( const RECT& other )
+   {
+      left = other.left;
+      top = other.top;
+      right = other.right;
+      bottom = other.bottom;
+      return *this;
+   }
+
    LONG area ( ) const;
 
    //todo GET RID OF THESE (for now)
-   //bool collidesWith ( const RECT& other ) const;
-   //bool collidesWith ( const RECT& other, Rect& intersect ) const;
+   bool collidesWith ( const RECT& other ) const;
+   bool collidesWith ( const RECT& other, Rect& intersect ) const;
    //bool contains ( const POINT& point ) const;
    //bool contains ( LONG x, LONG y ) const;
 

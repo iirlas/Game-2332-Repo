@@ -32,31 +32,31 @@ LONG Rect::area ( ) const
     return (width( ) * height( ));
 }
 
-////=======================================================================
-//bool Rect::collidesWith ( const RECT& other ) const
-//{
-//    Rect intersect;
-//    return collidesWith( other, intersect );
-//}
-//
-////=======================================================================
-//bool Rect::collidesWith ( const RECT& other, Rect& intersect ) const
-//{
-//    intersect.left =    max( left, other.left );
-//    intersect.top =     max( top, other.top );
-//    intersect.right =   min( right, other.right );
-//    intersect.bottom =  min( bottom, other.bottom );
-//
-//    if ( intersect.left < intersect.right &&
-//         intersect.top < intersect.bottom )
-//    {
-//        intersect.normalize( );
-//        return true;
-//    }
-//
-//    intersect;
-//    return false;
-//}
+//=======================================================================
+bool Rect::collidesWith ( const RECT& other ) const
+{
+    Rect intersect;
+    return collidesWith( other, intersect );
+}
+
+//=======================================================================
+bool Rect::collidesWith ( const RECT& other, Rect& intersect ) const
+{
+    intersect.left =    max( left, other.left );
+    intersect.top =     max( top, other.top );
+    intersect.right =   min( right, other.right );
+    intersect.bottom =  min( bottom, other.bottom );
+
+    if ( intersect.left < intersect.right &&
+         intersect.top < intersect.bottom )
+    {
+        intersect.normalize( );
+        return true;
+    }
+
+    intersect;
+    return false;
+}
 //
 ////=======================================================================
 //bool Rect::contains ( const POINT& point ) const

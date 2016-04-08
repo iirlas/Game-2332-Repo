@@ -60,7 +60,7 @@ bool DxSurface::createEmpty ( IDXDEVICE device, unsigned width, unsigned height 
 }
 
 //=======================================================================
-bool DxSurface::createFromFile ( IDXDEVICE device, const tstring& filepath, RECT* srcRect )
+bool DxSurface::createFromFile ( IDXDEVICE device, const tstring& filepath, const RECT* srcRect )
 {
    DWORD colorKey = 0;
    D3DXIMAGE_INFO info;

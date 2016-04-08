@@ -27,8 +27,8 @@ unsigned long long Timer::stop ( )
 {
    if ( myTimerIsRunning )
    {
-      return GetTickCount64( ) - myStartingTime;
       myTimerIsRunning = false;
+      return GetTickCount64( ) - myStartingTime;
    }
    return 0;
 }
