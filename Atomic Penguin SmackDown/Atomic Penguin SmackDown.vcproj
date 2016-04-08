@@ -194,6 +194,14 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\TiledBackground.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TileDescParser.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -214,6 +222,14 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TiledBackground.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TileDescParser.h"
 				>
 			</File>
 		</Filter>
