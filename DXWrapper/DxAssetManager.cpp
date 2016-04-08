@@ -22,7 +22,7 @@ DxAssetManager& DxAssetManager::getInstance ()
 }
 
 //=======================================================================
-bool DxAssetManager::init ( const tstring& configFilename, const TCHAR* rootPath,  bool createIfNotFound )
+bool DxAssetManager::init ( const TCHAR* rootPath,  bool createIfNotFound )
 {
    DWORD gle;
 
@@ -63,22 +63,11 @@ bool DxAssetManager::init ( const tstring& configFilename, const TCHAR* rootPath
          logln( "Unable to find specified Assets directory!" );
          return false;
       }
-      CreateDirectory( assetDir.c_str(), NULL );
-
-      tstring configFilepath(assetDir);
-      FILE* configFile = NULL;
-      fopen_s( &configFile, configFilepath.c_str(), "a" );
-
-      if ( configFile )
-      {
-         fclose( configFile );
-      }   
+      CreateDirectory( assetDir.c_str(), NULL ); 
    }
 
    myAssetPath = assetDir;
-   tstring configFilepath = myAssetPath;
-   PathUtilities::pathAppend( configFilepath, configFilename );
-   return parse( configFilepath );
+   return true;
 }
 
 //=======================================================================
@@ -90,7 +79,7 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
 
    if ( !script.is_open() || script.bad() )
    {
-      logln( _T("Unable to load Asset Animation File:\"%s\""), filename.c_str() );
+      logln( _T("Unable to load Asset Configuration File:\"%s\""), filename.c_str() );
       return false;
    }
 
@@ -101,7 +90,7 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
       tstringstream ss(line);
       tstring token;
       ss >> token;
-      if ( token == "@file" && ss >> token )
+      if ( token == "@file" && std::getline( ss, token ) )
       {
          addTextureAsset( token );
          currentTexture = getTexture( token );
@@ -110,33 +99,6 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
       {
          int type = 0;
          ss >> type;
-         if ( type == 3 ) // creates a texture
-         {
-            Point pos, size;
-            
-            ss >> pos.x >> pos.y >> size.x >> size.y;
-            if ( ss.fail() )
-            {
-               return false;
-            }
-
-            if ( !myTextures[myTextureCount].create( DxWrapper::device(), size.x, size.y, D3DUSAGE_RENDERTARGET ) )
-            {
-               return false;
-            }
-            myTextures[myTextureCount].name( token );
-            
-            Rect srcRect( pos, size.x, size.y );
-            currentTexture->stretchRect( DxWrapper::device(), &srcRect, myTextures[myTextureCount], NULL );            
-
-            myTextureCount++;
-            continue;
-         }
-         if ( type == 4 )// creates a surface;
-         {
-            mySurfaces[mySurfaceCount];
-            continue;
-         }
 
          myAnimations[myAnimationCount].animation( (DxAnimation::ANIMATION)type );
 
@@ -145,7 +107,7 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
             DxAnimationFrame frame;
             Point pos;            
             int width = -1, height = -1;
-             frame.texture = currentTexture;
+            frame.texture = currentTexture;
 
             ss >> pos.x >> pos.y >> width >> height;
 
@@ -176,8 +138,12 @@ void DxAssetManager::shutdown ()
 }
 
 //=======================================================================
-//tstring DxAssetManager::getAssetPath ( const tstring& imageName )
+//tstring DxAssetManager::getAssetFilePath ( const tstring& imageName )
 //{
+//   while (  )
+//   {
+//
+//   }
 //   return myAssetPath + "\\" + imageName;
 //}
 
@@ -227,7 +193,7 @@ DxAnimation* DxAssetManager::getAnimation ( const tstring& name )
 
 //=======================================================================
 DxAssetManager::DxAssetManager ()
-:myConfigFileCount(0), mySurfaceCount(0), myTextureCount(0), myAnimationCount(0)
+:mySurfaceCount(0), myTextureCount(0), myAnimationCount(0)
 {
 }
 
@@ -237,33 +203,33 @@ DxAssetManager::~DxAssetManager ()
 }
 
 //=======================================================================
-bool DxAssetManager::parse ( const tstring& assetConfig )
-{
-   tifstream configFile( assetConfig.c_str(), std::ios_base::in  );
-   DWORD gle = GetLastError();      // not likely to work in this instance... tbd
-   
-   if ( !configFile.is_open() || configFile.bad() )
-   {
-      logln( _T("Unable to load Asset Configuration File:\"%s\""), assetConfig.c_str() );
-      return false;
-   }
-   ConfigParser parser;
-   tstring line;
-   while ( parser.getNextLine( configFile, line ) )
-   {
-      if ( myConfigFileCount >= ourMaxCachedItemsCount )
-      {
-         break;
-      }
-
-      tstringstream ss( line );
-      ss >> myConfigFiles[myConfigFileCount];
-      myConfigFileCount++;
-   }
-
-   configFile.close();
-   return true;
-}
+//bool DxAssetManager::parse ( const tstring& assetConfig )
+//{
+//   tifstream configFile( assetConfig.c_str(), std::ios_base::in  );
+//   DWORD gle = GetLastError();      // not likely to work in this instance... tbd
+//   
+//   if ( !configFile.is_open() || configFile.bad() )
+//   {
+//      logln( _T("Unable to load Asset Configuration File:\"%s\""), assetConfig.c_str() );
+//      return false;
+//   }
+//   ConfigParser parser;
+//   tstring line;
+//   while ( parser.getNextLine( configFile, line ) )
+//   {
+//      if ( myConfigFileCount >= ourMaxCachedItemsCount )
+//      {
+//         break;
+//      }
+//
+//      //tstringstream ss( line );
+//      //ss >> myConfigFiles[myConfigFileCount];
+//      //myConfigFileCount++;
+//   }
+//
+//   configFile.close();
+//   return true;
+//}
 
 //=======================================================================
 bool DxAssetManager::addTextureAsset ( const tstring& name, POINT* srcSize )

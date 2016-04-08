@@ -27,8 +27,8 @@ Game::~Game ()
 //=======================================================================
 bool Game::gameInit ()
 {
-   if ( !DxAssetManager::getInstance().init( "config.txt" ) ||
-        !DxAssetManager::getInstance().parseConfig( "images.txt" ) )
+   if ( !DxAssetManager::getInstance().init() ||
+        !DxAssetManager::getInstance().parseConfig( "animations.txt" ) )
    {
       return false;
    }
