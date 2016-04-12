@@ -33,9 +33,13 @@ public:
 
    enum TileType
    {
-      GRASS,
-      BRICKS,
-      BLOCKS
+      GROUND,
+      ICE,
+      SLIME,
+      SNOW,
+      WATER,
+      ROCK
+
    };
 
    bool init ( IDXDEVICE dev, const tstring& bgConfigFilename );

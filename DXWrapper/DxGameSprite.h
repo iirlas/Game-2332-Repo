@@ -25,7 +25,8 @@ void textureUpdate();
 
 	bool create ( const tstring& animationName, D3DCOLOR transcolor = 0 );
 	bool create( DxTexture* texture, D3DCOLOR transcolor = 0 );
-	void destroy ( void );
+	bool create ( IDXDEVICE device, const tstring& filename, D3DCOLOR transcolor, POINT* srcSize );
+   void destroy ( void );
    
    //Different types of changeAnimations:
    //pass in animation
@@ -71,9 +72,12 @@ void textureUpdate();
    bool collidable ( bool flag ) { return (isCollidable = flag); }
    bool collidable () const { return isCollidable; } 
    bool collidesWith ( const DxGameSprite& other );
+   bool setDestroyable ( bool flag ){ return (isDestroyable = flag); }
+   bool getDestroyable() const { return isDestroyable; }
    bool radialCollidesWith ( const DxGameSprite& otherSprite  );
 	void toggleVisible();
 	bool isVisible(){return myVisible;}
+   
    
 private:
 
@@ -90,7 +94,8 @@ private:
 	D3DCOLOR       myColor;    //WHAT COLOR IS THIS???
 
 	bool           myVisible;
-    bool           isCollidable;
+   bool           isCollidable;
+   bool           isDestroyable;
 
 	Rect		   myCollisionArea;
 

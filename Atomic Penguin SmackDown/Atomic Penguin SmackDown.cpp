@@ -15,7 +15,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 //=======================================================================
 Game::Game ()
-:myHulkPenguin(NULL)
+//:myHulkPenguin(NULL)
 {
 }
 
@@ -27,14 +27,25 @@ Game::~Game ()
 //=======================================================================
 bool Game::gameInit ()
 {
-   if ( !DxAssetManager::getInstance().init() ||
-        !DxAssetManager::getInstance().parseConfig( "animations.txt" ) )
-   {
-      return false;
-   }
-   
-   myHulkPenguin = DxAssetManager::getInstance().getTexture( "HULK" );
+   myGameTitle.append("Atomic Penguin Smackdown");
+   winSetTitle ( myGameTitle );
+   bool result = true;
+
+   //DxAssetManager::getInstance().init("animation.txt");
+
+   myBgRect = Rect( 0, 0, winScreenWidth(), winScreenHeight() );
+
    bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
+
+   //result &= myLevelBgnds.init( device(), _T("16x16.config") );
+   //if ( !DxAssetManager::getInstance().init() ||
+   //     !DxAssetManager::getInstance().parseConfig( "animations.txt" ) )
+   //{
+   //   return false;
+   //}
+   
+   //myHulkPenguin = DxAssetManager::getInstance().getTexture( "HULK" );
+   //bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
    return true;
 }
 
@@ -45,14 +56,14 @@ void Game::gameRun ()
 
    // clear the backbuffer
    device()->ColorFill( backBuffer(), NULL, bgColor );
-
+   //myLevelBgnds.update();
    // start rendering
    if ( SUCCEEDED(device()->BeginScene()) && SUCCEEDED(spriteInterface()->Begin(D3DXSPRITE_ALPHABLEND) ) )
    {
       //render
-      myHulkPenguin->draw( spriteInterface(), NULL, &D3DXVECTOR2(5.2f,5.2f), 0, NULL );
+      //myHulkPenguin->draw( spriteInterface(), NULL, &D3DXVECTOR2(5.2f,5.2f), 0, NULL );
       // stop rendering
-      spriteInterface()->End();
+      //spriteInterface()->End();
       device()->EndScene();
 
       //switch screen to the next backbuffer

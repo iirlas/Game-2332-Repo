@@ -18,7 +18,8 @@ public:
    static const unsigned ourMaxCachedItemsCount = 256;
 
    static DxAssetManager& getInstance ();
-   bool init ( const TCHAR* rootPath = NULL,  bool createIfNotFound = false );
+   bool init ( const tstring& configFilename, const TCHAR* rootPath = NULL,  bool createIfNotFound = false );
+   //bool init ( const TCHAR* rootPath = NULL,  bool createIfNotFound = false );
    bool parseConfig ( const tstring& name );
    void shutdown ();
    

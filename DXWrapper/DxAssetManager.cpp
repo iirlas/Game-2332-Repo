@@ -22,7 +22,7 @@ DxAssetManager& DxAssetManager::getInstance ()
 }
 
 //=======================================================================
-bool DxAssetManager::init ( const TCHAR* rootPath,  bool createIfNotFound )
+bool DxAssetManager::init ( const tstring& configFilename, const TCHAR* rootPath,  bool createIfNotFound )
 {
    DWORD gle;
 
@@ -64,6 +64,16 @@ bool DxAssetManager::init ( const TCHAR* rootPath,  bool createIfNotFound )
          return false;
       }
       CreateDirectory( assetDir.c_str(), NULL ); 
+
+      tstring configFilepath(assetDir);
+      FILE* configFile = NULL;
+      fopen_s( &configFile, configFilepath.c_str(), "a" );
+
+      if ( configFile )
+      {
+         fclose( configFile );
+      }
+      return false;
    }
 
    myAssetPath = assetDir;
@@ -187,7 +197,7 @@ DxAnimation DxAssetManager::getAnimationCopy ( const tstring& name, float speed,
 
 //=======================================================================
 DxAssetManager::DxAssetManager ()
-:myConfigFileCount(0), mySurfaceCount(0), myTextureCount(0), myAnimationCount(0)
+:/*myConfigFileCount(0),*/ mySurfaceCount(0), myTextureCount(0), myAnimationCount(0)
 {
 }
 
