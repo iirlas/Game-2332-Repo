@@ -316,3 +316,14 @@ LRESULT Application::onClose ( WPARAM wParam, LPARAM lParam )
     quit();
     return wParam;
 }
+
+
+//---------------------------------------------------------------------------------------- 
+// Change the main window title to the specified string
+//
+void Application::winSetTitle ( tstring title )
+{
+   ::SetWindowText( window(), title.c_str() );
+}
+
+//---------------------------------------------------------------------------------------- 

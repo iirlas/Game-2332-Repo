@@ -288,6 +288,9 @@ protected:
         return 0; 
     }
 
+    //Set the main window title
+    void winSetTitle (tstring title);
+
 private:
     //class variables
     static HINSTANCE    ourHInstance;

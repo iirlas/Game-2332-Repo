@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+#include <cassert>
 #include "Utilities/TTypes.h"
 #include "Utilities/PathUtilities.h"
 #include "Utilities/ConfigParser.h"

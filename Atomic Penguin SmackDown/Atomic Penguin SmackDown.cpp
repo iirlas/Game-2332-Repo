@@ -15,7 +15,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 //=======================================================================
 Game::Game ()
-:myHulkPenguin(NULL)
+//:myHulkPenguin(NULL)
 {
 }
 
@@ -27,14 +27,27 @@ Game::~Game ()
 //=======================================================================
 bool Game::gameInit ()
 {
-   if ( !DxAssetManager::getInstance().init() ||
-        !DxAssetManager::getInstance().parseConfig( "animations.txt" ) )
-   {
-      return false;
-   }
+   bool result = true;
+   myGameTitle.append("Atomic Penguin Smackdown");
+   winSetTitle ( myGameTitle );
    
-   myHulkPenguin = DxAssetManager::getInstance().getTexture( "HULK" );
+
    bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
+   DxAssetManager::getInstance().init("animations.txt");
+
+   myBgRect = Rect( 0, 0, startTransWidth(), startTransHeight() );
+
+   
+
+   result &= myLevelBgnds.init( device(), _T("16x16.config") );
+   //if ( !DxAssetManager::getInstance().init() ||
+   //     !DxAssetManager::getInstance().parseConfig( "animations.txt" ) )
+   //{
+   //   return false;
+   //}
+   
+   //myHulkPenguin = DxAssetManager::getInstance().getTexture( "HULK" );
+   //bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
    return true;
 }
 
@@ -42,20 +55,26 @@ bool Game::gameInit ()
 void Game::gameRun ()
 {
    // pre-render
-
+   TiledBackground&  levelRef = myLevelBgnds;
    // clear the backbuffer
    device()->ColorFill( backBuffer(), NULL, bgColor );
-
+   myLevelBgnds.update();
    // start rendering
-   if ( SUCCEEDED(device()->BeginScene()) && SUCCEEDED(spriteInterface()->Begin(D3DXSPRITE_ALPHABLEND) ) )
+   if ( SUCCEEDED(device()->BeginScene()) /*&& SUCCEEDED(spriteInterface()->Begin(D3DXSPRITE_ALPHABLEND) )*/ )
    {
-      //render
-      myHulkPenguin->draw( spriteInterface(), NULL, &D3DXVECTOR2(5.2f,5.2f), 0, NULL );
-      // stop rendering
-      spriteInterface()->End();
-      device()->EndScene();
 
-      //switch screen to the next backbuffer
+   if ( SUCCEEDED(spriteInterface()->Begin( D3DXSPRITE_ALPHABLEND )) )
+      {
+         // sprite rendering...       
+         myLevelBgnds.drawMySpriteMap( spriteInterface() );
+
+         
+         // stop rendering
+	      spriteInterface()->End();
+      }
+
+      // End rendering:
+      device()->EndScene();
       device()->Present( NULL, NULL, NULL, NULL );
    }
 }

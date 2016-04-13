@@ -4,10 +4,11 @@
 #include "DxWrapper/DxCommon.h"
 #include "DxWrapper/DxTypes.h"
 #include "DxWrapper/DxGameSprite.h"
+#include "DxWrapper/DxAssetManager.h"
 
 //=======================================================================
 DxGameSprite::DxGameSprite ( )
-:myRotation(0), isCollidable(true), myVisible(true), myCenter( 0, 0 ), 
+:myRotation(0), isCollidable(true), myVisible(true), isDestroyable(true), myCenter( 0, 0 ), 
 myVelocity( 0, 0, 0 ), myLastVelocity( 0, 0, 0 ), myAccel( 0, 0, 0 ), 
 myLastAccel( 0, 0, 0 ),myScale( 1, 1 ), myPosition( 0, 0, 0 ), myLastPosition ( 0, 0, 0 )
 {
@@ -36,48 +37,62 @@ void DxGameSprite::shutdown()
 
 
 //=======================================================================
-bool DxGameSprite::create ( IDXDEVICE device, const tstring& filename, D3DCOLOR transcolor, POINT* srcSize )
+//bool DxGameSprite::create ( IDXDEVICE device, const tstring& filename, D3DCOLOR transcolor, POINT* srcSize )
+//{
+//	bool result = myTexture.create( device, filename, transcolor, srcSize );
+//   myColor =  D3DCOLOR_XRGB( 255, 255, 255 );
+//
+//	//create animation here
+//
+//   tstring name(filename);
+//   PathUtilities::pathStripPath( name );
+//   DxAnimationFrame frame;
+//   frame.texture = &myTexture;
+//   frame.rect.set( 0, 0, (srcSize ? srcSize->x : myTexture.width()), ( srcSize ? srcSize->y : myTexture.height()) );
+//   myAnimation.addFrame( frame );
+//
+//
+//
+//	myWidth = myTexture.width();
+//	myHeight = myTexture.height();
+//	myVisible = true;
+//	myVelocity.x = myVelocity.y = myVelocity.z = 0;
+//	myLastVelocity.x = myLastVelocity.y = myLastVelocity.z = 0;
+//	myAccel.x = myAccel.y = myAccel.z = 0;
+//	myPosition.x = myPosition.y = myPosition.z = 0;
+//	myLastPosition.x = myLastPosition.y = myLastPosition.z = 0;
+//
+//	myCenter.x = myCenter.y = 0;
+//	myScale.x = myScale.y = 1;
+//	myRotation = 0;
+//
+//	myCollisionArea.top  = (long)myPosition.y;
+//	myCollisionArea.bottom = (long)myCollisionArea.top + getHeight();
+//	myCollisionArea.left = (long)myPosition.x;
+//	myCollisionArea.right = (long)myCollisionArea.left + getWidth();
+//
+//	return result;
+//}
+
+//=======================================================================
+//make create that takes in width, height, and x+y positions
+bool DxGameSprite::create( DxTexture* texture, D3DCOLOR transcolor )
 {
-	bool result = myTexture.create( device, filename, transcolor, srcSize );
-   myColor =  D3DCOLOR_XRGB( 255, 255, 255 );
-
-	//create animation here
-
-   tstring name(filename);
-   PathUtilities::pathStripPath( name );
-   DxAnimationFrame frame;
-   frame.texture = &myTexture;
-   frame.rect.set( 0, 0, (srcSize ? srcSize->x : myTexture.width()), ( srcSize ? srcSize->y : myTexture.height()) );
-   myAnimation.addFrame( frame );
-
-
-
-	myWidth = myTexture.width();
-	myHeight = myTexture.height();
-	myVisible = true;
-	myVelocity.x = myVelocity.y = myVelocity.z = 0;
-	myLastVelocity.x = myLastVelocity.y = myLastVelocity.z = 0;
-	myAccel.x = myAccel.y = myAccel.z = 0;
-	myPosition.x = myPosition.y = myPosition.z = 0;
-	myLastPosition.x = myLastPosition.y = myLastPosition.z = 0;
-
-	myCenter.x = myCenter.y = 0;
-	myScale.x = myScale.y = 1;
-	myRotation = 0;
+   if ( !myAnimation.init( texture, 0 ) )
+   {
+      return false;
+   }
 
 	myCollisionArea.top  = (long)myPosition.y;
 	myCollisionArea.bottom = (long)myCollisionArea.top + getHeight();
 	myCollisionArea.left = (long)myPosition.x;
 	myCollisionArea.right = (long)myCollisionArea.left + getWidth();
 
-	return result;
-}
-
-//=======================================================================
-//make create that takes in width, height, and x+y positions
-bool DxGameSprite::create( DxTexture* texture, D3DCOLOR transcolor )
-{
-   myColor =  D3DCOLOR_XRGB( 255, 255, 255 );
+ 	return true;
+   
+   
+   
+   /* myColor =  D3DCOLOR_XRGB( 255, 255, 255 );
 
 	//create animation here
 	bool b = myAnimation.init( device, animationName, 10, myColor );
@@ -110,8 +125,23 @@ bool DxGameSprite::create( DxTexture* texture, D3DCOLOR transcolor )
 	myCollisionArea.right = (long)myCollisionArea.left + getWidth();
 
  	return true;
+   */
 }
 
+//=======================================================================
+//make create that takes in width, height, and x+y positions
+bool DxGameSprite::create( const tstring& animationName, D3DCOLOR transcolor )
+{
+	//create animation here
+   myAnimation = DxAssetManager::getInstance().getAnimationCopy( animationName, 0, transcolor );
+
+	myCollisionArea.top  = (long)myPosition.y;
+	myCollisionArea.bottom = (long)myCollisionArea.top + getHeight();
+	myCollisionArea.left = (long)myPosition.x;
+	myCollisionArea.right = (long)myCollisionArea.left + getWidth();
+
+ 	return true;
+}
 
 //=======================================================================
 void DxGameSprite::destroy ( )
