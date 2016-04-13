@@ -6,7 +6,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "Utilities/NonCopyable.h"
-#include "Utilities\TTypes.h"
+#include "Utilities/TTypes.h"
 #include "DxWrapper/DxTexture.h"
 #include "DxWrapper/DxTypes.h"
 #include "DxWrapper/DxAnimation.h"
@@ -18,9 +18,9 @@ public:
 	~DxGameSprite ( void );
 
 public:
-	void init();
+
 	void update();
-void textureUpdate();
+
 	void shutdown();
 
 	bool create ( const tstring& animationName, D3DCOLOR transcolor = 0 );

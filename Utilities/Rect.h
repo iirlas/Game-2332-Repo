@@ -5,7 +5,14 @@
 class Rect : public RECT
 {
 public:
-   Rect ( );  
+   Rect ( );
+   Rect ( const RECT& other )
+   {
+      left = other.left;
+      top = other.top;
+      right = other.right;
+      bottom = other.bottom;
+   }
    Rect ( LONG left, LONG top, LONG right, LONG bottom );
    Rect ( POINT topleft, LONG width, LONG height );
    ~Rect ( );

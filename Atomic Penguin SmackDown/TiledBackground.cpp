@@ -750,12 +750,12 @@ bool TiledBackground::draw ( IDXSPRITE spriteobj, const RECT* dstRect )
    //todo sas - not quite right, just yet.  This should NOT stretch to the dstSurface's full size
    //           so... if dstRect isn't given... fool it into drawing in same aspect as srcSurface
    
-   RECT srcRect = { 0, 0, myTiledBgTexture.width(), myTiledBgTexture.height() };
+   Rect srcRect( 0, 0, myTiledBgTexture.width(), myTiledBgTexture.height() );
 
    if (dstRect == NULL) 
       dstRect = &srcRect;
 
-   RECT dRect = *dstRect;
+   Rect dRect = *dstRect;
 
    //todo: this isn't right.  limit to min's.
    dRect.bottom = min( dRect.bottom, srcRect.bottom );
@@ -769,7 +769,7 @@ bool TiledBackground::draw ( IDXSPRITE spriteobj, const RECT* dstRect )
    
    //TODO: Need to change locations
    D3DXVECTOR3 vPos( 0, 0, 0 );
-   HRESULT hr = myTiledBgTexture.draw( spriteobj, &vPos, D3DCOLOR_XRGB(255,255,255), &dRect );
+   HRESULT hr = myTiledBgTexture.drawStretch( spriteobj, &srcRect, &dRect );
    
    //drawMySpriteMap( spriteobj );
 

@@ -6,7 +6,6 @@
 #include "Utilities/Rect.h"
 #include "Utilities/Point.h"
 #include "Utilities/TStringRoutines.h"
-#include "DxWrapper/DxAssetManager.h"
 #include "DxWrapper/DxTexture.h"
 #include "DxWrapper/DxAnimation.h"
 //=======================================================================
@@ -138,9 +137,8 @@ void DxAnimation::drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position,
                               D3DXVECTOR2* scale, float rotation, 
                               D3DXVECTOR2* center, D3DCOLOR color )
  {
-   myFrames[myCurrentFrame].texture->draw ( spriteobj, position, scale, 
-                                            rotation, center, color, 
-                                            &myFrames[myCurrentFrame].rect );
+   myFrames[myCurrentFrame].texture->drawEx ( spriteobj, &myFrames[myCurrentFrame].rect, 
+                                            center, position, rotation, color, scale );
 }
 
 //=======================================================================
