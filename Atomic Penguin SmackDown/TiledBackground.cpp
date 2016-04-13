@@ -135,28 +135,261 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
             mySpriteMap[index].create( "GROUND" );
             mySpriteMap[index].collidable(false);
          }
+          else if(  fileInfo.getTileType( row, col ) == _T("GROUND-BORDERED") )
+         {
+            mySpriteMap[index].create( "GROUND-BORDERED" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-BOTTOM") )
+         {
+            mySpriteMap[index].create( "GROUND-BOTTOM" );
+            mySpriteMap[index].collidable(false);
+         }
+          else if(  fileInfo.getTileType( row, col ) == _T("GROUND-TOP") )
+         {
+            mySpriteMap[index].create( "GROUND-TOP" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-LEFT") )
+         {
+            mySpriteMap[index].create( "GROUND-LEFT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-RIGHT") )
+         {
+            mySpriteMap[index].create( "GROUND-RIGHT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-CORNERTL") )
+         {
+            mySpriteMap[index].create( "GROUND-CORNERTL" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-CORNERTR") )
+         {
+            mySpriteMap[index].create( "GROUND-CORNERTR" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-CORNERBL") )
+         {
+            mySpriteMap[index].create( "GROUND-CORNERBL" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-CORNERBR") )
+         {
+            mySpriteMap[index].create( "GROUND-CORNERBR" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-INLETTOP") )
+         {
+            mySpriteMap[index].create( "GROUND-INLETTOP" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-INLETBOTTOM") )
+         {
+            mySpriteMap[index].create( "GROUND-INLETBOTTOM" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-INLETLEFT") )
+         {
+            mySpriteMap[index].create( "GROUND-INLETLEFT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("GROUND-INLETRIGHT") )
+         {
+            mySpriteMap[index].create( "GROUND-INLETRIGHT" );
+            mySpriteMap[index].collidable(false);
+         }
+
+
+
+
          else if(  fileInfo.getTileType( row, col ) == _T("ICE") )
          {
             mySpriteMap[index].create( "ICE" );
             mySpriteMap[index].collidable(false);
          }
-         else if(  fileInfo.getTileType( row, col ) == _T("SNOW") )
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-BORDERED") )
          {
-            mySpriteMap[index].create( "SNOW" );
+            mySpriteMap[index].create( "ICE-BORDERED" );
             mySpriteMap[index].collidable(false);
          }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-BOTTOM") )
+         {
+            mySpriteMap[index].create( "ICE-BOTTOM" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-TOP") )
+         {
+            mySpriteMap[index].create( "ICE-TOP" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-LEFT") )
+         {
+            mySpriteMap[index].create( "ICE-LEFT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-RIGHT") )
+         {
+            mySpriteMap[index].create( "ICE-RIGHT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-CORNERTL") )
+         {
+            mySpriteMap[index].create( "ICE-CORNERTL" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-CORNERTR") )
+         {
+            mySpriteMap[index].create( "ICE-CORNERTR" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-CORNERBL") )
+         {
+            mySpriteMap[index].create( "ICE-CORNERBL" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-CORNERBR") )
+         {
+            mySpriteMap[index].create( "ICE-CORNERBR" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-INLETTOP") )
+         {
+            mySpriteMap[index].create( "ICE-INLETTOP" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-INLETBOTTOM") )
+         {
+            mySpriteMap[index].create( "ICE-INLETBOTTOM" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-INLETLEFT") )
+         {
+            mySpriteMap[index].create( "ICE-INLETLEFT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("ICE-INLETRIGHT") )
+         {
+            mySpriteMap[index].create( "ICE-INLETRIGHT" );
+            mySpriteMap[index].collidable(false);
+         }
+
+
+
          else if(  fileInfo.getTileType( row, col ) == _T("SLIME") )
          {
             mySpriteMap[index].create( "SLIME" );
             mySpriteMap[index].collidable(false);
          }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIMEBORDERED") )
+         {
+            mySpriteMap[index].create( "SLIMEBORDERED" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIMEBOTTOM") )
+         {
+            mySpriteMap[index].create( "SLIMEBOTTOM" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIMETOP") )
+         {
+            mySpriteMap[index].create( "SLIMETOP" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIMELEFT") )
+         {
+            mySpriteMap[index].create( "SLIMELEFT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-RIGHT") )
+         {
+            mySpriteMap[index].create( "SLIME-RIGHT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-CORNERTL") )
+         {
+            mySpriteMap[index].create( "SLIME-CORNERTL" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-CORNERTR") )
+         {
+            mySpriteMap[index].create( "SLIME-CORNERTR" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-CORNERBL") )
+         {
+            mySpriteMap[index].create( "SLIME-CORNERBL" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-CORNERBR") )
+         {
+            mySpriteMap[index].create( "SLIME-CORNERBR" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-INLETTOP") )
+         {
+            mySpriteMap[index].create( "SLIME-INLETTOP" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-INLETBOTTOM") )
+         {
+            mySpriteMap[index].create( "SLIME-INLETBOTTOM" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-INLETLEFT") )
+         {
+            mySpriteMap[index].create( "SLIME-INLETLEFT" );
+            mySpriteMap[index].collidable(false);
+         }
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-INLETRIGHT") )
+         {
+            mySpriteMap[index].create( "SLIME-INLETRIGHT" );
+            mySpriteMap[index].collidable(false);
+         }
+         
+         
+         else if(  fileInfo.getTileType( row, col ) == _T("SNOW") )
+         {
+            mySpriteMap[index].create( "SNOW" );
+            mySpriteMap[index].collidable(false);
+         }
+         
+
+
          else if ( fileInfo.getTileType( row, col ) == _T("ROCK") )
          {
             mySpriteMap[index].create( "ROCK" );
-            //Point pos( (LONG)xPos, (LONG)yPos );
-            //mySpriteMap[index].setCollisionArea(Rect( pos, tilePixWidth, tilePixHeight ) );
             mySpriteMap[index].setDestroyable ( false );
          }
+         else if ( fileInfo.getTileType( row, col ) == _T("ROCK-GROUND2") )
+         {
+            mySpriteMap[index].create( "ROCK-GROUND2" );
+            mySpriteMap[index].setDestroyable ( false );
+         }
+         else if ( fileInfo.getTileType( row, col ) == _T("ROCK-GROUND3") )
+         {
+            mySpriteMap[index].create( "ROCK-GROUND3" );
+            mySpriteMap[index].setDestroyable ( false );
+         }
+         else if ( fileInfo.getTileType( row, col ) == _T("ROCK-SNOW1") )
+         {
+            mySpriteMap[index].create( "ROCK-SNOW1" );
+            mySpriteMap[index].setDestroyable ( false );
+         }
+         else if ( fileInfo.getTileType( row, col ) == _T("ROCK-SNOW2") )
+         {
+            mySpriteMap[index].create( "ROCK-SNOW2" );
+            mySpriteMap[index].setDestroyable ( false );
+         }
+         else if ( fileInfo.getTileType( row, col ) == _T("ROCK-SNOW3") )
+         {
+            mySpriteMap[index].create( "ROCK-SNOW3" );
+            mySpriteMap[index].setDestroyable ( false );
+         }
+         
+         
+         
          else
          {
             mySpriteMap[index].create( "WATER" );
@@ -181,21 +414,208 @@ TiledBackground::TileType TiledBackground::getTileEnumType( const tstring& label
       return GROUND;
    }
 
+   if( label == "GROUND-BORDERED")
+   {
+      return GROUNDBORDERED;
+   }
+   if( label == "GROUND-BOTTOM")
+   {
+      return GROUNDBOTTOM;
+   }
+   if( label == "GROUND-TOP")
+   {
+      return GROUNDTOP;
+   }
+   if( label == "GROUND-LEFT")
+   {
+      return GROUNDLEFT;
+   }
+   if( label == "GROUND-RIGHT")
+   {
+      return GROUNDRIGHT;
+   }
+   if( label == "GROUND-CORNETL")
+   {
+      return GROUNDCORNERTL;
+   }
+   if( label == "GROUND-CORNERTR")
+   {
+      return GROUNDCORNERTR;
+   }
+   if( label == "GROUND-CORNERBL")
+   {
+      return GROUNDCORNERBL;
+   if( label == "GROUND-CORNERBR")
+   {
+      return GROUNDCORNERBR;
+   }
+   }
+      if( label == "GROUND-INLETTOP")
+   {
+      return GROUNDINLETTOP;
+   }
+      if( label == "GROUND-INLETBOTTOM")
+   {
+      return GROUNDINLETBOTTOM;
+   }
+      if( label == "GROUND-INLETLEFT")
+   {
+      return GROUNDINLETLEFT;
+   }
+      if( label == "GROUND-INLETRIGHT")
+   {
+      return GROUNDINLETRIGHT;
+   }
+
+
    if( label == "ICE" )
    {
       return ICE;
    }
+   if( label == "ICE-BORDERED" )
+   {
+      return ICEBORDERED;
+   }
+   if( label == "ICE-BOTTOM" )
+   {
+      return ICEBOTTOM;
+   }
+   if( label == "ICE-TOP" )
+   {
+      return ICETOP;
+   }
+   if( label == "ICE-LEFT" )
+   {
+      return ICELEFT;
+   }
+   if( label == "ICE-RIGHT" )
+   {
+      return ICERIGHT;
+   }
+   if( label == "ICE-CORNERTL" )
+   {
+      return ICECORNERTL;
+   }
+   if( label == "ICE-CORNERTR" )
+   {
+      return ICECORNERTR;
+   }
+   if( label == "ICE-CORNERBL" )
+   {
+      return ICECORNERBL;
+   }
+   if( label == "ICE-CORNERBR" )
+   {
+      return ICECORNERBR;
+   }
+   if( label == "ICE-INLETTOP" )
+   {
+      return ICEINLETTOP;
+   }
+   if( label == "ICE-INLETBOTTOM" )
+   {
+      return ICEINLETBOTTOM;
+   }
+   if( label == "ICE-INLETLEFT" )
+   {
+      return ICEINLETLEFT;
+   }
+   if( label == "ICE-INLETRIGHT" )
+   {
+      return ICEINLETRIGHT;
+   }
+
+
+
     if( label == "SLIME" )
    {
       return SLIME;
    }
+    if( label == "SLIMEBORDERED" )
+   {
+      return SLIMEBORDERED;
+   }
+    if( label == "SLIMEBOTTOM" )
+   {
+      return SLIMEBOTTOM;
+   }
+    if( label == "SLIMETOP" )
+   {
+      return SLIMETOP;
+   }
+    if( label == "SLIMELEFT" )
+   {
+      return SLIMELEFT;
+   }
+    if( label == "SLIME-RIGHT" )
+   {
+      return SLIMERIGHT;
+   }
+    if( label == "SLIME-CORNERTL" )
+   {
+      return SLIMECORNERTL;
+   }
+    if( label == "SLIME-CORNERTR" )
+   {
+      return SLIMECORNERTR;
+   }
+    if( label == "SLIME-CORNERBL" )
+   {
+      return SLIMECORNERBL;
+   }
+    if( label == "SLIME-CORNERBR" )
+   {
+      return SLIMECORNERBR;
+   }
+    if( label == "SLIME-INLETTOP" )
+   {
+      return SLIMEINLETTOP;
+   }
+    if( label == "SLIME-INLETBOTTOM" )
+   {
+      return SLIMEINLETBOTTOM;
+   }
+    if( label == "SLIME-INLETLEFT" )
+   {
+      return SLIMEINLETLEFT;
+   }
+    if( label == "SLIME-INLETRIGHT" )
+   {
+      return SLIMEINLETRIGHT;
+   }
+
+
+
+
     if( label == "SNOW" )
    {
       return SNOW;
    }
+
+
    if( label == "ROCK" )
    {
       return ROCK;
+   }
+   if( label == "ROCK-GROUND2" )
+   {
+      return ROCKGROUND2;
+   }
+   if( label == "ROCK-GROUND3" )
+   {
+      return ROCKGROUND3;
+   }
+   if( label == "ROCK-SNOW1" )
+   {
+      return ROCKSNOW1;
+   }
+   if( label == "ROCK-SNOW2" )
+   {
+      return ROCKSNOW2;
+   }
+   if( label == "ROCK-SNOW3" )
+   {
+      return ROCKSNOW3;
    }
 
    assert(false);
@@ -211,13 +631,60 @@ bool TiledBackground::tileIsCollidable( TiledBackground::TileType tileEnumType )
    {
       //List non collidable tile names here
    case GROUND:
+     case GROUNDBORDERED:
+         case GROUNDBOTTOM:
+            case GROUNDTOP:
+               case GROUNDLEFT:
+                  case GROUNDRIGHT:
+                     case GROUNDCORNERTL:
+                        case GROUNDCORNERTR:
+                           case GROUNDCORNERBL:
+                              case GROUNDCORNERBR:
+                                 case GROUNDINLETTOP:
+                                    case GROUNDINLETBOTTOM:
+                                       case GROUNDINLETLEFT:
+                                          case GROUNDINLETRIGHT:
    case ICE:
-   case SNOW:
+      case ICEBORDERED:
+         case ICEBOTTOM:
+            case ICETOP:
+               case ICELEFT:
+                  case ICERIGHT:
+                     case ICECORNERTL:
+                        case ICECORNERTR:
+                           case ICECORNERBL:
+                              case ICECORNERBR:
+                                 case ICEINLETTOP:
+                                    case ICEINLETBOTTOM:
+                                       case ICEINLETLEFT:
+                                          case ICEINLETRIGHT:
+
+   
    case SLIME:
+      case SLIMEBORDERED:
+         case SLIMEBOTTOM:
+            case SLIMETOP:
+               case SLIMELEFT:
+                  case SLIMERIGHT:
+                     case SLIMECORNERTL:
+                        case SLIMECORNERTR:
+                           case SLIMECORNERBL:
+                              case SLIMECORNERBR:
+                                 case SLIMEINLETTOP:
+                                    case SLIMEINLETBOTTOM:
+                                       case SLIMEINLETLEFT:
+                                          case SLIMEINLETRIGHT:
+
+   case SNOW:
       return false;     
       break;
       //List colidable tile names here
    case ROCK:
+      case ROCKGROUND2:
+         case ROCKGROUND3:
+            case ROCKSNOW1:
+               case ROCKSNOW2:
+                  case ROCKSNOW3:
    case WATER:
       return true;
    default:

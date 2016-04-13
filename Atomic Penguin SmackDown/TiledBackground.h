@@ -34,11 +34,59 @@ public:
    enum TileType
    {
       GROUND,
+      GROUNDBORDERED,		
+      GROUNDBOTTOM,			
+      GROUNDTOP,				
+      GROUNDLEFT,				
+      GROUNDRIGHT,			
+      GROUNDCORNERTL,		
+      GROUNDCORNERTR,		
+      GROUNDCORNERBL,		
+      GROUNDCORNERBR,		
+      GROUNDINLETTOP,		
+      GROUNDINLETBOTTOM,	
+      GROUNDINLETLEFT, 	
+      GROUNDINLETRIGHT,
+      
       ICE,
+      ICEBORDERED,	
+      ICEBOTTOM,		
+      ICETOP,			
+      ICELEFT,	   
+      ICERIGHT,		
+      ICECORNERTL,	
+      ICECORNERTR,	
+      ICECORNERBL,	
+      ICECORNERBR,	
+      ICEINLETTOP,	
+      ICEINLETBOTTOM,
+      ICEINLETLEFT,	
+      ICEINLETRIGHT,
+
       SLIME,
+      SLIMEBORDERED,		
+      SLIMEBOTTOM,		
+      SLIMETOP,		   
+      SLIMELEFT,		   
+      SLIMERIGHT,		   
+      SLIMECORNERTL,		
+      SLIMECORNERTR,		
+      SLIMECORNERBL,		
+      SLIMECORNERBR,		
+      SLIMEINLETTOP,		
+      SLIMEINLETBOTTOM,	
+      SLIMEINLETLEFT,		
+      SLIMEINLETRIGHT,	
+
       SNOW,
       WATER,
-      ROCK
+
+      ROCK,
+      ROCKGROUND2,	
+      ROCKGROUND3,	
+      ROCKSNOW1,		
+      ROCKSNOW2,		
+      ROCKSNOW3		
 
    };
 
