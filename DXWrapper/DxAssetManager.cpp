@@ -104,6 +104,7 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
       ss >> token;
       if ( token == "@file" && std::getline( ss, token ) )
       {
+         token = Util::trimBoth (token);
          addTextureAsset( token );
          currentTexture = getTexture( token );
       }

@@ -128,7 +128,7 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
          int xPos = col*tilePixWidth;
          int yPos = row*tilePixHeight; 
 
-         mySpriteMap[index].setScale( .25, .25 );
+         mySpriteMap[index].setScale( .5, .5 );
 
          if(  fileInfo.getTileType( row, col ) == _T("GROUND") )
          {

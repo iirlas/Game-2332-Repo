@@ -21,8 +21,8 @@ protected:
    void gameRun ();
    void gameExit ();
 
-   int winScreenWidth() const { return 800; }
-   int winScreenHeight() const { return 600; }
+   int startTransWidth ()  { return 800; }
+   int startTransHeight()  { return 800; }
 
 private:
    //DxTexture* myHulkPenguin;
