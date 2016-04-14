@@ -136,10 +136,10 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
             tstring imageFilePath( myAssetPath );
 
             PathUtilities::pathAppend( imageFilePath, name );
-            myTextures[myTextureCount].create( DxFramework::device(), width, height, D3DUSAGE_RENDERTARGET );
+            myTextures[myTextureCount].create( DxWrapper::device(), width, height, D3DUSAGE_RENDERTARGET );
             myTextures[myTextureCount].name( name );
 
-            currentTexture->stretchRect( DxFramework::device(), &srcRect, myTextures[myTextureCount], NULL );
+            currentTexture->stretchRect( DxWrapper::device(), &srcRect, myTextures[myTextureCount], NULL );
             myTextureCount++;
          }
          else if ( type == 4 && mySurfaceCount < ourMaxCachedItemsCount )
@@ -282,7 +282,7 @@ bool DxAssetManager::addTextureAsset ( const tstring& name, POINT* srcSize, D3DC
    {
       tstring imageFilePath( myAssetPath );
       PathUtilities::pathAppend( imageFilePath, name );
-      myTextures[myTextureCount].create( DxFramework::device(), imageFilePath, excludeColor, srcSize );
+      myTextures[myTextureCount].create( DxWrapper::device(), imageFilePath, excludeColor, srcSize );
       myTextures[myTextureCount].name( Util::trimPath( imageFilePath ) );
       myTextureCount++;
       return true;

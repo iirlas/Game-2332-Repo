@@ -7,6 +7,8 @@
 #include <d3dx9.h>
 #include "Utilities/NonCopyable.h"
 #include "Utilities/TTypes.h"
+#include "Utilities/Rect.h"
+#include "Utilities/Point.h"
 #include "DxWrapper/DxTexture.h"
 #include "DxWrapper/DxTypes.h"
 #include "DxWrapper/DxAnimation.h"
@@ -98,7 +100,8 @@ private:
    bool           isCollidable;
    bool           isDestroyable;
 
-	Rect		   myCollisionArea;
+	Rect		      myCollisionArea;
+   Point          myCollisionOffset;
 
 	//////////////////////////
 	DxAnimation    myAnimation;
