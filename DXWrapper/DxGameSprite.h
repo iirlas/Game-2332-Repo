@@ -23,10 +23,9 @@ public:
 
 	void shutdown();
 
-	bool create ( const tstring& animationName, D3DCOLOR transcolor = 0 );
+	bool create ( const tstring& animationName, float speed = 0, D3DCOLOR transcolor = 0 );
 	bool create( DxTexture* texture, D3DCOLOR transcolor = 0 );
-	bool create ( IDXDEVICE device, const tstring& filename, D3DCOLOR transcolor, POINT* srcSize );
-   void destroy ( void );
+	void destroy ( void );
    
    //Different types of changeAnimations:
    //pass in animation
@@ -35,9 +34,11 @@ public:
    //pass in group of animations ????
 
    //MUST have working animation copy constructor/assignment operator
+   bool changeAnimation( const tstring& animationName, float speed, D3DCOLOR excludeColor = 0 );
    bool changeAnimation( DxAnimation& newAnimation );
+   DxAnimation& getAnimation( );
 
-	void transform ( float x, float y, D3DXVECTOR2 center, float rotation, D3DXVECTOR2 scale, D3DCOLOR color );
+	void transform ( float x, float y, D3DXVECTOR2 center, float rotation, D3DXVECTOR2 scale, D3DCOLOR excludeColor );
 	inline float getXPosition ( ) const { return myPosition.x; }
 	inline float getYPosition ( ) const { return myPosition.y; }
 	void setPosition ( float x, float y );
@@ -67,7 +68,7 @@ public:
 	RECT getCollisionArea(){return myCollisionArea;}
 	void setCollisionArea(RECT collisionArea);
 
-   void draw( IDXSPRITE spriteobj, D3DCOLOR color = D3DCOLOR_XRGB( 241,242,243 ) );
+   void draw( IDXSPRITE spriteobj, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255) );
    
    bool collidable ( bool flag ) { return (isCollidable = flag); }
    bool collidable () const { return isCollidable; } 
@@ -75,8 +76,8 @@ public:
    bool setDestroyable ( bool flag ){ return (isDestroyable = flag); }
    bool getDestroyable() const { return isDestroyable; }
    bool radialCollidesWith ( const DxGameSprite& otherSprite  );
-	void toggleVisible();
-	bool isVisible(){return myVisible;}
+   void toggleVisible();
+   bool isVisible(){return myVisible;}
    
    
 private:

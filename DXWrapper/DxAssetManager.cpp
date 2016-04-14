@@ -102,16 +102,55 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
       tstringstream ss(line);
       tstring token;
       ss >> token;
-      if ( token == "@file" && std::getline( ss, token ) )
+      if ( token == "@file" && ss >> token )
       {
-         token = Util::trimBoth (token);
-         addTextureAsset( token );
+         int a = 0, r = 0, g = 0, b = 0;
+         ss >> a >> r >> g >> b;
+         token = Util::trimBoth( token );
+         addTextureAsset( token, NULL, D3DCOLOR_ARGB( a, r, g, b ) );
          currentTexture = getTexture( token );
+
       }
-      else if ( myAnimationCount < ourMaxCachedItemsCount )
+      else
       {
-         myAnimations[myAnimationCount].init( currentTexture, line, 0 );
-         myAnimationCount++;
+         tstring name = token;
+         int type;
+         
+         ss >> type;
+         if ( ss.fail() )
+         {
+            return false;
+         }
+
+         if ( type == 3 && myTextureCount < ourMaxCachedItemsCount )
+         {
+            int x, y, width, height;
+
+            ss >> x >> y >> width >> height;
+            if ( ss.fail() )
+            {
+               return false;
+            }
+
+            Rect srcRect( x, y, x + width, y + height );
+            tstring imageFilePath( myAssetPath );
+
+            PathUtilities::pathAppend( imageFilePath, name );
+            myTextures[myTextureCount].create( DxFramework::device(), width, height, D3DUSAGE_RENDERTARGET );
+            myTextures[myTextureCount].name( name );
+
+            currentTexture->stretchRect( DxFramework::device(), &srcRect, myTextures[myTextureCount], NULL );
+            myTextureCount++;
+         }
+         else if ( type == 4 && mySurfaceCount < ourMaxCachedItemsCount )
+         {
+
+         }
+         else if ( myAnimationCount < ourMaxCachedItemsCount )
+         {
+            myAnimations[myAnimationCount].init( currentTexture, line, 0 );
+            myAnimationCount++;
+         }
       }
    }
    script.close();
@@ -198,7 +237,7 @@ DxAnimation DxAssetManager::getAnimationCopy ( const tstring& name, float speed,
 
 //=======================================================================
 DxAssetManager::DxAssetManager ()
-:/*myConfigFileCount(0),*/ mySurfaceCount(0), myTextureCount(0), myAnimationCount(0)
+:mySurfaceCount(0), myTextureCount(0), myAnimationCount(0)
 {
 }
 
@@ -237,13 +276,13 @@ DxAssetManager::~DxAssetManager ()
 //}
 
 //=======================================================================
-bool DxAssetManager::addTextureAsset ( const tstring& name, POINT* srcSize )
+bool DxAssetManager::addTextureAsset ( const tstring& name, POINT* srcSize, D3DCOLOR excludeColor )
 {
    if ( myTextureCount < ourMaxCachedItemsCount )
    {
       tstring imageFilePath( myAssetPath );
       PathUtilities::pathAppend( imageFilePath, name );
-      myTextures[myTextureCount].create( DxWrapper::device(), imageFilePath, 0, srcSize );
+      myTextures[myTextureCount].create( DxFramework::device(), imageFilePath, excludeColor, srcSize );
       myTextures[myTextureCount].name( Util::trimPath( imageFilePath ) );
       myTextureCount++;
       return true;

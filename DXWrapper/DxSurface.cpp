@@ -49,7 +49,7 @@ DxSurface& DxSurface::operator= ( const DxSurface& other )
 //=======================================================================
 bool DxSurface::createEmpty ( IDXDEVICE device, unsigned width, unsigned height )
 {
-   HRESULT result = device->CreateOffscreenPlainSurface( width, height, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &mySurface, NULL );
+   HRESULT result = device->CreateOffscreenPlainSurface( width, height, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &mySurface, NULL );
    if ( FAILED( result ) )
    {
       log( _T("Error: Could not create Surface!\n") );

@@ -94,7 +94,7 @@ bool DxTexture::create ( IDXDEVICE device, int width, int height, DWORD usage )
                                height,             //image height
                                1,                  //mip-map levels (1 for no chain)
                                usage,              //D3DUSAGE: )
-                               D3DFMT_X8R8G8B8,     //texture format (default)
+                               D3DFMT_A8R8G8B8,     //texture format (default)
                                D3DPOOL_DEFAULT,    //memory class for the texture
                                &myTexture          //destination texture
                                );  
@@ -133,7 +133,7 @@ bool DxTexture::create ( IDXDEVICE device, LPCVOID pData, UINT dataSize, D3DCOLO
                                                   fileInfo().Height,   //bitmap image height
                                                   1,                   //mip-map levels (1 for no chain)
                                                   D3DPOOL_DEFAULT,     //the type of surface (standard)
-                                                  D3DFMT_X8R8G8B8,      //surface format (default)
+                                                  D3DFMT_A8R8G8B8,      //surface format (default)
                                                   D3DPOOL_DEFAULT,     //memory class for the texture
                                                   D3DX_DEFAULT,        //image filter
                                                   D3DX_DEFAULT,        //mip filter
@@ -157,7 +157,7 @@ bool DxTexture::create ( IDXDEVICE device, const tstring& filename, D3DCOLOR tra
                                          (srcSize ? (srcSize->y) : fileInfo().Height),   //bitmap image height
 						                       1,                                              //mip-map levels (1 for no chain)
 						                       usage,                                          //Usage (see above)
-						                       D3DFMT_X8R8G8B8,                                 //surface format (default)
+						                       D3DFMT_A8R8G8B8,                                 //surface format (default)
 						                       D3DPOOL_DEFAULT,                                //memory class for the texture
 						                       D3DX_DEFAULT,                                   //image filter
 						                       D3DX_DEFAULT,                                   //mip filter

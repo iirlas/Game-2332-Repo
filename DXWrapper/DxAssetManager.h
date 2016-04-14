@@ -19,7 +19,6 @@ public:
 
    static DxAssetManager& getInstance ();
    bool init ( const tstring& configFilename, const TCHAR* rootPath = NULL,  bool createIfNotFound = false );
-   //bool init ( const TCHAR* rootPath = NULL,  bool createIfNotFound = false );
    bool parseConfig ( const tstring& name );
    void shutdown ();
    
@@ -35,7 +34,7 @@ private:
    DxAssetManager ();
    ~DxAssetManager ();
    //bool parse ( const tstring& configFile );
-   bool addTextureAsset ( const tstring& name, POINT* srcSize = NULL );
+   bool addTextureAsset ( const tstring& name, POINT* srcSize = NULL, D3DCOLOR excludeColor = D3DCOLOR_ARGB(0, 0, 0, 0) );
 
    unsigned int    myTextureCount;
    unsigned int    mySurfaceCount;

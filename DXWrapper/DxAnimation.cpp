@@ -10,7 +10,7 @@
 #include "DxWrapper/DxAnimation.h"
 //=======================================================================
 DxAnimation::DxAnimation ()
-:myName(), myCurrentFrame(0), myFrameCount(0)
+:myName(), myCurrentFrame(0), myFrameDirection(0), myFrameCount(0)
 {  
 }
 
@@ -53,7 +53,7 @@ bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float
       return false;
    }
 
-   myAnimation =  (ANIMATION)type;
+   animation( (ANIMATION)type );
 
    while ( true )
    {
@@ -74,7 +74,7 @@ bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float
 }
 
 //=======================================================================
-bool DxAnimation::init ( DxTexture* texture, float speed, D3DCOLOR excludeColor )
+bool DxAnimation::init ( DxTexture* texture, D3DCOLOR excludeColor )
 {
    Point pos;
    DxAnimationFrame frame;
@@ -82,7 +82,7 @@ bool DxAnimation::init ( DxTexture* texture, float speed, D3DCOLOR excludeColor 
    frame.texture = texture;
    myFrames[myFrameCount] = frame;
    myFrameCount++; 
-   mySpeed = speed;
+   mySpeed = 0;
    myExcludeColor = excludeColor;
    return true;
 }
@@ -91,12 +91,48 @@ bool DxAnimation::init ( DxTexture* texture, float speed, D3DCOLOR excludeColor 
 void DxAnimation::update ()
 {
    if ( !myTimer.isRunning() )
-   {
-      myTimer.start();
-   }
-   if ( myTimer.elapsedTime() < 1000/mySpeed )
       return;
-   myCurrentFrame = (myCurrentFrame + 1) % myFrameCount;
+
+   if ( mySpeed != 0 && myTimer.elapsedTime() < 1000 / mySpeed )
+      return;
+
+   myCurrentFrame = (myCurrentFrame + myFrameDirection) % myFrameCount;
+
+   switch ( myAnimation )
+   {
+   case ANIMATION::SINGLE:
+      {
+         myFrameDirection = 1;
+         if ( myCurrentFrame == (myFrameCount - 1) )
+         {
+            myTimer.stop();
+         }
+      }
+      break;
+
+   case ANIMATION::LOOP:
+      {
+         myFrameDirection = 1;
+      }
+      break;
+
+   case ANIMATION::ROCKER:
+      {
+         if ( myCurrentFrame == (myFrameCount - 1) && myFrameDirection > 0)
+         {
+            myFrameDirection = -1;
+         }
+         else if ( myCurrentFrame == 0 && myFrameDirection < 0 )
+         {
+            myFrameDirection = 1;
+         }
+      }
+      break;
+   default:
+      myFrameDirection = 0;
+      break;
+   } 
+
    myTimer.restart();
 }
 
@@ -116,11 +152,30 @@ void DxAnimation::reset() //added for resetting animation so it doesn't start mi
    myTimer.restart();
 }
 
+//=======================================================================
+void DxAnimation::play ()
+{
+   myTimer.start();
+}
+
+
+//=======================================================================
+void DxAnimation::stop ()
+{
+   myTimer.stop();
+}
+
+//=======================================================================
+bool DxAnimation::isPlaying ()
+{
+   return myTimer.isRunning();
+}
 
 //=======================================================================
 DxAnimation::ANIMATION DxAnimation::animation ( ANIMATION type )
 {
    myAnimation = type;
+   myFrameDirection = 1;
    return myAnimation;
 }
 
@@ -136,9 +191,9 @@ float DxAnimation::speed ( float value )
 void DxAnimation::drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position, 
                               D3DXVECTOR2* scale, float rotation, 
                               D3DXVECTOR2* center, D3DCOLOR color )
- {
-   myFrames[myCurrentFrame].texture->drawEx ( spriteobj, &myFrames[myCurrentFrame].rect, 
-                                            center, position, rotation, color, scale );
+{
+   myFrames[myCurrentFrame].texture->drawEx ( spriteobj, &myFrames[myCurrentFrame].rect,
+                                              center, position, rotation, color, scale );
 }
 
 //=======================================================================
