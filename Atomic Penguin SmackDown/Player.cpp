@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+#include <cassert>
 #include "Utilities/ConfigParser.h"
 #include "DxWrapper/DxAssetManager.h"
 #include "DxWrapper/DxWrapper.h"
@@ -56,6 +56,8 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
          }
 
          myPenguins[penguinIndex].create( (PENGUIN)type, c * tileWidth, r * tiltHeight );
+         myPenguins[penguinIndex].setScale( (float)tileWidth  / (float)myPenguins[penguinIndex].getWidth(), 
+                                            (float)tiltHeight / (float)myPenguins[penguinIndex].getHeight() );
          penguinIndex++;
       }
    }
@@ -67,7 +69,26 @@ void Player::update ()
 {
    for ( int index = 0; index < myPenguinCount; index++ )
    {
-      myPenguins[index].update( );
+      myPenguins[index].update();
+
+      if ( DxWrapper::mouse().mouseButton(0) )
+      {
+         int mouse_x = DxWrapper::mouse().mouseX(), mouse_y = DxWrapper::mouse().mouseY();
+         if ( myPenguins[index].getCollisionArea().contains( mouse_x, mouse_y ) )
+         {
+            mySelectedPenguin = &myPenguins[index];
+         }
+      }
+
+      if ( &myPenguins[index] != mySelectedPenguin )
+      {
+         myPenguins[index].getAnimation().stop();
+         myPenguins[index].getAnimation().reset();
+      }
+      else if ( !myPenguins[index].getAnimation().isPlaying() )
+      {
+         myPenguins[index].getAnimation().play();
+      }
    }
 }
 
@@ -77,7 +98,7 @@ void Player::draw ()
    for ( int index = 0; index < myPenguinCount; index++ )
    {
       myPenguins[index].draw( DxWrapper::spriteInterface() );
-   }
+   }   
 }
 
 

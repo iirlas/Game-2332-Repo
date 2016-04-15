@@ -93,7 +93,7 @@ void DxAnimation::update ()
    if ( !myTimer.isRunning() )
       return;
 
-   if ( mySpeed != 0 && myTimer.elapsedTime() < 1000 / mySpeed )
+   if ( mySpeed == 0 || myTimer.elapsedTime() < 1000 / mySpeed )
       return;
 
    myCurrentFrame = (myCurrentFrame + myFrameDirection) % myFrameCount;

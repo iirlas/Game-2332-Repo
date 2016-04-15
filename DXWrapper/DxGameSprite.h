@@ -67,7 +67,7 @@ public:
 	void setLastXVel(float xV);
 	void setLastYVel(float yV);
 
-	RECT getCollisionArea(){return myCollisionArea;}
+	Rect getCollisionArea(){return myCollisionArea;}
 	void setCollisionArea(RECT collisionArea);
 
    void draw( IDXSPRITE spriteobj, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255) );

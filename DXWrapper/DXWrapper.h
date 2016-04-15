@@ -10,6 +10,7 @@
 #include <d3dx9.h>
 #include "Utilities\TTypes.h"
 #include "WinWrapper\Application.h"
+#include "DxWrapper\DxMouse.h"
 #include "DxWrapper\DxTypes.h"
 
 
@@ -44,6 +45,14 @@ public:
    {
       return ourSpriteInterface;
    }
+
+   //=======================================================================
+   //
+   static DxMouse& mouse ()
+   {
+      return ourMouse;
+   }
+
 
 protected:
    //=======================================================================
@@ -135,6 +144,7 @@ private:
    static IDXINTERFACE   ourInterface;
    static IDXDEVICE      ourDevice;
    static IDXSPRITE      ourSpriteInterface;
+   static DxMouse        ourMouse;
    D3DPRESENT_PARAMETERS myD3Dpp;
    IDXSURFACE            myBackBuffer;
 };

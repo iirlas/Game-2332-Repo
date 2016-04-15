@@ -7,10 +7,10 @@
 
 #include "stdafx.h"
 
-#include <windows.h>
-#include <d3d9.h>
-#include <d3dx9.h>
+#include "Utilities/Point.h"
+#include "DxWrapper/DxCommon.h"
 #include <dinput.h>
+
 //#include <xinput.h>
 
 
@@ -31,10 +31,11 @@ public:
 
 private:
 	//Private member variable
+   Point                myPosition;
 	LPDIRECTINPUTDEVICE8	myMouse;
 	LPDIRECTINPUT8			myInput;
 	DIMOUSESTATE			myMouseState;
-	HWND					myHwnd;
+	HWND					   myHwnd;
 };
 
 #endif

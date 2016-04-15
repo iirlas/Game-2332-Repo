@@ -31,8 +31,8 @@ public:
    //todo GET RID OF THESE (for now)
    bool collidesWith ( const RECT& other ) const;
    bool collidesWith ( const RECT& other, Rect& intersect ) const;
-   //bool contains ( const POINT& point ) const;
-   //bool contains ( LONG x, LONG y ) const;
+   bool contains ( const POINT& point ) const;
+   bool contains ( LONG x, LONG y ) const;
 
    void normalize ( );
 

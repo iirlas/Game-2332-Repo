@@ -9,7 +9,7 @@
 class Player
 {
 public:
-   Player () { myPenguinCount = 0; myPenguins = NULL; }
+   Player () { myPenguinCount = 0; myPenguins = NULL; mySelectedPenguin = NULL; }
    ~Player () {}
 
    bool init ( tstring playerConfigFile, int tileWidth, int tiltHeight );
@@ -18,8 +18,9 @@ public:
    void shutdown ();
 
 private:
-   int myPenguinCount;
+   int      myPenguinCount;
    Penguin* myPenguins;
+   Penguin* mySelectedPenguin;
 };
 
 #endif //_PLAYER_H_

@@ -8,9 +8,10 @@
 #include "DxWrapper/DxAssetManager.h"
 #include "DxWrapper/DxWrapper.h"
 
-IDXDEVICE DxWrapper::ourDevice = NULL;
+IDXDEVICE    DxWrapper::ourDevice = NULL;
 IDXINTERFACE DxWrapper::ourInterface = NULL;
-IDXSPRITE DxWrapper::ourSpriteInterface = NULL;
+IDXSPRITE    DxWrapper::ourSpriteInterface = NULL;
+DxMouse      DxWrapper::ourMouse;
 
 //=======================================================================
 DxWrapper::DxWrapper ()
@@ -34,7 +35,7 @@ bool DxWrapper::preWindow ()
 //protected
 bool DxWrapper::postInit ()
 {
-   HRESULT result;
+   HRESULT result;   
    ourInterface = Direct3DCreate9(D3D_SDK_VERSION);
 
    if ( dxInterface() == NULL )
@@ -80,6 +81,13 @@ bool DxWrapper::postInit ()
       return false;
    }
 
+
+   if ( !ourMouse.mouseInit( window(), device() ) )
+   {
+      log( _T("Could not retrieve mouse.") );
+      return false;
+   }
+
    return gameInit();
 }
 
@@ -88,6 +96,7 @@ bool DxWrapper::postInit ()
 void DxWrapper::update ()
 {
    assert( !!ourDevice && "Trying to use an invalid DirectX device!" );
+   mouse().mouseUpdate();
    gameRun();  
 }
 
@@ -97,6 +106,8 @@ void DxWrapper::preDestroy ()
 {
    gameExit();
    DxAssetManager::getInstance().shutdown();
+   mouse().mouseShutdown();
+
    if ( spriteInterface() )
    {
       ourSpriteInterface->Release();

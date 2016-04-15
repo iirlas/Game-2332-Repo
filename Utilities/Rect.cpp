@@ -57,19 +57,19 @@ bool Rect::collidesWith ( const RECT& other, Rect& intersect ) const
     intersect;
     return false;
 }
-//
-////=======================================================================
-//bool Rect::contains ( const POINT& point ) const
-//{
-//    return contains( point.x, point.y );
-//}
-//
-////=======================================================================
-//bool Rect::contains ( LONG x, LONG y ) const
-//{
-//    return ( x >= left && x < right && 
-//             y >= top && y < bottom );
-//}
+
+//=======================================================================
+bool Rect::contains ( const POINT& point ) const
+{
+    return contains( point.x, point.y );
+}
+
+//=======================================================================
+bool Rect::contains ( LONG x, LONG y ) const
+{
+    return ( x >= left && x < right && 
+             y >= top && y < bottom );
+}
 
 //=======================================================================
 void Rect::normalize ( )

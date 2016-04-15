@@ -53,10 +53,9 @@ bool Penguin::create ( PENGUIN type, float x ,float y )
       myLeftAnim =  "P2-HULK-LEFT"; myRightAnim = "P2-HULK-RIGHT";
       break;
    default:
-      break;
+      return false;
    }      
    result = DxGameSprite::create( myFrontAnim, ourAnimationSpeed );
    setPosition( x, y );
-   setScale( 0.75f, 0.75f );
    return result;
 }

@@ -23,8 +23,8 @@ protected:
    void gameRun ();
    void gameExit ();
 
-   int startTransWidth ()  { return 960; }
-   int startTransHeight()  { return 960; }
+   int startTransWidth ()  { return 640; }
+   int startTransHeight()  { return 640; }
 
 private:
    D3DCOLOR        bgColor;

@@ -390,7 +390,7 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
          
          else
          {
-            mySpriteMap[index].create( "WATER" );
+            mySpriteMap[index].create( "WATER", 2.0f );
             mySpriteMap[index].setDestroyable(false);
          }
          mySpriteMap[index].setScale( (float)myTileWidth / (float)mySpriteMap[index].getWidth(), 
@@ -700,6 +700,10 @@ bool TiledBackground::tileIsCollidable( TiledBackground::TileType tileEnumType )
 //
 bool TiledBackground::update ( )
 {
+   for( int i = 0; i < mySpriteMap.size(); i++)
+   {
+      mySpriteMap[i].update();
+   }
    return true;
 }
 
