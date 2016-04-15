@@ -282,24 +282,24 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
             mySpriteMap[index].create( "SLIME" );
             mySpriteMap[index].collidable(false);
          }
-         else if(  fileInfo.getTileType( row, col ) == _T("SLIMEBORDERED") )
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-BORDERED") )
          {
-            mySpriteMap[index].create( "SLIMEBORDERED" );
+            mySpriteMap[index].create( "SLIME-BORDERED" );
             mySpriteMap[index].collidable(false);
          }
-         else if(  fileInfo.getTileType( row, col ) == _T("SLIMEBOTTOM") )
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-BOTTOM") )
          {
-            mySpriteMap[index].create( "SLIMEBOTTOM" );
+            mySpriteMap[index].create( "SLIME-BOTTOM" );
             mySpriteMap[index].collidable(false);
          }
-         else if(  fileInfo.getTileType( row, col ) == _T("SLIMETOP") )
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-TOP") )
          {
-            mySpriteMap[index].create( "SLIMETOP" );
+            mySpriteMap[index].create( "SLIME-TOP" );
             mySpriteMap[index].collidable(false);
          }
-         else if(  fileInfo.getTileType( row, col ) == _T("SLIMELEFT") )
+         else if(  fileInfo.getTileType( row, col ) == _T("SLIME-LEFT") )
          {
-            mySpriteMap[index].create( "SLIMELEFT" );
+            mySpriteMap[index].create( "SLIME-LEFT" );
             mySpriteMap[index].collidable(false);
          }
          else if(  fileInfo.getTileType( row, col ) == _T("SLIME-RIGHT") )
