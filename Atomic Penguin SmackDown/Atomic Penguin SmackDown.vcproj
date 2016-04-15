@@ -175,6 +175,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Penguin.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -210,6 +218,14 @@
 			>
 			<File
 				RelativePath=".\Atomic Penguin SmackDown.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Penguin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.h"
 				>
 			</File>
 			<File

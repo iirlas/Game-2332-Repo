@@ -37,18 +37,9 @@ bool Game::gameInit ()
 
    myBgRect = Rect( 0, 0, startTransWidth(), startTransHeight() );
 
-   
 
    result &= myLevelBgnds.init( device(), _T("16x16.config") );
-   //if ( !DxAssetManager::getInstance().init() ||
-   //     !DxAssetManager::getInstance().parseConfig( "animations.txt" ) )
-   //{
-   //   return false;
-   //}
-   
-   //myHulkPenguin = DxAssetManager::getInstance().getTexture( "HULK" );
-   //bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
-   return true;
+   return myPlayer.init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
 }
 
 //=======================================================================
@@ -59,6 +50,8 @@ void Game::gameRun ()
    // clear the backbuffer
    device()->ColorFill( backBuffer(), NULL, bgColor );
    myLevelBgnds.update();
+   myPlayer.update();
+
    // start rendering
    if ( SUCCEEDED(device()->BeginScene()) /*&& SUCCEEDED(spriteInterface()->Begin(D3DXSPRITE_ALPHABLEND) )*/ )
    {
@@ -67,7 +60,7 @@ void Game::gameRun ()
       {
          // sprite rendering...       
          myLevelBgnds.drawMySpriteMap( spriteInterface() );
-
+         myPlayer.draw();
          
          // stop rendering
 	      spriteInterface()->End();

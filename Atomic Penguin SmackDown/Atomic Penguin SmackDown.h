@@ -9,6 +9,8 @@
 #include "Resource.h"
 #include <Windows.h>
 #include "Atomic Penguin SmackDown/TiledBackground.h"
+#include "Atomic Penguin SmackDown/Player.h"
+
 class Game : public DxWrapper
 {
 public:
@@ -21,17 +23,15 @@ protected:
    void gameRun ();
    void gameExit ();
 
-   int startTransWidth ()  { return 800; }
-   int startTransHeight()  { return 800; }
+   int startTransWidth ()  { return 960; }
+   int startTransHeight()  { return 960; }
 
 private:
-   //DxTexture* myHulkPenguin;
-   DxTexture  myImage;
-   D3DCOLOR bgColor;
-
-   tstring myGameTitle;
+   D3DCOLOR        bgColor;
+   Player          myPlayer;
+   tstring         myGameTitle;
    TiledBackground myLevelBgnds;
-   RECT myBgRect;
+   RECT            myBgRect;
 };
 
 #endif //_GAME_H_

@@ -78,8 +78,8 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
 
    mySpriteMap.resize( myNumTilesVert * myNumTilesHoriz );
       
-   //int bgWidth  = fileInfo.getTilePixWidth() * myNumTilesHoriz;
-   //int bgHeight = fileInfo.getTilePixHeight() * myNumTilesVert;
+   //int bgWidth  = fileInfo.getmyTileWidth() * myNumTilesHoriz;
+   //int bgHeight = fileInfo.getmyTileHeight() * myNumTilesVert;
 
 
 
@@ -112,23 +112,21 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
 
    int index = 0;
 
-   int tilePixWidth  = fileInfo.getTilePixWidth();
-   int tilePixHeight = fileInfo.getTilePixHeight();
+   myTileWidth  = fileInfo.getTilePixWidth();
+   myTileHeight = fileInfo.getTilePixHeight();
 
    for (int row = 0; row < fileInfo.numTileRows(); row++)
    {
       for (int col = 0; col < fileInfo.numTileCols(); col++)
       {
-         //RECT dstRect = { xPos, yPos, tilePixWidth+xPos, tilePixHeight+yPos };
+         //RECT dstRect = { xPos, yPos, myTileWidth+xPos, myTileHeight+yPos };
 
          //DxTexture& srcTileTexture = fileInfo.getTileTexture(row,col);
 
          //srcTileTexture.stretchRect( myDevice, NULL, myTiledBgTexture, &dstRect );
 
-         int xPos = col*tilePixWidth;
-         int yPos = row*tilePixHeight; 
-
-         mySpriteMap[index].setScale( .5, .5 );
+         int xPos = col*myTileWidth;
+         int yPos = row*myTileHeight; 
 
          if(  fileInfo.getTileType( row, col ) == _T("GROUND") )
          {
@@ -395,7 +393,9 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
             mySpriteMap[index].create( "WATER" );
             mySpriteMap[index].setDestroyable(false);
          }
-         
+         mySpriteMap[index].setScale( (float)myTileWidth / (float)mySpriteMap[index].getWidth(), 
+                                      (float)myTileHeight / (float)mySpriteMap[index].getHeight() );
+
          mySpriteMap[index].setPosition( float(xPos), float(yPos) );
 
          index++;

@@ -41,7 +41,14 @@
 #pragma comment( lib, "d3dx9.lib" )
 #pragma comment( lib, "Dinput8.lib" )
 
-template<typename ITYPE> bool IfRelease ( ITYPE** interfaceInstance  )
+//Company wide allow warning disablers...
+//  warning C4482: nonstandard extension used: enum 'Kitty::Direction' used in qualified name : DISABLE ALLOW
+//    DISABLE THIS WARNING GLOBALLY FOR ALL DxFramework work.  Why? STUPID C++ rule.  That's Why.
+#pragma warning( disable : 4482 )
+
+
+
+template<typename ITYPE> bool IfRelease ( ITYPE** interfaceInstance )
 {
    if ( *interfaceInstance )
    {

@@ -114,7 +114,7 @@ void DxGameSprite::setXPosition ( float value )
 	myPosition.x = value;
 
 	//update collision Area to new XPOS
-   myCollisionArea.x( (long)myPosition.x );
+   myCollisionArea.x( (long)myPosition.x + myCollisionOffset.x );
 
 }
 
@@ -125,7 +125,7 @@ void DxGameSprite::setYPosition ( float value )
 	myPosition.y = value;
 
 	//update Collision Area to new YPOS
-   myCollisionArea.y( (long)myPosition.y );
+   myCollisionArea.y( (long)myPosition.y + myCollisionOffset.y );
 }
 
 //===========================================================================
@@ -133,7 +133,16 @@ void DxGameSprite::setScale ( float scaleX, float scaleY )
 {
    myScale.x = scaleX;
    myScale.y = scaleY;
+
+   myCollisionOffset.x *= scaleX;
+   myCollisionOffset.y *= scaleY;
+
+   myCollisionArea.width( myCollisionArea.width() * scaleX );
+   myCollisionArea.height( myCollisionArea.height() * scaleY );
+
+   setPosition( myPosition.x, myPosition.y );
 }
+
 //===========================================================================
 void DxGameSprite::draw (IDXSPRITE spriteObj, D3DCOLOR color)
 {

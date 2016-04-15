@@ -106,6 +106,9 @@ public:
    int numColumns () const { return myNumTilesHoriz; }
    int numRows () const { return myNumTilesVert; }
 
+   int tileWidth () const { return myTileWidth; }
+   int tileHeight () const { return myTileHeight; }
+
    std::vector<DxGameSprite> mySpriteMap;
    
 private:
