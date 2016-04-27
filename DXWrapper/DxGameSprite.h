@@ -41,8 +41,10 @@ public:
    DxAnimation& getAnimation( );
 
 	void transform ( float x, float y, D3DXVECTOR2 center, float rotation, D3DXVECTOR2 scale, D3DCOLOR excludeColor );
+   inline D3DXVECTOR3 getPosition ( ) const { return myPosition; }
 	inline float getXPosition ( ) const { return myPosition.x; }
 	inline float getYPosition ( ) const { return myPosition.y; }
+   void setPosition ( const D3DXVECTOR3& position );
 	void setPosition ( float x, float y );
 	void setXPosition ( float value );
 	void setYPosition ( float value );
@@ -89,7 +91,7 @@ private:
 	D3DXVECTOR3    myVelocity;
 	D3DXVECTOR3    myLastVelocity;
 	D3DXVECTOR3    myAccel;
-    D3DXVECTOR3    myLastAccel;
+   D3DXVECTOR3    myLastAccel;
 
 	float          myRotation;
 	D3DXVECTOR2    myScale;

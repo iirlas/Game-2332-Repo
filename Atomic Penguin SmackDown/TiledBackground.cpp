@@ -393,6 +393,8 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
             mySpriteMap[index].create( "WATER", 2.0f );
             mySpriteMap[index].setDestroyable(false);
          }
+
+         mySpriteMap[index].type( getTileEnumType( fileInfo.getTileType( row, col ) ) );
          mySpriteMap[index].setScale( (float)myTileWidth / (float)mySpriteMap[index].getWidth(), 
                                       (float)myTileHeight / (float)mySpriteMap[index].getHeight() );
 
@@ -407,7 +409,7 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
 }
 //===================================================================================================>
 //
-TiledBackground::TileType TiledBackground::getTileEnumType( const tstring& label )
+TileType TiledBackground::getTileEnumType( const tstring& label )
 {
    if( label == "GROUND")
    {
@@ -434,7 +436,7 @@ TiledBackground::TileType TiledBackground::getTileEnumType( const tstring& label
    {
       return GROUNDRIGHT;
    }
-   if( label == "GROUND-CORNETL")
+   if( label == "GROUND-CORNERTL")
    {
       return GROUNDCORNERTL;
    }
@@ -445,24 +447,24 @@ TiledBackground::TileType TiledBackground::getTileEnumType( const tstring& label
    if( label == "GROUND-CORNERBL")
    {
       return GROUNDCORNERBL;
+   }
    if( label == "GROUND-CORNERBR")
    {
       return GROUNDCORNERBR;
    }
-   }
-      if( label == "GROUND-INLETTOP")
+   if( label == "GROUND-INLETTOP")
    {
       return GROUNDINLETTOP;
    }
-      if( label == "GROUND-INLETBOTTOM")
+   if( label == "GROUND-INLETBOTTOM")
    {
       return GROUNDINLETBOTTOM;
    }
-      if( label == "GROUND-INLETLEFT")
+   if( label == "GROUND-INLETLEFT")
    {
       return GROUNDINLETLEFT;
    }
-      if( label == "GROUND-INLETRIGHT")
+   if( label == "GROUND-INLETRIGHT")
    {
       return GROUNDINLETRIGHT;
    }
@@ -531,19 +533,19 @@ TiledBackground::TileType TiledBackground::getTileEnumType( const tstring& label
    {
       return SLIME;
    }
-    if( label == "SLIMEBORDERED" )
+    if( label == "SLIME-BORDERED" )
    {
       return SLIMEBORDERED;
    }
-    if( label == "SLIMEBOTTOM" )
+    if( label == "SLIME-BOTTOM" )
    {
       return SLIMEBOTTOM;
    }
-    if( label == "SLIMETOP" )
+    if( label == "SLIME-TOP" )
    {
       return SLIMETOP;
    }
-    if( label == "SLIMELEFT" )
+    if( label == "SLIME-LEFT" )
    {
       return SLIMELEFT;
    }
@@ -618,6 +620,11 @@ TiledBackground::TileType TiledBackground::getTileEnumType( const tstring& label
       return ROCKSNOW3;
    }
 
+   if( label == "WATER" )
+   {
+      return WATER;
+   }
+
    assert(false);
    return TileType(-1);
 }
@@ -625,7 +632,7 @@ TiledBackground::TileType TiledBackground::getTileEnumType( const tstring& label
 
 //===================================================================================================>
 //
-bool TiledBackground::tileIsCollidable( TiledBackground::TileType tileEnumType )
+bool TiledBackground::tileIsCollidable( TileType tileEnumType )
 {
    switch( tileEnumType )
    {
@@ -700,7 +707,7 @@ bool TiledBackground::tileIsCollidable( TiledBackground::TileType tileEnumType )
 //
 bool TiledBackground::update ( )
 {
-   for( int i = 0; i < mySpriteMap.size(); i++)
+   for( unsigned int i = 0; i < mySpriteMap.size(); i++)
    {
       mySpriteMap[i].update();
    }

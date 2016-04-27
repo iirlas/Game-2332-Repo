@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <cassert>
 #include "Utilities/ConfigParser.h"
+#include "DxWrapper/DxKeyboard.h"
 #include "DxWrapper/DxAssetManager.h"
 #include "DxWrapper/DxWrapper.h"
 #include "Atomic Penguin SmackDown/Player.h"
@@ -61,6 +62,11 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
          penguinIndex++;
       }
    }
+
+   myCursor.create( "CURSOR", 10 );
+   myCursor.setScale( (float)tileWidth  / (float)myCursor.getWidth(), 
+                      (float)tiltHeight / (float)myCursor.getHeight() );
+
    return true;
 }
 
@@ -74,7 +80,7 @@ void Player::update ()
       if ( DxWrapper::mouse().mouseButton(0) )
       {
          int mouse_x = DxWrapper::mouse().mouseX(), mouse_y = DxWrapper::mouse().mouseY();
-         if ( myPenguins[index].getCollisionArea().contains( mouse_x, mouse_y ) )
+         if ( myMovements.empty() && myPenguins[index].getCollisionArea().contains( mouse_x, mouse_y ) )
          {
             mySelectedPenguin = &myPenguins[index];
          }
@@ -90,15 +96,49 @@ void Player::update ()
          myPenguins[index].getAnimation().play();
       }
    }
+
+   if ( mySelectedPenguin )
+   {
+      int horz = DxKeyboard::keyPressed( VK_RIGHT ) - DxKeyboard::keyPressed( VK_LEFT );
+      int vert = DxKeyboard::keyPressed( VK_DOWN ) - DxKeyboard::keyPressed( VK_UP );
+
+      if ( XOR(horz, vert) && myMovements.size() < mySelectedPenguin->moveCount() /* && check for collision*/ )
+      {  
+         float nextX = mySelectedPenguin->getXPosition() + horz * mySelectedPenguin->getWidth();
+         float nextY = mySelectedPenguin->getYPosition() + vert * mySelectedPenguin->getHeight();
+         
+         myMovements.push_back( D3DXVECTOR3( mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), 0 ) );
+         mySelectedPenguin->setXPosition(nextX);
+         mySelectedPenguin->setYPosition(nextY);
+      }
+      else if ( DxKeyboard::keyPressed( VK_RETURN ) )
+      {
+         myMovements.clear();
+         mySelectedPenguin = NULL;
+      }
+      else if ( DxKeyboard::keyPressed( VK_BACK ) && !myMovements.empty() )
+      {
+         mySelectedPenguin->setPosition(myMovements.back());
+         myMovements.pop_back();
+      }
+   }
+   myCursor.update();
 }
 
 //=======================================================================
-void Player::draw ()
+void Player::draw ( IDXSPRITE spriteInterface )
 {
+   if ( mySelectedPenguin )
+   {
+      myCursor.setPosition( mySelectedPenguin->getPosition() );
+      myCursor.draw( spriteInterface );
+   }   
+   
    for ( int index = 0; index < myPenguinCount; index++ )
    {
-      myPenguins[index].draw( DxWrapper::spriteInterface() );
-   }   
+      myPenguins[index].draw( spriteInterface );
+   }
+
 }
 
 

@@ -241,6 +241,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Tile.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TiledBackground.h"
 				>
 			</File>

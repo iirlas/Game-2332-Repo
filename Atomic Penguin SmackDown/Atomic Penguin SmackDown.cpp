@@ -37,7 +37,6 @@ bool Game::gameInit ()
 
    myBgRect = Rect( 0, 0, startTransWidth(), startTransHeight() );
 
-
    result &= myLevelBgnds.init( device(), _T("16x16.config") );
    return myPlayer.init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
 }
@@ -53,17 +52,16 @@ void Game::gameRun ()
    myPlayer.update();
 
    // start rendering
-   if ( SUCCEEDED(device()->BeginScene()) /*&& SUCCEEDED(spriteInterface()->Begin(D3DXSPRITE_ALPHABLEND) )*/ )
+   if ( SUCCEEDED(device()->BeginScene()) )
    {
-
-   if ( SUCCEEDED(spriteInterface()->Begin( D3DXSPRITE_ALPHABLEND )) )
+      if ( SUCCEEDED(spriteInterface()->Begin( D3DXSPRITE_ALPHABLEND )) )
       {
          // sprite rendering...       
          myLevelBgnds.drawMySpriteMap( spriteInterface() );
-         myPlayer.draw();
+         myPlayer.draw( spriteInterface() );
          
          // stop rendering
-	      spriteInterface()->End();
+         spriteInterface()->End();
       }
 
       // End rendering:

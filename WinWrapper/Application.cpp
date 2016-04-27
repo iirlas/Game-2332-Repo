@@ -100,7 +100,7 @@ Application::~Application ()
 int Application::winMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, 
                            LPTSTR    lpCmdLine, int       nCmdShow )
 {
-    if ( !init( hInstance, WS_LOCKEDWINDOW ) )
+    if ( !init( hInstance, style() ) )
     {
         log( _T("Unable to initialize the application\n") );
         return E_FAIL;

@@ -21,4 +21,6 @@ typedef std::ofstream tofstream;
 typedef std::stringstream tstringstream;
 #endif // UNICODE
 
+#define XOR(A,B) ((!!A)^(!!B))
+
 #endif //_TTYPE_H_

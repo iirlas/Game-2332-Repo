@@ -15,7 +15,7 @@
 #include "DxWrapper/DxAnimation.h"
 #include "DxWrapper/DxGameSprite.h"
 #include "Utilities/Point.h"
-
+#include "Atomic Penguin SmackDown/Tile.h"
 
 
 //===================================================================================================
@@ -30,65 +30,6 @@ class TiledBackground
 public:
    TiledBackground();
   ~TiledBackground();
-
-   enum TileType
-   {
-      GROUND,
-      GROUNDBORDERED,		
-      GROUNDBOTTOM,			
-      GROUNDTOP,				
-      GROUNDLEFT,				
-      GROUNDRIGHT,			
-      GROUNDCORNERTL,		
-      GROUNDCORNERTR,		
-      GROUNDCORNERBL,		
-      GROUNDCORNERBR,		
-      GROUNDINLETTOP,		
-      GROUNDINLETBOTTOM,	
-      GROUNDINLETLEFT, 	
-      GROUNDINLETRIGHT,
-      
-      ICE,
-      ICEBORDERED,	
-      ICEBOTTOM,		
-      ICETOP,			
-      ICELEFT,	   
-      ICERIGHT,		
-      ICECORNERTL,	
-      ICECORNERTR,	
-      ICECORNERBL,	
-      ICECORNERBR,	
-      ICEINLETTOP,	
-      ICEINLETBOTTOM,
-      ICEINLETLEFT,	
-      ICEINLETRIGHT,
-
-      SLIME,
-      SLIMEBORDERED,		
-      SLIMEBOTTOM,		
-      SLIMETOP,		   
-      SLIMELEFT,		   
-      SLIMERIGHT,		   
-      SLIMECORNERTL,		
-      SLIMECORNERTR,		
-      SLIMECORNERBL,		
-      SLIMECORNERBR,		
-      SLIMEINLETTOP,		
-      SLIMEINLETBOTTOM,	
-      SLIMEINLETLEFT,		
-      SLIMEINLETRIGHT,	
-
-      SNOW,
-      WATER,
-
-      ROCK,
-      ROCKGROUND2,	
-      ROCKGROUND3,	
-      ROCKSNOW1,		
-      ROCKSNOW2,		
-      ROCKSNOW3		
-
-   };
 
    bool init ( IDXDEVICE dev, const tstring& bgConfigFilename );
    bool update ();
@@ -109,7 +50,7 @@ public:
    int tileWidth () const { return myTileWidth; }
    int tileHeight () const { return myTileHeight; }
 
-   std::vector<DxGameSprite> mySpriteMap;
+   std::vector<Tile> mySpriteMap;
    
 private:
    void scrollScreen( IDXSURFACE backBuf );

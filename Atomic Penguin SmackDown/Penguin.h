@@ -25,16 +25,21 @@ typedef enum
 class Penguin : public DxGameSprite
 {
 public:
-   Penguin () {}
+   
+   Penguin () {myMaxMoves = 0;}
    ~Penguin () {}
    bool create ( PENGUIN type, float x ,float y );
+   inline unsigned int moveCount () { return myMaxMoves; }
 
 private:
+   static unsigned int ourPenguinMaxMoves[5];
    static float ourAnimationSpeed;
-   tstring  myFrontAnim;
-   tstring  myBackAnim;
-   tstring  myLeftAnim;  
-   tstring  myRightAnim;
+
+   unsigned int myMaxMoves;
+   tstring      myFrontAnim;
+   tstring      myBackAnim;
+   tstring      myLeftAnim;
+   tstring      myRightAnim;
 };
 
 

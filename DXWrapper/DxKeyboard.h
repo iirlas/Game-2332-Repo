@@ -10,25 +10,21 @@
 class DxKeyboard
 {
 public:
-	DxKeyboard();
-	~DxKeyboard();
-	
-	bool keyboardInit(HWND hwnd);
-	void keyboardUpdate();
-   void shutdown();
-   char getKeys(int key);
-	static bool keyPressed(int key);
+   enum KeyState
+   {      
+      UP,
+      DOWN
+   };
+
+   static bool keyPressed(int key);
+
 	static bool keyDown(int key);
    static bool keyUp(int key);
 
-
-
 private:
-	LPDIRECTINPUTDEVICE8 myKeyboard;
-	LPDIRECTINPUT8		   myInput;
-	char				      myKeys[256];
-	HWND				      myHwnd;
-
+   DxKeyboard();
+	~DxKeyboard();
+   static KeyState ourKeyState[256];
 };
 
 #endif

@@ -101,6 +101,12 @@ void DxGameSprite::transform ( float x, float y, D3DXVECTOR2 center, float rotat
 }
 
 //=======================================================================
+void DxGameSprite::setPosition ( const D3DXVECTOR3& position )
+{
+   myPosition = position;
+}
+
+//=======================================================================
 void DxGameSprite::setPosition ( float x, float y )
 {
    setXPosition( x );
@@ -134,11 +140,11 @@ void DxGameSprite::setScale ( float scaleX, float scaleY )
    myScale.x = scaleX;
    myScale.y = scaleY;
 
-   myCollisionOffset.x *= scaleX;
-   myCollisionOffset.y *= scaleY;
+   myCollisionOffset.x = (LONG)(myCollisionOffset.x *scaleX);
+   myCollisionOffset.y = (LONG)(myCollisionOffset.y * scaleY);
 
-   myCollisionArea.width( myCollisionArea.width() * scaleX );
-   myCollisionArea.height( myCollisionArea.height() * scaleY );
+   myCollisionArea.width( (LONG)(myCollisionArea.width() * scaleX) );
+   myCollisionArea.height( (LONG)(myCollisionArea.height() * scaleY) );
 
    setPosition( myPosition.x, myPosition.y );
 }

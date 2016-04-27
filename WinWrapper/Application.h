@@ -130,7 +130,7 @@ protected:
     virtual void preEnd ();
     
     //=======================================================================
-    // An overridable method that is called prior to the application exiting.
+    // An overridable method that is called after the application exited.
     virtual void postEnd ();
 
     //=======================================================================
@@ -163,6 +163,13 @@ protected:
     // An overridable method that is call on the WM_CLOSE window's message.
     virtual LRESULT onClose ( WPARAM wParam, LPARAM lParam );
     
+    //=======================================================================
+    // The starting style for the window.
+    virtual inline DWORD style ()
+    {
+       return WS_LOCKEDWINDOW;
+    }
+
     //=======================================================================
     // The starting title for the window.
     virtual inline LPCTSTR startTitle ()

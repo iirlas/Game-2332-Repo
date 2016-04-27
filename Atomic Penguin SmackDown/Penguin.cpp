@@ -1,12 +1,40 @@
 #include "stdafx.h"
+#include "Utilities/TTypes.h"
+#include "Utilities/ConfigParser.h"
+#include "DxWrapper/DxAssetManager.h"
 #include "Atomic Penguin SmackDown/Penguin.h"
-
+unsigned int Penguin::ourPenguinMaxMoves[5] = {-1};
 float Penguin::ourAnimationSpeed = 10.0f;
 
 //=======================================================================
 bool Penguin::create ( PENGUIN type, float x ,float y )
 {
    bool result = false;
+
+   if ( ourPenguinMaxMoves[0] == -1 )
+   {
+      tifstream file( DxAssetManager::getInstance(). getConfigAssetPath("Penguin.config").c_str() );
+      if ( !file.is_open() || file.bad() )
+      {
+         return false;
+      }
+      ConfigParser parser;
+      tstring line;
+      while ( parser.getNextLine( file, line ) )
+      {
+         tstringstream ss( line );
+         int penguinType = 0, speed = -1;
+         ss >> penguinType >> speed;
+         if ( ss.fail() )
+         {
+            return false;
+         }
+
+         ourPenguinMaxMoves[penguinType] = speed;
+      }
+
+   }
+
    switch ( type )
    {
    case PENGUIN::PAWN_P1:
@@ -14,8 +42,8 @@ bool Penguin::create ( PENGUIN type, float x ,float y )
       myLeftAnim =  "P1-PAWN-LEFT"; myRightAnim = "P1-PAWN-RIGHT";
       break;
    case PENGUIN::BAZOOKA_P1:
-      myFrontAnim = "P2-BAZOOKA-FRONT"; myBackAnim =  "P2-BAZOOKA-BACK"; 
-      myLeftAnim =  "P2-BAZOOKA-LEFT"; myRightAnim = "P2-BAZOOKA-RIGHT";
+      myFrontAnim = "P1-BAZOOKA-FRONT"; myBackAnim =  "P1-BAZOOKA-BACK"; 
+      myLeftAnim =  "P1-BAZOOKA-LEFT"; myRightAnim = "P1-BAZOOKA-RIGHT";
       break;
    case PENGUIN::SLIDER_P1:
       myFrontAnim = "P1-SLIDER-FRONT"; myBackAnim =  "P1-SLIDER-BACK"; 
@@ -54,7 +82,10 @@ bool Penguin::create ( PENGUIN type, float x ,float y )
       break;
    default:
       return false;
-   }      
+   }
+
+   myMaxMoves = ourPenguinMaxMoves[type];
+
    result = DxGameSprite::create( myFrontAnim, ourAnimationSpeed );
    setPosition( x, y );
    return result;

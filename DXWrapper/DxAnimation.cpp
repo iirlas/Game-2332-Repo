@@ -70,6 +70,7 @@ bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float
    }
    mySpeed = speed;
    myExcludeColor = excludeColor;
+   myFrameDirection = 1;
    return true;
 }
 
@@ -84,6 +85,7 @@ bool DxAnimation::init ( DxTexture* texture, D3DCOLOR excludeColor )
    myFrameCount++; 
    mySpeed = 0;
    myExcludeColor = excludeColor;
+   myFrameDirection = 0;
    return true;
 }
 

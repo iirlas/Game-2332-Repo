@@ -61,30 +61,26 @@ public:
    ~DxAnimation ();
    DxAnimation ( const DxAnimation& other )
    {
-      myName =         other.myName;
-      mySpeed =        other.mySpeed;
-      myCurrentFrame = other.myCurrentFrame;
-      myExcludeColor = other.myExcludeColor;
-      myAnimation =    other.myAnimation;
-      myFrameCount =   other.myFrameCount;
-      for ( int index = 0; index < ourMaxAnimationFrames; index++ )
-      {
-         myFrames[index] = other.myFrames[index];
-      }
+      myName           = other.myName;
+      mySpeed          = other.mySpeed;
+      myCurrentFrame   = other.myCurrentFrame;
+      myFrameDirection = other.myFrameDirection;
+      myExcludeColor   = other.myExcludeColor;
+      myAnimation      = other.myAnimation;
+      myFrameCount     = other.myFrameCount;
+      memcpy( myFrames, other.myFrames, sizeof(myFrames) );
    }
 
    DxAnimation& operator= ( const DxAnimation& other )
    {
-      myName =         other.myName;
-      mySpeed =        other.mySpeed;
-      myCurrentFrame = other.myCurrentFrame;
-      myExcludeColor = other.myExcludeColor;
-      myAnimation =    other.myAnimation;
-      myFrameCount =   other.myFrameCount;
-      for ( int index = 0; index < ourMaxAnimationFrames; index++ )
-      {
-         myFrames[index] = other.myFrames[index];
-      }
+      myName           = other.myName;
+      mySpeed          = other.mySpeed;
+      myCurrentFrame   = other.myCurrentFrame;
+      myFrameDirection = other.myFrameDirection;
+      myExcludeColor   = other.myExcludeColor;
+      myAnimation      = other.myAnimation;
+      myFrameCount     = other.myFrameCount;
+      memcpy( myFrames, other.myFrames, sizeof(myFrames) );
       return *this;
    }
 
