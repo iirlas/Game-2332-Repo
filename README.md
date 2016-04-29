@@ -1,4 +1,4 @@
-# Game-2332-Repo
+# ATOMIC PENGUIN WARFARE
 
 02/23/2016:
 Name suggestions, pick a name!
@@ -8,12 +8,13 @@ Our Choice for title: "Atomic Penguin Warfare"
 Military pawnguin civil war, scientist just discovered the Atomic Pawnguin, their leaders begin fighting over a fish and thus the war begins on a tile map in a 1v1 turn based game.
 
 ## Making The Game
-Game is written in C++ and based on Directx9 and FMOD. 
-Engine and Windows framework are custom built by Issac Irlas.
-Art is by Patricia Sipes.
-Menu System by Nicholas Pastrano.
-Game Requirements set by class assigment.
-Game Design group developed and implemented.
+##### 
+    Game is written in C++ and based on Directx9 and FMOD. 
+    Engine and Windows framework are custom built by Issac Irlas.
+    Art is by Patricia Sipes.
+    Menu System by Nicholas Pastrano.
+    Game Requirements set by class assigment.
+    Game Design group developed and implemented.
 
 ## Mechanics
 
