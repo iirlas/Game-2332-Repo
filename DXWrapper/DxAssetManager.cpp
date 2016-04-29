@@ -215,15 +215,11 @@ DxAnimation* DxAssetManager::getAnimation ( const tstring& name )
 //=======================================================================
 DxAnimation DxAssetManager::getAnimationCopy ( const tstring& name, float speed, D3DCOLOR excludeColor )
 {
-   DxAnimation animation;
-   for ( unsigned int index = 0; index < myAnimationCount; index++ )
-   {
-      if ( myAnimations[index].name() == name )
-      {
-         animation = myAnimations[index];
-         break;
-      }
-   }
+   DxAnimation* pAnimation = getAnimation( name ), animation;
+   if ( !pAnimation  )
+      throw 0x03;
+   
+   animation = *pAnimation;
    animation.speed( speed );
    animation.excludeColor( excludeColor );
    return animation;

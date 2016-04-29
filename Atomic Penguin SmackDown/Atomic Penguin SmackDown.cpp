@@ -39,11 +39,13 @@ bool Game::gameInit ()
    myBgRect = Rect( 0, 0, startTransWidth(), startTransHeight() );
 
    result &= myLevelBgnds.init( device(), _T("16x16.config") );
-   myCollisionManager.init();
    
-   myGameUI.init( fontInterface(), 0, 0, D3DCOLOR_XRGB(255, 255, 255) );
+   result &= myGameUI.init( fontInterface(), 0, 0, D3DCOLOR_XRGB(255, 255, 255) );
 
-   return myPlayer.init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
+   result &= Penguin::initPenguinMovement( "Penguin.config" );
+
+   result &= myPlayer.init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
+   return result;
 }
 
 //=======================================================================
@@ -84,5 +86,4 @@ void Game::gameRun ()
 //=======================================================================
 void Game::gameExit ()
 {
-   myCollisionManager.shutdown();
 }

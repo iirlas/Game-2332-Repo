@@ -75,3 +75,22 @@ bool Util::tokenizeStringToPair ( const tstring& line,
 
    return true;
 } 
+
+//=======================================================================
+tstring Util::intToString ( int num, unsigned int base )
+{
+   bool isNegative = (num<0);
+   tstring numStr;
+   num = abs(num);
+   do
+   {
+      char c = '0' + (num % base);
+      num /= base;
+      numStr += c;
+   }while (num != 0);
+   if ( isNegative )
+   {
+      numStr.insert( 0, "-" );
+   }
+   return numStr;
+}

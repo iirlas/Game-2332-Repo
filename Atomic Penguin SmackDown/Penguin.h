@@ -3,28 +3,24 @@
 #if !defined(_PENGUIN_H_)
 #define _PENGUIN_H_
 
+#include <map>
 #include "DxWrapper/DxGameSprite.h"
+#include "Atomic Penguin SmackDown/Tile.h"
 
-
-typedef enum 
-{
-   PAWN_P1,
-   BAZOOKA_P1,
-   SLIDER_P1,
-   GENERAL_P1,
-   HULK_P1,
-
-   PAWN_P2 = 0x100,
-   BAZOOKA_P2,
-   SLIDER_P2,
-   GENERAL_P2,
-   HULK_P2
-
-} PENGUIN;
 
 class Penguin : public DxGameSprite
 {
 public:
+
+   typedef enum 
+   {
+      PAWN     = 1, 
+      BAZOOKA  = 2, 
+      SLIDER   = 3, 
+      GENERAL  = 4, 
+      HULK     = 5,
+   } Type;
+
    typedef enum 
    {
       NONE,
@@ -42,18 +38,24 @@ public:
                      ( yDir < 0 ? NORTH : NONE ))));
    }
    
-   static bool initPenguinMovement ();
+   static bool initPenguinMovement ( const tstring& filename );
 
    Penguin () {myMaxMoves = 0;}
    ~Penguin () {}
-   bool create ( PENGUIN type, float x ,float y );
+   bool create ( Type type, float x ,float y, int playerTurnIndex );
    inline unsigned int moveCount () { return myMaxMoves; }
 
    Direction direction () { return myDirection; }
    Direction direction ( Direction direction );
 
+   Type type () { return myType; }
+
+   bool canMoveTo ( Tile::Type type );
+   bool canMoveFrom ( Tile::Type type );
+
 private:
-   static unsigned int ourPenguinMaxMoves[5];
+
+   static std::map<unsigned int, unsigned int> ourPenguinMaxMoves;
    static float ourAnimationSpeed;
 
    unsigned int myMaxMoves;
@@ -62,6 +64,7 @@ private:
    tstring      myLeftAnim;
    tstring      myRightAnim;
    Direction    myDirection;
+   Type         myType;
 };
 
 

@@ -1,42 +1,8 @@
 #include "stdafx.h"
 #include "Atomic Penguin SmackDown/CollisionManager.h"
 
-
-CollisionManager::CollisionManager()
-{
-   myFirstTimeFlag = true;
-}
 //========================================================================================
-//
-CollisionManager::~CollisionManager(){}
-//========================================================================================
-//
-void CollisionManager::init()
-{ 
-  loadAnimation();
-
-}
-//========================================================================================
-//
-bool CollisionManager::loadAnimation()
-{
-   if( myFirstTimeFlag )
-   {
-      myFirstTimeFlag = false;
-      myGrassAnim = DxAssetManager::getInstance().getAnimationCopy( "GRASS", 10, D3DCOLOR_XRGB( 170, 181, 129 ) );
-      myBoomBrickAnim = DxAssetManager::getInstance().getAnimationCopy( "BRICK-DESTROY", 10, D3DCOLOR_XRGB( 170, 181, 129 ) );
-   }
-
-   return true;
-}
-//========================================================================================
-//
-void CollisionManager::update(){}
-//========================================================================================
-//
-void CollisionManager::shutdown(){}
-//========================================================================================
-//
+// static
 bool CollisionManager::worldCollisions( DxGameSprite sprite, TiledBackground&  LevelRef, unsigned int* index )
 {
    Rect collision = sprite.getCollisionArea();
@@ -95,7 +61,7 @@ bool CollisionManager::worldCollisions( DxGameSprite sprite, TiledBackground&  L
 }
 
 //========================================================================================
-//
+// static
 bool CollisionManager::spriteCollsions( DxGameSprite sprite1, DxGameSprite sprite2 )
 {
    if( ( sprite1.collidesWith( sprite2 ) && sprite2.collidable() ) )

@@ -24,53 +24,53 @@ bool GameUI::init( IDXFONT font, int xPos, int yPos, D3DCOLOR color )
    myPlayerTwo.create( font, "PLAYER TWO", 770, 15, 100, 100, myTextColor );
    
    p1General.setScale(0.5f, 0.5f);
-   p1General.create("P1-GENERAL-FRONT", 2);
-   p1General.setPosition((xPos+10),(yPos + 60));
+   p1General.create("P1-GENERAL-FRONT", 2.0f);
+   p1General.setPosition((float)(xPos+10),(float)(yPos + 60));
 
    p1Bazooka.setScale(0.5f, 0.5f);
-   p1Bazooka.create("P1-BAZOOKA-FRONT", 2);
-   p1Bazooka.setPosition((xPos+10),(yPos + 160));
+   p1Bazooka.create("P1-BAZOOKA-FRONT", 2.0f);
+   p1Bazooka.setPosition((float)(xPos+10),(float)(yPos + 160));
 
    p1Slider.setScale(0.5f, 0.5f);
-   p1Slider.create("P1-SLIDER-LEFT", 2);
-   p1Slider.setPosition((xPos+10),(yPos + 260));
+   p1Slider.create("P1-SLIDER-LEFT", 2.0f);
+   p1Slider.setPosition((float)(xPos+10),(float)(yPos + 260));
 
    p1Pawn1.setScale(0.5f, 0.5f);
-   p1Pawn1.create("P1-PAWN-FRONT", 2);
-   p1Pawn1.setPosition((xPos+10),(yPos + 360));
+   p1Pawn1.create("P1-PAWN-FRONT", 2.0f);
+   p1Pawn1.setPosition((float)(xPos+10),(float)(yPos + 360));
 
    p1Pawn2.setScale(0.5f, 0.5f);
-   p1Pawn2.create("P1-PAWN-FRONT", 2);
-   p1Pawn2.setPosition((xPos+10),(yPos + 460));
+   p1Pawn2.create("P1-PAWN-FRONT", 2.0f);
+   p1Pawn2.setPosition((float)(xPos+10),(float)(yPos + 460));
 
    p1Hulk.setScale(0.5f, 0.5f);
-   p1Hulk.create("P1-HULK-FRONT", 2);
-   p1Hulk.setPosition((xPos+10),(yPos + 560));
+   p1Hulk.create("P1-HULK-FRONT", 2.0f);
+   p1Hulk.setPosition((float)(xPos+10),(float)(yPos + 560));
 
 
    p2General.setScale(0.5f, 0.5f);
-   p2General.create("P2-GENERAL-FRONT", 2);
-   p2General.setPosition((xPos+830),(yPos + 60));
+   p2General.create("P2-GENERAL-FRONT", 2.0f);
+   p2General.setPosition((float)(xPos+830),(float)(yPos + 60));
 
    p2Bazooka.setScale(0.5f, 0.5f);
-   p2Bazooka.create("P2-BAZOOKA-FRONT", 2);
-   p2Bazooka.setPosition((xPos+830),(yPos + 160));
+   p2Bazooka.create("P2-BAZOOKA-FRONT", 2.0f);
+   p2Bazooka.setPosition((float)(xPos+830),(float)(yPos + 160));
 
    p2Slider.setScale(0.5f, 0.5f);
-   p2Slider.create("P2-SLIDER-RIGHT", 2);
-   p2Slider.setPosition((xPos+830),(yPos + 260));
+   p2Slider.create("P2-SLIDER-RIGHT", 2.0f);
+   p2Slider.setPosition((float)(xPos+830),(float)(yPos + 260));
 
    p2Pawn1.setScale(0.5f, 0.5f);
-   p2Pawn1.create("P2-PAWN-FRONT", 2);
-   p2Pawn1.setPosition((xPos+830),(yPos + 360));
+   p2Pawn1.create("P2-PAWN-FRONT", 2.0f);
+   p2Pawn1.setPosition((float)(xPos+830),(float)(yPos + 360));
 
    p2Pawn2.setScale(0.5f, 0.5f);
-   p2Pawn2.create("P2-PAWN-FRONT", 2);
-   p2Pawn2.setPosition((xPos+830),(yPos + 460));
+   p2Pawn2.create("P2-PAWN-FRONT", 2.0f);
+   p2Pawn2.setPosition((float)(xPos+830),(float)(yPos + 460));
 
    p2Hulk.setScale(0.5f, 0.5f);
-   p2Hulk.create("P2-HULK-FRONT", 2);
-   p2Hulk.setPosition((xPos+830),(yPos + 560));
+   p2Hulk.create("P2-HULK-FRONT", 2.0f);
+   p2Hulk.setPosition((float)(xPos+830),(float)(yPos + 560));
 
 
    return true;

@@ -3,14 +3,14 @@
 #include "Utilities/ConfigParser.h"
 #include "DxWrapper/DxAssetManager.h"
 #include "Atomic Penguin SmackDown/Penguin.h"
-unsigned int Penguin::ourPenguinMaxMoves[5] = {-1};
+std::map<unsigned int, unsigned int> Penguin::ourPenguinMaxMoves;
 float Penguin::ourAnimationSpeed = 10.0f;
 
 
 //=======================================================================
-bool Penguin::initPenguinMovement ()
+bool Penguin::initPenguinMovement ( const tstring& filename )
 {
-   tifstream file( DxAssetManager::getInstance(). getConfigAssetPath("Penguin.config").c_str() );
+   tifstream file( DxAssetManager::getInstance(). getConfigAssetPath(filename).c_str() );
    if ( !file.is_open() || file.bad() )
    {
       return false;
@@ -33,68 +33,43 @@ bool Penguin::initPenguinMovement ()
 }
 
 //=======================================================================
-bool Penguin::create ( PENGUIN type, float x ,float y )
+bool Penguin::create ( Penguin::Type type, float x ,float y, int playerTurnIndex )
 {
    bool result = false;
    myDirection = SOUTH;
 
-   if ( ourPenguinMaxMoves[0] == -1 )
-   {
-      if ( initPenguinMovement() )
-         return false;
-   }
-
    switch ( type )
    {
-   case PENGUIN::PAWN_P1:
-      myFrontAnim = "P1-PAWN-FRONT"; myBackAnim =  "P1-PAWN-BACK"; 
-      myLeftAnim =  "P1-PAWN-LEFT"; myRightAnim = "P1-PAWN-RIGHT";
+   case PAWN:
+      myFrontAnim = "PAWN-FRONT"; myBackAnim = "PAWN-BACK"; 
+      myLeftAnim =  "PAWN-LEFT"; myRightAnim = "PAWN-RIGHT";
       break;
-   case PENGUIN::BAZOOKA_P1:
-      myFrontAnim = "P1-BAZOOKA-FRONT"; myBackAnim =  "P1-BAZOOKA-BACK"; 
-      myLeftAnim =  "P1-BAZOOKA-LEFT"; myRightAnim = "P1-BAZOOKA-RIGHT";
+   case BAZOOKA:
+      myFrontAnim = "BAZOOKA-FRONT"; myBackAnim = "BAZOOKA-BACK"; 
+      myLeftAnim =  "BAZOOKA-LEFT"; myRightAnim = "BAZOOKA-RIGHT";
       break;
-   case PENGUIN::SLIDER_P1:
-      myFrontAnim = "P1-SLIDER-FRONT"; myBackAnim =  "P1-SLIDER-BACK"; 
-      myLeftAnim =  "P1-SLIDER-LEFT"; myRightAnim = "P1-SLIDER-RIGHT";
+   case SLIDER:
+      myFrontAnim = "SLIDER-FRONT"; myBackAnim = "SLIDER-BACK"; 
+      myLeftAnim =  "SLIDER-LEFT"; myRightAnim = "SLIDER-RIGHT";
       break;
-   case PENGUIN::GENERAL_P1:
-      myFrontAnim = "P1-GENERAL-FRONT"; myBackAnim =  "P1-GENERAL-BACK";
-      myLeftAnim =  "P1-GENERAL-LEFT"; myRightAnim = "P1-GENERAL-RIGHT";
+   case GENERAL:
+      myFrontAnim = "GENERAL-FRONT"; myBackAnim = "GENERAL-BACK";
+      myLeftAnim =  "GENERAL-LEFT"; myRightAnim = "GENERAL-RIGHT";
       break;
-   case PENGUIN::HULK_P1:
-      myFrontAnim = "P1-HULK-FRONT"; myBackAnim =  "P1-HULK-BACK";
-      myLeftAnim =  "P1-HULK-LEFT"; myRightAnim = "P1-HULK-RIGHT";
-      break;
-
-
-
-   case PENGUIN::PAWN_P2:
-      myFrontAnim = "P2-PAWN-FRONT"; myBackAnim =  "P2-PAWN-BACK"; 
-      myLeftAnim =  "P2-PAWN-LEFT"; myRightAnim = "P2-PAWN-RIGHT";
-      break;
-   case PENGUIN::BAZOOKA_P2:
-      myFrontAnim = "P2-BAZOOKA-FRONT"; myBackAnim =  "P2-BAZOOKA-BACK"; 
-      myLeftAnim =  "P2-BAZOOKA-LEFT"; myRightAnim = "P2-BAZOOKA-RIGHT";
-      break;
-   case PENGUIN::SLIDER_P2:
-      myFrontAnim = "P2-SLIDER-FRONT"; myBackAnim =  "P2-SLIDER-BACK"; 
-      myLeftAnim =  "P2-SLIDER-LEFT"; myRightAnim = "P2-SLIDER-RIGHT";
-      break;
-   case PENGUIN::GENERAL_P2:
-      myFrontAnim = "P2-GENERAL-FRONT"; myBackAnim =  "P2-GENERAL-BACK";
-      myLeftAnim =  "P2-GENERAL-LEFT"; myRightAnim = "P2-GENERAL-RIGHT";
-      break;
-   case PENGUIN::HULK_P2:
-      myFrontAnim = "P2-HULK-FRONT"; myBackAnim =  "P2-HULK-BACK";
-      myLeftAnim =  "P2-HULK-LEFT"; myRightAnim = "P2-HULK-RIGHT";
+   case HULK:
+      myFrontAnim = "HULK-FRONT"; myBackAnim = "HULK-BACK";
+      myLeftAnim =  "HULK-LEFT"; myRightAnim = "HULK-RIGHT";
       break;
    default:
       return false;
    }
-
+   myFrontAnim = "P" + Util::intToString(playerTurnIndex) + "-" + myFrontAnim; 
+   myBackAnim  = "P" + Util::intToString(playerTurnIndex) + "-" + myBackAnim;
+   myLeftAnim  = "P" + Util::intToString(playerTurnIndex) + "-" + myLeftAnim; 
+   myRightAnim = "P" + Util::intToString(playerTurnIndex) + "-" + myRightAnim;
+   myType = type;
    myMaxMoves = ourPenguinMaxMoves[type];
-
+   
    result = DxGameSprite::create( myFrontAnim, ourAnimationSpeed );
    setPosition( x, y );
    return result;
@@ -120,4 +95,36 @@ Penguin::Direction Penguin::direction ( Penguin::Direction direction )
       break;
    }
    return (myDirection = direction);
+}
+
+//=======================================================================
+bool Penguin::canMoveTo ( Tile::Type type )
+{
+   switch ( myType )
+   {
+   case PAWN:
+   case HULK:
+      return !!(type & (Tile::SLIME | Tile::PASSABLE));
+   case BAZOOKA:
+   case SLIDER:
+   case GENERAL:
+      return !!(type & (Tile::PASSABLE));
+   }
+   return false;
+}
+
+//=======================================================================
+bool Penguin::canMoveFrom ( Tile::Type type )
+{
+   switch ( myType )
+   {
+   case HULK:
+      return !!(type & (Tile::SLIME | Tile::PASSABLE));
+   case PAWN:
+   case BAZOOKA:
+   case SLIDER:
+   case GENERAL:
+      return !!(type & (Tile::PASSABLE));
+   }
+   return false;
 }

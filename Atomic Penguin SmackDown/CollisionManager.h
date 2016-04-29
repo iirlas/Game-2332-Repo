@@ -12,25 +12,16 @@
 class CollisionManager
 {
 public:
-   CollisionManager();
-   ~CollisionManager();
-   void init();
-   void update();
-   void shutdown();
+
+   static bool worldCollisions( DxGameSprite sprite, TiledBackground&  LevelRef, unsigned int* index = NULL );
+   static bool spriteCollsions( DxGameSprite sprite1, DxGameSprite sprite2 );
+
+   CollisionManager() {};
+   ~CollisionManager() {};
    
-   bool worldCollisions( DxGameSprite sprite, TiledBackground&  LevelRef, unsigned int* index = NULL );
-   bool spriteCollsions( DxGameSprite sprite1, DxGameSprite sprite2 );
+private:
 
 private:
-   bool loadAnimation();
-
-private:
-   bool myFirstTimeFlag;
-   DxAnimation myGrassAnim;
-   DxAnimation myBoomBrickAnim;
-   int myDoorIndex;
-
-
 };
 
 #endif 

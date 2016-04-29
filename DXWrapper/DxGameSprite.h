@@ -77,6 +77,8 @@ public:
 	Rect getCollisionArea(){return myCollisionArea;}
 	void setCollisionArea(RECT collisionArea);
 
+   void resizeCollisionArea ( );
+
    void draw( IDXSPRITE spriteobj, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255) );
    
    bool collidable ( bool flag ) { return (isCollidable = flag); }

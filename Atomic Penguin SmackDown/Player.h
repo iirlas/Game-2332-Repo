@@ -21,7 +21,7 @@ struct Movement
 class Player
 {
 public:
-   Player () { myPenguinCount = 0; myPenguins = NULL; mySelectedPenguin = NULL; myPrevMoveTexture = NULL; }
+   Player () { myPenguinCount = 0; myPenguins = NULL; mySelectedPenguin = NULL; myPrevMoveTexture = NULL; myTurnIndex = 0; mySackCount = 0; }
    ~Player () { shutdown(); }
 
    bool init ( tstring playerConfigFile, int tileWidth, int tiltHeight );
@@ -34,13 +34,15 @@ public:
    const Penguin* selectedPenguin () { return mySelectedPenguin; }
 
 private:
+   unsigned int             mySackCount;
+   unsigned int             myTurnIndex;
    unsigned int             myPenguinCount;
    Penguin*                 myPenguins;
    Penguin*                 mySelectedPenguin;
    CollisionManager         myCollisionManager;
    DxTexture*               myPrevMoveTexture;
    DxGameSprite             myCursor;
-   std::vector<Movement> myMovements;
+   std::vector<Movement>    myMovements;
 
 };
 

@@ -27,19 +27,22 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
       ss >> type;
       if ( ss.fail() )
       {
-         if ( myPenguinCount != 0 )
+         ss.clear();
+         tstring token;
+         ss >> token;
+         if ( token == "@NUMBER" && myPenguinCount == 0  )
+         {
+            ss >> myPenguinCount;
+            myPenguins = new Penguin[myPenguinCount];
+         }
+         else if ( token == "@PLAYER" )
+         {
+            ss >> myTurnIndex;
+         }
+         else
          {
             return false;
          }
-         ss.clear();
-
-         tstring token;
-         ss >> token;
-         if ( token == "@NUMBER" )
-         {
-            ss >> myPenguinCount;
-         }
-         myPenguins = new Penguin[myPenguinCount];
       }
       else 
       {
@@ -56,9 +59,10 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
             return false;
          }
 
-         myPenguins[penguinIndex].create( (PENGUIN)type, c * tileWidth, r * tiltHeight );
+         myPenguins[penguinIndex].create( (Penguin::Type)type, c * tileWidth, r * tiltHeight, myTurnIndex );
          myPenguins[penguinIndex].setScale( (float)tileWidth  / (float)myPenguins[penguinIndex].getWidth(), 
             (float)tiltHeight / (float)myPenguins[penguinIndex].getHeight() );
+         myPenguins[penguinIndex].resizeCollisionArea();
          penguinIndex++;
       }
    }
@@ -110,13 +114,18 @@ void Player::update ( TiledBackground& tiledBackground )
          float nextY = mySelectedPenguin->getYPosition() + vert * mySelectedPenguin->getHeight();
 
 
-         Tile* tile = tiledBackground.tileAt( (float)nextX, (float)nextY, (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
-         if ( tile && tile->type() != Tile::BLOCKED )
+         Tile* nextTile = tiledBackground.tileAt( (float)nextX, (float)nextY, (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
+         Tile* tile =     tiledBackground.tileAt( (float)mySelectedPenguin->getXPosition(), (float)mySelectedPenguin->getYPosition(), 
+                                                  (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
+         if ( nextTile && tile )
          {
-            Movement movement = { mySelectedPenguin->direction(), D3DXVECTOR3( mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), 0 ) };
-            myMovements.push_back( movement );
-            mySelectedPenguin->setXPosition(nextX);
-            mySelectedPenguin->setYPosition(nextY);
+            if ( mySelectedPenguin->canMoveFrom( tile->type() ) && mySelectedPenguin->canMoveTo( nextTile->type() ) )
+            {
+               Movement movement = { mySelectedPenguin->direction(), D3DXVECTOR3( mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), 0 ) };
+               myMovements.push_back( movement );
+               mySelectedPenguin->setXPosition(nextX);
+               mySelectedPenguin->setYPosition(nextY);
+            }
          }
 
          mySelectedPenguin->direction( Penguin::makeDirection( horz, vert ) );
@@ -125,6 +134,15 @@ void Player::update ( TiledBackground& tiledBackground )
       else if ( DxKeyboard::keyPressed( VK_RETURN ) )
       {
          myMovements.clear();
+         if ( mySelectedPenguin->type() == Penguin::PAWN )
+         {
+            mySackCount++;
+            mySelectedPenguin->destroy();
+            if ( mySackCount == 2 )
+            {   
+               mySelectedPenguin->create( Penguin::HULK, mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), myTurnIndex );
+            }
+         }
          mySelectedPenguin = NULL;
       }
       else if ( DxKeyboard::keyPressed( VK_BACK ) && !myMovements.empty() )

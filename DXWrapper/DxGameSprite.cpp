@@ -287,3 +287,11 @@ void DxGameSprite::setCollisionArea (RECT collisionArea)
    myCollisionOffset.y =  myCollisionArea.top - (long)myPosition.y;
 }
 
+//=======================================================================
+void DxGameSprite::resizeCollisionArea ( )
+{
+   myCollisionArea.x( (LONG)myPosition.x );
+   myCollisionArea.x( (LONG)myPosition.x );
+   myCollisionArea.width( getWidth() );
+   myCollisionArea.height( getHeight() );
+}

@@ -30,6 +30,8 @@ tstring trimPath ( const tstring& str, const tstring& toTrim = _T("\\/") );
 bool tokenizeStringToPair ( const tstring& line, 
                             tstring& first, tstring& second, 
                             const tstring& sepChrs = whitespace );
+//=======================================================================
+tstring intToString ( int num, unsigned int base = 10 );
 }
 
 #endif //_TSTRINGROUTINES_H_

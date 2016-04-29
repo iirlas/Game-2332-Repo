@@ -14,9 +14,9 @@ public:
 
    typedef enum
    {
-      PASSABLE = 0,
-      BLOCKED = 1,
-      SLIME = 2,
+      PASSABLE = 0x1, // 0001
+      BLOCKED  = 0x2, // 0010
+      SLIME    = 0x4, // 0100
    } Type;
 
    Type type () const { return myType; }
