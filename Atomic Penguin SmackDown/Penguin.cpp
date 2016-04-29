@@ -6,33 +6,42 @@
 unsigned int Penguin::ourPenguinMaxMoves[5] = {-1};
 float Penguin::ourAnimationSpeed = 10.0f;
 
+
+//=======================================================================
+bool Penguin::initPenguinMovement ()
+{
+   tifstream file( DxAssetManager::getInstance(). getConfigAssetPath("Penguin.config").c_str() );
+   if ( !file.is_open() || file.bad() )
+   {
+      return false;
+   }
+   ConfigParser parser;
+   tstring line;
+   while ( parser.getNextLine( file, line ) )
+   {
+      tstringstream ss( line );
+      int penguinType = 0, speed = -1;
+      ss >> penguinType >> speed;
+      if ( ss.fail() )
+      {
+         return false;
+      }
+
+      ourPenguinMaxMoves[penguinType] = speed;
+   }
+   return true;
+}
+
 //=======================================================================
 bool Penguin::create ( PENGUIN type, float x ,float y )
 {
    bool result = false;
+   myDirection = SOUTH;
 
    if ( ourPenguinMaxMoves[0] == -1 )
    {
-      tifstream file( DxAssetManager::getInstance(). getConfigAssetPath("Penguin.config").c_str() );
-      if ( !file.is_open() || file.bad() )
-      {
+      if ( initPenguinMovement() )
          return false;
-      }
-      ConfigParser parser;
-      tstring line;
-      while ( parser.getNextLine( file, line ) )
-      {
-         tstringstream ss( line );
-         int penguinType = 0, speed = -1;
-         ss >> penguinType >> speed;
-         if ( ss.fail() )
-         {
-            return false;
-         }
-
-         ourPenguinMaxMoves[penguinType] = speed;
-      }
-
    }
 
    switch ( type )
@@ -89,4 +98,26 @@ bool Penguin::create ( PENGUIN type, float x ,float y )
    result = DxGameSprite::create( myFrontAnim, ourAnimationSpeed );
    setPosition( x, y );
    return result;
+}
+
+
+//=======================================================================
+Penguin::Direction Penguin::direction ( Penguin::Direction direction )
+{
+   switch ( direction )
+   {
+   case Direction::NORTH:
+      changeAnimation( myBackAnim, ourAnimationSpeed );
+      break;
+   case Direction::SOUTH:
+      changeAnimation( myFrontAnim, ourAnimationSpeed );
+      break;
+   case Direction::EAST:
+      changeAnimation( myRightAnim, ourAnimationSpeed );
+      break;
+   case Direction::WEST:
+      changeAnimation( myLeftAnim, ourAnimationSpeed );
+      break;
+   }
+   return (myDirection = direction);
 }

@@ -48,13 +48,18 @@ public:
 	void setPosition ( float x, float y );
 	void setXPosition ( float value );
 	void setYPosition ( float value );
-   void setScale( float scaleX, float scaleY );
+	void setRotation( float rotation );
+	void setScale( float scaleX, float scaleY );
 
-   int getWidth() const {return (int)(myAnimation.width() * myScale.x);}
+   D3DXVECTOR2 getScale () { return myScale; }
+
+	int getWidth() const {return (int)(myAnimation.width() * myScale.x);}
 	int getHeight() const {return (int)(myAnimation.height() * myScale.y);}
 
 	float getXVel(){return  myVelocity.x;}
 	float getYVel(){return  myVelocity.y;}
+   D3DXVECTOR3 getPosition() { return myPosition; }
+	D3DXVECTOR3 getLastPostion(){return myLastPosition;}
 	void setXVel(float xV);
 	void setYVel(float yV);
 

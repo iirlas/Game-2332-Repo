@@ -9,6 +9,7 @@
 int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                          LPTSTR    lpCmdLine, int       nCmdShow)
 {
+   Application::enableCRTHeapDebugging( false );
    Game penguinGame;
    return penguinGame.winMain( hInstance, hPrevInstance, lpCmdLine, nCmdShow );
 }
@@ -38,6 +39,8 @@ bool Game::gameInit ()
    myBgRect = Rect( 0, 0, startTransWidth(), startTransHeight() );
 
    result &= myLevelBgnds.init( device(), _T("16x16.config") );
+   myCollisionManager.init();
+
    return myPlayer.init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
 }
 
@@ -49,7 +52,10 @@ void Game::gameRun ()
    // clear the backbuffer
    device()->ColorFill( backBuffer(), NULL, bgColor );
    myLevelBgnds.update();
-   myPlayer.update();
+   myPlayer.update( levelRef );
+
+   //myPlayer.resolveCollisions( levelRef );
+
 
    // start rendering
    if ( SUCCEEDED(device()->BeginScene()) )
@@ -73,4 +79,5 @@ void Game::gameRun ()
 //=======================================================================
 void Game::gameExit ()
 {
+   myCollisionManager.shutdown();
 }

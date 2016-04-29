@@ -40,6 +40,53 @@ LRESULT CALLBACK WndProc ( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 }
 
 //=======================================================================
+void Application::enableCRTHeapDebugging ( bool maxImpact )
+{
+#ifdef _DEBUG
+   int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG ) | _CRTDBG_LEAK_CHECK_DF;
+
+   // _CRTDBG_CHECK_ALWAYS_DF can SERIOUSLY slow execution, but breakpoints immediately on heap corruption
+   if ( maxImpact )
+      flag |= _CRTDBG_CHECK_ALWAYS_DF;
+
+   _CrtSetDbgFlag(flag);
+   
+   // NOTE: This allocation is INTENTIONALLY leaked.  It should show up in the output window at program 
+   // termination.  Any allocation #'s LESS than this can be ignored: microsoft bugs in the CRT.
+   // It shows up as a "data: <    > DE AD BE EF", i.e., "DEAD BEEF"
+   int* iTestDebug = new int( 0xEFBEADDE );
+
+   OutputDebugString( _T("\n\
+******************************************************\n\
+CRT DEBUG MODE ENABLED\n\
+After program exits, review debug output window\n\
+for leaks and other heap corruption information\n\
+EXPECT ONE INTENTIONAL LEAK:\n\
+    {nnn} normal block at 0xXXXXXXXX, 4 bytes long\n\
+    Data: <    > DE AD BE EF\n\
+Any allocation number < {nnn} can be ignored\n") );
+
+   if ( maxImpact )
+      OutputDebugString( _T(">>> MAX HEAP CHECKING ENABLED: EXPECT SLOW EXECUTION <<<\n") );
+
+   OutputDebugString( _T("\
+******************************************************\n\n"));
+      
+#endif
+   
+   // For Reference: These could be used to expand upon the debugging
+   // Store current heap state
+   //_CrtMemState  memState;
+   //_CrtMemCheckpoint( &memState );
+
+   // Dump allocations since given checkpoint
+   // _CrtMemDumpAllObjectsSince( &memState );
+
+   // _CrtDumpMemoryLeaks(); immediate memory dump report to output window
+
+}
+
+//=======================================================================
 //private
 bool Application::registerClass ()
 {

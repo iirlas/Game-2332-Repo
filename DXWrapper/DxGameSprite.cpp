@@ -135,18 +135,18 @@ void DxGameSprite::setYPosition ( float value )
 }
 
 //===========================================================================
+// rotation is in radians
+void DxGameSprite::setRotation( float rotation )
+{
+   myRotation = rotation;
+}
+
+
+//===========================================================================
 void DxGameSprite::setScale ( float scaleX, float scaleY )
 {
-   myScale.x = scaleX;
-   myScale.y = scaleY;
-
-   myCollisionOffset.x = (LONG)(myCollisionOffset.x *scaleX);
-   myCollisionOffset.y = (LONG)(myCollisionOffset.y * scaleY);
-
-   myCollisionArea.width( (LONG)(myCollisionArea.width() * scaleX) );
-   myCollisionArea.height( (LONG)(myCollisionArea.height() * scaleY) );
-
-   setPosition( myPosition.x, myPosition.y );
+	myScale.x = scaleX;
+	myScale.y = scaleY;
 }
 
 //===========================================================================

@@ -40,10 +40,9 @@ bool TileDescParser::parseLevelConfig ( IDXDEVICE device, const tstring& configF
 
    struct SourceTileDescr 
    {
-      tstring     label;
+      tstring     skin;
       int         idNum;
-      int         xPos, yPos, pixWidth, pixHeight;
-      DxTexture   texture;
+      int         type;
    };
    std::map<int, SourceTileDescr>  srcTileDescrMap;
 
@@ -87,28 +86,18 @@ bool TileDescParser::parseLevelConfig ( IDXDEVICE device, const tstring& configF
    {
       // line is in form "label idNum x y w h"  the {x y w h} part is TO BE REMOVED
       tstringstream ss( line );
-      int      idNum, x, y, w, h;
-      tstring  label;
+      int  idNum, type;
+      tstring skin;
 
-      ss >> label >> idNum >> x >> y >> w >> h;
+      ss >> skin >> idNum >> type;
       if ( ss.fail() )
          return false;
 
       SourceTileDescr srcDescr;
-
-      srcDescr.idNum     = idNum;
-      srcDescr.label     = label;
-      srcDescr.xPos      = x; 
-      srcDescr.yPos      = y; 
-      srcDescr.pixWidth  = w; 
-      srcDescr.pixHeight = h; 
-
-      Rect  srcRect( x, y, x+w, y+h );
-      bool result = srcDescr.texture.create( device, w, h, D3DUSAGE_RENDERTARGET );
-      bigImage->stretchRect( DxWrapper::device(), &srcRect, srcDescr.texture, NULL );
-
-      srcDescr.texture.name( label );
-      assert( result );
+      
+      srcDescr.skin    = skin;
+      srcDescr.idNum    = idNum;
+      srcDescr.type     = type;
 
       srcTileDescrMap[idNum] = srcDescr;
    }
@@ -161,13 +150,13 @@ bool TileDescParser::parseLevelConfig ( IDXDEVICE device, const tstring& configF
          if ( ss.fail() )
             assert( false );
 
-         DxTexture& texture = srcTileDescrMap[idNum].texture;
-         tstring&   label   = srcTileDescrMap[idNum].label;
-         BgTileDescr& descr = getDescr(row,col);
+         tstring& skin = srcTileDescrMap[idNum].skin;
+         int&     type = srcTileDescrMap[idNum].type;
 
-         descr.label    = label;
-         descr.texture  = texture;
-               
+         BgTileDescr& descr = getDescr(row,col);
+         descr.skin = skin;
+         descr.type = type;
+         descr.idNum = idNum;
       }
    }
 
@@ -175,21 +164,32 @@ bool TileDescParser::parseLevelConfig ( IDXDEVICE device, const tstring& configF
    return true;
 }
 
+//===================================================================================================>
+//
+tstring TileDescParser::getTileSkin (int row, int col) 
+{
+
+   return getDescr(row,col).skin;
+}
+
 
 //===================================================================================================>
 //
-tstring TileDescParser::getTileType (int row, int col) 
+int TileDescParser::getTileType (int row, int col) 
 {
 
-   return getDescr(row,col).label;
+   return getDescr(row,col).type;
 }
+
+
 //===================================================================================================>
 //
-DxTexture& TileDescParser::getTileTexture (int row, int col) 
+int TileDescParser::getTileID (int row, int col) 
 {
 
-   return getDescr(row,col).texture;
+   return getDescr(row,col).idNum;
 }
+
 
 //===================================================================================================>
 //

@@ -86,12 +86,13 @@ public:
 
    bool init ( DxTexture* texture, const tstring& animationDesc, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
    bool init ( DxTexture* texture, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
-   void update ( );
-   void shutdown ( );
+   void update ();
+   void shutdown ();
    void reset ();
    void play ();
    void stop ();
-   bool isPlaying ( );   
+   bool isPlaying ();
+   bool hasEnded ();
 
    inline void addFrame ( DxAnimationFrame& frame )
    {

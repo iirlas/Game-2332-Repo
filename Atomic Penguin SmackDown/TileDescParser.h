@@ -23,8 +23,9 @@ public:
 
    struct BgTileDescr 
    {
-      tstring     label;
-      DxTexture   texture;
+      tstring     skin;
+      int         idNum;
+      int         type;
       // Do we NEED anything else here... not right now... 
       // We *could* put pixWidth,pixHeight - which would allow the bg tiles to be *any* size
       // and we *could* put xPos,yPos - but I think the Level would really be more likely to
@@ -39,8 +40,9 @@ public:
    int numTileRows ( )        const { return myNumTilesVert; }
    int getTilePixWidth  ( )   const { return myTileWidth; }
    int getTilePixHeight ( )   const { return myTileHeight; }
-   tstring getTileType ( int row, int col );
-   DxTexture& getTileTexture ( int row, int col );
+   tstring getTileSkin ( int row, int col );
+   int getTileType ( int row, int col );
+   int getTileID ( int row, int col );
    
 private:
    bool parseLevelConfig ( IDXDEVICE device, const tstring& configFilename );

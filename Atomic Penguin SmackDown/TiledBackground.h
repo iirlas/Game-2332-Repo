@@ -40,15 +40,30 @@ public:
 
    bool drawMySpriteMap( IDXSPRITE spriteObj );
 
-   bool tileIsCollidable( TileType tileEnumType );
-   TileType getTileEnumType( const tstring& label );
-
    RECT getMyBgSrcRect();
    int numColumns () const { return myNumTilesHoriz; }
    int numRows () const { return myNumTilesVert; }
 
    int tileWidth () const { return myTileWidth; }
    int tileHeight () const { return myTileHeight; }
+
+   inline Tile* tileAt ( int column, int row )
+   {
+      if ( column < 0 || column >= myNumTilesHoriz || 
+           row < 0    || row >= myNumTilesVert )
+           return NULL;
+      unsigned int index = column + row * myNumTilesHoriz;
+      if ( index < mySpriteMap.size() )
+         return &mySpriteMap[index];
+      return NULL;
+   }
+
+   inline Tile* tileAt ( float x, float y, float width, float height )
+   {
+      return tileAt( (int)(x/width), (int)(y/height) );
+   }
+
+
 
    std::vector<Tile> mySpriteMap;
    

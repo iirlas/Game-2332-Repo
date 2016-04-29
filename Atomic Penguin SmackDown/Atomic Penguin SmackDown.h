@@ -8,6 +8,7 @@
 #include "DxWrapper/DxWrapper.h"
 #include "Resource.h"
 #include <Windows.h>
+#include "Atomic Penguin SmackDown/CollisionManager.h"
 #include "Atomic Penguin SmackDown/TiledBackground.h"
 #include "Atomic Penguin SmackDown/Player.h"
 
@@ -27,11 +28,13 @@ protected:
    int startTransHeight()  { return 640; }
 
 private:
-   D3DCOLOR        bgColor;
-   Player          myPlayer;
-   tstring         myGameTitle;
-   TiledBackground myLevelBgnds;
-   RECT            myBgRect;
+   D3DCOLOR           bgColor;
+   Player             myPlayer;
+   tstring            myGameTitle;
+   TiledBackground    myLevelBgnds;
+   RECT               myBgRect;
+   CollisionManager   myCollisionManager;
+
 };
 
 #endif //_GAME_H_

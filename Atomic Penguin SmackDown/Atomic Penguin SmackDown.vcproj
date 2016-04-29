@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CollisionManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Penguin.cpp"
 				>
 			</File>
@@ -218,6 +222,10 @@
 			>
 			<File
 				RelativePath=".\Atomic Penguin SmackDown.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CollisionManager.h"
 				>
 			</File>
 			<File

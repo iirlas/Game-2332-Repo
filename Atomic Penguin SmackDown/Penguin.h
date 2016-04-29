@@ -25,11 +25,32 @@ typedef enum
 class Penguin : public DxGameSprite
 {
 public:
+   typedef enum 
+   {
+      NONE,
+      NORTH,
+      SOUTH,
+      EAST,
+      WEST
+   } Direction;
+
+   inline static Direction makeDirection ( int xDir, int yDir )
+   {
+      return ( xDir > 0 ? EAST : 
+               ( xDir < 0 ? WEST :
+                  ( yDir > 0 ? SOUTH :
+                     ( yDir < 0 ? NORTH : NONE ))));
+   }
    
+   static bool initPenguinMovement ();
+
    Penguin () {myMaxMoves = 0;}
    ~Penguin () {}
    bool create ( PENGUIN type, float x ,float y );
    inline unsigned int moveCount () { return myMaxMoves; }
+
+   Direction direction () { return myDirection; }
+   Direction direction ( Direction direction );
 
 private:
    static unsigned int ourPenguinMaxMoves[5];
@@ -40,6 +61,7 @@ private:
    tstring      myBackAnim;
    tstring      myLeftAnim;
    tstring      myRightAnim;
+   Direction    myDirection;
 };
 
 

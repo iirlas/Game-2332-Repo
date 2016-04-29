@@ -12,8 +12,8 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
    ConfigParser parser;
    tifstream file( DxAssetManager::getInstance().getConfigAssetPath( playerConfigFile ).c_str() );
    tstring line;
-   int penguinIndex = 0;
-   
+   unsigned int penguinIndex = 0;
+
    if ( !file.is_open() || file.bad() )
    {
       return false;
@@ -23,7 +23,7 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
    {
       tstringstream ss(line);
       int type = -1;
-      
+
       ss >> type;
       if ( ss.fail() )
       {
@@ -58,22 +58,23 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
 
          myPenguins[penguinIndex].create( (PENGUIN)type, c * tileWidth, r * tiltHeight );
          myPenguins[penguinIndex].setScale( (float)tileWidth  / (float)myPenguins[penguinIndex].getWidth(), 
-                                            (float)tiltHeight / (float)myPenguins[penguinIndex].getHeight() );
+            (float)tiltHeight / (float)myPenguins[penguinIndex].getHeight() );
          penguinIndex++;
       }
    }
 
    myCursor.create( "CURSOR", 10 );
    myCursor.setScale( (float)tileWidth  / (float)myCursor.getWidth(), 
-                      (float)tiltHeight / (float)myCursor.getHeight() );
-
-   return true;
+      (float)tiltHeight / (float)myCursor.getHeight() );
+   myPrevMoveTexture = DxAssetManager::getInstance().getTexture( "GRADIENT" );
+   return (myPrevMoveTexture != NULL);
 }
 
 //=======================================================================
-void Player::update ()
+void Player::update ( TiledBackground& tiledBackground )
 {
-   for ( int index = 0; index < myPenguinCount; index++ )
+   // penguin selection
+   for ( unsigned int index = 0; index < myPenguinCount; index++ )
    {
       myPenguins[index].update();
 
@@ -97,19 +98,29 @@ void Player::update ()
       }
    }
 
+   // penguin movement
    if ( mySelectedPenguin )
    {
       int horz = DxKeyboard::keyPressed( VK_RIGHT ) - DxKeyboard::keyPressed( VK_LEFT );
       int vert = DxKeyboard::keyPressed( VK_DOWN ) - DxKeyboard::keyPressed( VK_UP );
 
-      if ( XOR(horz, vert) && myMovements.size() < mySelectedPenguin->moveCount() /* && check for collision*/ )
+      if ( XOR(horz, vert) && myMovements.size() < mySelectedPenguin->moveCount() )
       {  
          float nextX = mySelectedPenguin->getXPosition() + horz * mySelectedPenguin->getWidth();
          float nextY = mySelectedPenguin->getYPosition() + vert * mySelectedPenguin->getHeight();
-         
-         myMovements.push_back( D3DXVECTOR3( mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), 0 ) );
-         mySelectedPenguin->setXPosition(nextX);
-         mySelectedPenguin->setYPosition(nextY);
+
+
+         Tile* tile = tiledBackground.tileAt( (float)nextX, (float)nextY, (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
+         if ( tile && tile->type() != Tile::BLOCKED )
+         {
+            Movement movement = { mySelectedPenguin->direction(), D3DXVECTOR3( mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), 0 ) };
+            myMovements.push_back( movement );
+            mySelectedPenguin->setXPosition(nextX);
+            mySelectedPenguin->setYPosition(nextY);
+         }
+
+         mySelectedPenguin->direction( Penguin::makeDirection( horz, vert ) );
+
       }
       else if ( DxKeyboard::keyPressed( VK_RETURN ) )
       {
@@ -118,7 +129,8 @@ void Player::update ()
       }
       else if ( DxKeyboard::keyPressed( VK_BACK ) && !myMovements.empty() )
       {
-         mySelectedPenguin->setPosition(myMovements.back());
+         mySelectedPenguin->setPosition(myMovements.back().position);
+         mySelectedPenguin->direction( myMovements.back().direction );
          myMovements.pop_back();
       }
    }
@@ -128,13 +140,19 @@ void Player::update ()
 //=======================================================================
 void Player::draw ( IDXSPRITE spriteInterface )
 {
+   for ( unsigned int index = 0; mySelectedPenguin && index < myMovements.size(); index++ )
+   {
+      myPrevMoveTexture->drawScale( spriteInterface, myMovements[index].position.x, myMovements[index].position.y, 
+                                    (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
+   }
+
    if ( mySelectedPenguin )
    {
       myCursor.setPosition( mySelectedPenguin->getPosition() );
       myCursor.draw( spriteInterface );
-   }   
-   
-   for ( int index = 0; index < myPenguinCount; index++ )
+   }
+
+   for ( unsigned int index = 0; index < myPenguinCount; index++ )
    {
       myPenguins[index].draw( spriteInterface );
    }
@@ -151,3 +169,28 @@ void Player::shutdown ()
       myPenguins = NULL;
    }
 }
+
+//=======================================================================
+//void Player::collisionAt ( TiledBackground& tiledBackground,  )
+//{
+//   for ( unsigned int index = 0; index < myPenguinCount; index++ )
+//   {
+//      unsigned int tileIndex = 0;
+//      if ( myCollisionManager.worldCollisions( myPenguins[index], tiledBackground, &tileIndex ) )
+//      {
+//         switch ( tiledBackground.mySpriteMap[tileIndex].type() )
+//         {
+//         case Tile::BLOCKED:
+//            break;
+//         case Tile::PASSABLE:
+//            break;
+//         case Tile::SLIME:
+//            break;
+//         }
+//      }
+//   }
+//   //int index = ( (int)collision.left / mySelectedPenguin->getWidth() ) + 
+//   //            ( (int)collision.top / mySelectedPenguin->getHeight() ) *  tiledBackground.numColumns();
+//   //return mySelectedPenguin->collidesWith( tiledBackground.mySpriteMap[indexTopRight] ) &&  
+//   //       tiledBackground.mySpriteMap[indexTopRight].collidable()
+//}

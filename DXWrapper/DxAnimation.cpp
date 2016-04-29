@@ -70,8 +70,7 @@ bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float
    }
    mySpeed = speed;
    myExcludeColor = excludeColor;
-   myFrameDirection = 1;
-   return true;
+   return myTimer.start();
 }
 
 //=======================================================================
@@ -85,8 +84,7 @@ bool DxAnimation::init ( DxTexture* texture, D3DCOLOR excludeColor )
    myFrameCount++; 
    mySpeed = 0;
    myExcludeColor = excludeColor;
-   myFrameDirection = 0;
-   return true;
+   return myTimer.start();
 }
 
 //=======================================================================
@@ -174,6 +172,24 @@ bool DxAnimation::isPlaying ()
 }
 
 //=======================================================================
+bool DxAnimation::hasEnded ()
+{
+   switch ( myAnimation )
+   {
+   case ANIMATION::SINGLE:
+   case ANIMATION::LOOP:
+      return (myCurrentFrame == (myFrameCount - 1) );
+
+   case ANIMATION::ROCKER:
+      return ( myCurrentFrame == (myFrameCount - 1) && myFrameDirection > 0) || 
+             ( myCurrentFrame == 0 && myFrameDirection < 0 );
+      break;
+   }
+   return false;
+}
+
+
+//=======================================================================
 DxAnimation::ANIMATION DxAnimation::animation ( ANIMATION type )
 {
    myAnimation = type;
@@ -194,8 +210,11 @@ void DxAnimation::drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position,
                               D3DXVECTOR2* scale, float rotation, 
                               D3DXVECTOR2* center, D3DCOLOR color )
 {
-   myFrames[myCurrentFrame].texture->drawEx ( spriteobj, &myFrames[myCurrentFrame].rect,
-                                              center, position, rotation, color, scale );
+   if ( myFrames[myCurrentFrame].texture )
+   {
+      myFrames[myCurrentFrame].texture->drawEx ( spriteobj, &myFrames[myCurrentFrame].rect,
+                                                 center, position, rotation, color, scale );
+   }
 }
 
 //=======================================================================
