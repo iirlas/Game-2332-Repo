@@ -11,6 +11,7 @@
 IDXDEVICE    DxWrapper::ourDevice = NULL;
 IDXINTERFACE DxWrapper::ourInterface = NULL;
 IDXSPRITE    DxWrapper::ourSpriteInterface = NULL;
+IDXFONT      DxWrapper::ourFontInterface = NULL;
 DxMouse      DxWrapper::ourMouse;
 
 //=======================================================================
@@ -74,6 +75,13 @@ bool DxWrapper::postInit ()
       return false;
    }
 
+   result = D3DXCreateFont( device(), 18, 0, FW_BOLD, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial", &ourFontInterface );
+   if( FAILED( result ) )
+   {
+      log( _T("Unable to create font!") );
+      return false;
+   };
+
    result = device()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &myBackBuffer );
    if ( FAILED(result) || myBackBuffer == NULL )
    {
@@ -108,6 +116,11 @@ void DxWrapper::preDestroy ()
    DxAssetManager::getInstance().shutdown();
    mouse().mouseShutdown();
 
+   if( fontInterface() )
+   {
+      ourFontInterface->Release();
+      ourFontInterface = NULL;
+   }
    if ( spriteInterface() )
    {
       ourSpriteInterface->Release();

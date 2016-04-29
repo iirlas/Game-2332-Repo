@@ -6,12 +6,13 @@
 #include "Utilities/Logger.h"
 #include "DxWrapper/DxTexture.h"
 #include "DxWrapper/DxWrapper.h"
+#include "DxWrapper/DxText.h"
 #include "Resource.h"
 #include <Windows.h>
 #include "Atomic Penguin SmackDown/CollisionManager.h"
 #include "Atomic Penguin SmackDown/TiledBackground.h"
 #include "Atomic Penguin SmackDown/Player.h"
-
+#include "Atomic Penguin SmackDown/GameUI.h"
 class Game : public DxWrapper
 {
 public:
@@ -24,7 +25,7 @@ protected:
    void gameRun ();
    void gameExit ();
 
-   int startTransWidth ()  { return 640; }
+   int startTransWidth ()  { return 880; }
    int startTransHeight()  { return 640; }
 
 private:
@@ -34,6 +35,8 @@ private:
    TiledBackground    myLevelBgnds;
    RECT               myBgRect;
    CollisionManager   myCollisionManager;
+
+   GameUI             myGameUI;
 
 };
 

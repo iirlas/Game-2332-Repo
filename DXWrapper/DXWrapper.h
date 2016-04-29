@@ -48,6 +48,14 @@ public:
 
    //=======================================================================
    //
+   static IDXFONT fontInterface ()
+   {
+      return ourFontInterface;
+   }
+
+
+   //=======================================================================
+   //
    static DxMouse& mouse ()
    {
       return ourMouse;
@@ -144,6 +152,7 @@ private:
    static IDXINTERFACE   ourInterface;
    static IDXDEVICE      ourDevice;
    static IDXSPRITE      ourSpriteInterface;
+   static IDXFONT                ourFontInterface;
    static DxMouse        ourMouse;
    D3DPRESENT_PARAMETERS myD3Dpp;
    IDXSURFACE            myBackBuffer;

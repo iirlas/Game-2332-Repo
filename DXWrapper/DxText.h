@@ -9,8 +9,8 @@
 #include "Utilities/TTypes.h"
 #include "Utilities/Rect.h"
 #include "Utilities/Point.h"
-#include "DxFramework/DxTexture.h"
-#include "DxFramework/DxTypes.h"
+#include "DxWrapper/DxTexture.h"
+#include "DxWrapper/DxTypes.h"
 
 class DxText
 {

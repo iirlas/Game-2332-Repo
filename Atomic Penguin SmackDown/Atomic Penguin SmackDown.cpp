@@ -40,6 +40,8 @@ bool Game::gameInit ()
 
    result &= myLevelBgnds.init( device(), _T("16x16.config") );
    myCollisionManager.init();
+   
+   myGameUI.init( fontInterface(), 0, 0, D3DCOLOR_XRGB(255, 255, 255) );
 
    return myPlayer.init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
 }
@@ -54,6 +56,8 @@ void Game::gameRun ()
    myLevelBgnds.update();
    myPlayer.update( levelRef );
 
+   myGameUI.update();
+
    //myPlayer.resolveCollisions( levelRef );
 
 
@@ -65,6 +69,7 @@ void Game::gameRun ()
          // sprite rendering...       
          myLevelBgnds.drawMySpriteMap( spriteInterface() );
          myPlayer.draw( spriteInterface() );
+         myGameUI.draw( spriteInterface() );
          
          // stop rendering
          spriteInterface()->End();

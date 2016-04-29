@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include <cassert>
-#include "DxFramework/DxCommon.h"
-#include "DxFramework/DxTypes.h"
-#include "DxFramework/DxText.h"
+#include "DxWrapper/DxCommon.h"
+#include "DxWrapper/DxTypes.h"
+#include "DxWrapper/DxText.h"
 
 //=======================================================================
 DxText::DxText()

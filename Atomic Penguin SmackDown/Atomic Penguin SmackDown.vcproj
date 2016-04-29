@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GameUI.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Penguin.cpp"
 				>
 			</File>
@@ -226,6 +230,10 @@
 			</File>
 			<File
 				RelativePath=".\CollisionManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameUI.h"
 				>
 			</File>
 			<File
