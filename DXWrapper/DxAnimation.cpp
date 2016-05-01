@@ -206,6 +206,21 @@ float DxAnimation::speed ( float value )
 }
 
 //=======================================================================
+void DxAnimation::drawFrame ( IDXSPRITE spriteobj, float x, float y, float rotation, D3DCOLOR color )
+{
+   if ( myFrames[myCurrentFrame].texture )
+   {
+      Rect dstRect;
+      dstRect.x((LONG)x);
+      dstRect.y((LONG)y);
+      dstRect.width(myFrames[myCurrentFrame].rect.width());
+      dstRect.height(myFrames[myCurrentFrame].rect.height());
+      myFrames[myCurrentFrame].texture->drawStretch ( spriteobj, &myFrames[myCurrentFrame].rect, &dstRect, rotation, color );
+   }
+}
+
+
+//=======================================================================
 void DxAnimation::drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position, 
                               D3DXVECTOR2* scale, float rotation, 
                               D3DXVECTOR2* center, D3DCOLOR color )

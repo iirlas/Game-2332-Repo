@@ -116,8 +116,8 @@ bool PathUtilities::pathIsDirectory ( const tstring& path )
    {
       return false;
    }
-   bool result = ((*_pathIsDirectory)( path.c_str() ) != FALSE);
-   return result;
+   BOOL result = (*_pathIsDirectory)( path.c_str() );
+   return !!result;
 }
 
 //=======================================================================
@@ -128,8 +128,8 @@ bool PathUtilities::pathFileExists ( const tstring& path )
       return false;
    }
 
-   bool result = ((*_pathFileExists)( path.c_str() ) == TRUE);
-   return result;
+   BOOL result = (*_pathFileExists)( path.c_str() );
+   return !!result;
 }
 
 //=======================================================================

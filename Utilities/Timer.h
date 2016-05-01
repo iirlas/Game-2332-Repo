@@ -4,7 +4,7 @@
 #include <windows.h>
 
 
-class Timer : public NonCopyable
+class Timer //: public NonCopyable
 {
 public:
    static DWORD systemTick ( ) { return GetTickCount(); }

@@ -59,30 +59,30 @@ public:
 
    DxAnimation ();
    ~DxAnimation ();
-   DxAnimation ( const DxAnimation& other )
-   {
-      myName           = other.myName;
-      mySpeed          = other.mySpeed;
-      myCurrentFrame   = other.myCurrentFrame;
-      myFrameDirection = other.myFrameDirection;
-      myExcludeColor   = other.myExcludeColor;
-      myAnimation      = other.myAnimation;
-      myFrameCount     = other.myFrameCount;
-      memcpy( myFrames, other.myFrames, sizeof(myFrames) );
-   }
+   //DxAnimation ( const DxAnimation& other )
+   //{
+   //   myName           = other.myName;
+   //   mySpeed          = other.mySpeed;
+   //   myCurrentFrame   = other.myCurrentFrame;
+   //   myFrameDirection = other.myFrameDirection;
+   //   myExcludeColor   = other.myExcludeColor;
+   //   myAnimation      = other.myAnimation;
+   //   myFrameCount     = other.myFrameCount;
+   //   memcpy( myFrames, other.myFrames, sizeof(myFrames) );
+   //}
 
-   DxAnimation& operator= ( const DxAnimation& other )
-   {
-      myName           = other.myName;
-      mySpeed          = other.mySpeed;
-      myCurrentFrame   = other.myCurrentFrame;
-      myFrameDirection = other.myFrameDirection;
-      myExcludeColor   = other.myExcludeColor;
-      myAnimation      = other.myAnimation;
-      myFrameCount     = other.myFrameCount;
-      memcpy( myFrames, other.myFrames, sizeof(myFrames) );
-      return *this;
-   }
+   //DxAnimation& operator= ( const DxAnimation& other )
+   //{
+   //   myName           = other.myName;
+   //   mySpeed          = other.mySpeed;
+   //   myCurrentFrame   = other.myCurrentFrame;
+   //   myFrameDirection = other.myFrameDirection;
+   //   myExcludeColor   = other.myExcludeColor;
+   //   myAnimation      = other.myAnimation;
+   //   myFrameCount     = other.myFrameCount;
+   //   memcpy( myFrames, other.myFrames, sizeof(myFrames) );
+   //   return *this;
+   //}
 
    bool init ( DxTexture* texture, const tstring& animationDesc, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
    bool init ( DxTexture* texture, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
@@ -124,7 +124,7 @@ public:
 
    float speed ( float value );
    float speed () { return mySpeed; }
-
+   void drawFrame ( IDXSPRITE spriteobj, float x, float y, float rotation = 0, D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ) );
    void drawFrame ( IDXSPRITE spriteobj, D3DXVECTOR3* position, D3DXVECTOR2* scale, float rotation, D3DXVECTOR2* center, D3DCOLOR color );
    unsigned int getFrameCount() { return myFrameCount; }
 private:

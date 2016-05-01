@@ -12,7 +12,7 @@ DxGameSprite::DxGameSprite ( )
 myVelocity( 0, 0, 0 ), myLastVelocity( 0, 0, 0 ), myAccel( 0, 0, 0 ), 
 myLastAccel( 0, 0, 0 ),myScale( 1, 1 ), myPosition( 0, 0, 0 ), myLastPosition ( 0, 0, 0 )
 {
-
+   myAnimationIsValid = false;
 }
 
 //=======================================================================
@@ -22,24 +22,21 @@ DxGameSprite::~DxGameSprite( )
 }
 
 //=======================================================================
-void DxGameSprite::shutdown()
-{
-
-}
-
-//=======================================================================
 //make create that takes in width, height, and x+y positions
 bool DxGameSprite::create( const tstring& animationName, float speed, D3DCOLOR transcolor )
 {
 	//create animation here
-   myAnimation = DxAssetManager::getInstance().getAnimationCopy( animationName, speed, transcolor );
+	myAnimation = DxAssetManager::getInstance().getAnimationCopy( animationName, speed, transcolor );
 
 	myCollisionArea.top  = (long)myPosition.y;
 	myCollisionArea.bottom = (long)myCollisionArea.top + getHeight();
 	myCollisionArea.left = (long)myPosition.x;
 	myCollisionArea.right = (long)myCollisionArea.left + getWidth();
-    myAnimation.play();
- 	return true;
+   D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255);
+   myColor = color;
+	myAnimation.play();
+   myAnimationIsValid = true;
+	return true;
 }
 
 //=======================================================================
@@ -48,10 +45,10 @@ bool DxGameSprite::create( DxTexture* texture, D3DCOLOR transcolor )
 {
 	//create animation here
 
-   if ( !myAnimation.init( texture, 0 ) )
-   {
-      return false;
-   }
+	if ( !myAnimation.init( texture, 0 ) )
+	{
+		return false;
+	}
 
 	myCollisionArea.top  = (long)myPosition.y;
 	myCollisionArea.bottom = (long)myCollisionArea.top + getHeight();
@@ -152,12 +149,13 @@ void DxGameSprite::setScale ( float scaleX, float scaleY )
 //===========================================================================
 void DxGameSprite::draw (IDXSPRITE spriteObj, D3DCOLOR color)
 {
-	if ( isVisible() )
-	{
+   if ( myAnimationIsValid && isVisible() )
+   {
       myAnimation.drawFrame ( spriteObj, &myPosition, &myScale, 
-						      myRotation, &myCenter,  color );
-	}
+         myRotation, &myCenter,  color );
+   }
 }
+
 
 //=======================================================================
 
@@ -209,10 +207,10 @@ void DxGameSprite::update()
 	myPosition     += myVelocity;
 
 	// update collision area
-   myCollisionArea.x( (long)myPosition.x + myCollisionOffset.x);
-   myCollisionArea.y( (long)myPosition.y + myCollisionOffset.y);
-
-   myAnimation.update();
+	myCollisionArea.x( (long)myPosition.x + myCollisionOffset.x);
+	myCollisionArea.y( (long)myPosition.y + myCollisionOffset.y);
+   if ( myAnimationIsValid )
+	   myAnimation.update();
 
 }
 
@@ -222,55 +220,6 @@ bool DxGameSprite::collidesWith ( const DxGameSprite& other )
    return myCollisionArea.collidesWith( other.myCollisionArea );
 }
 
-//=======================================================================
-bool DxGameSprite::radialCollidesWith ( const DxGameSprite& other  )
-{
-   D3DXVECTOR2 centerOne, centerTwo;
-   double radiusOne, radiusTwo;
-
-
-   //Get the radius for the first sprite using the longest dimension
-   //    because wouldn't want to have it collide with you and do nothing
-   //    just because the sprite is skinny or fat or short or tall
-   if( getWidth() > getHeight() )
-      radiusOne = getWidth() / 2;
-   else
-      radiusOne = getHeight() / 2;
-
-   centerOne.x = getXPosition() + (float)radiusOne;
-   centerOne.y = getYPosition() + (float)radiusOne;
-
-   if( other.getWidth() > other.getHeight() )
-      radiusTwo = other.getWidth() / 2.0;
-   else
-      radiusTwo = other.getHeight() / 2.0;
-
-   centerTwo.x = other.getXPosition() + (float)radiusTwo;
-   centerTwo.y = other.getYPosition() + (float)radiusTwo;
-
-   double deltaX = centerOne.x - centerTwo.x;
-   double deltaY = centerTwo.y - centerOne.y;
-   double distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-
-
-   return (distance < radiusOne + radiusTwo);
-
-   //other.getHeight() - centerTwo.y;
-   //other.getWidth() - centerTwo.x;
-
-   ////Gives center but need radius
-   //evaluateCenter();
-   //centerOne = getCenter();
-
-   //Gives center but need radius
-   //other.evaluateCenter();
-   //centerTwo = other.getCenter();
-
-
-   //Calculate distance
-
-
-}
 
 //=======================================================================
 

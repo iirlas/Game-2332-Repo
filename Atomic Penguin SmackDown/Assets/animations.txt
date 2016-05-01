@@ -10,7 +10,7 @@
 
 
 #name of file
-@file spritesheet.png
+@Image SPRITESHEET spritesheet.png
 
 #type of animation refers to style. 
 #           0 is looping 

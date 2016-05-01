@@ -4,7 +4,7 @@
 #include "DxWrapper/DxKeyboard.h"
 using namespace std;
 
-DxKeyboard::KeyState DxKeyboard::ourKeyState[256] = {};
+DxKeyboard::KeyState DxKeyboard::ourKeyboardState[256] = {};
 
 //=======================================================================
 bool DxKeyboard::keyPressed(int key) 
@@ -12,15 +12,15 @@ bool DxKeyboard::keyPressed(int key)
    short state = GetAsyncKeyState(key);
    if ( (state & 0x0001) && (state & 0x8000) )
    {
-      if ( ourKeyState[key] != DOWN )
+      if ( ourKeyboardState[key] != DOWN )
       {
-         ourKeyState[key] = DOWN;
+         ourKeyboardState[key] = DOWN;
          return true;
       }
    }
-   else if ( ourKeyState[key] == DOWN && !(state & 0x8000) )
+   else if ( ourKeyboardState[key] == DOWN && !(state & 0x8000) )
    {
-      ourKeyState[key] = UP;
+      ourKeyboardState[key] = UP;
    }
    return false;
 }

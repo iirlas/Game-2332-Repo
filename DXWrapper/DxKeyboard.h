@@ -20,11 +20,17 @@ public:
 
 	static bool keyDown(int key);
    static bool keyUp(int key);
+   
+   DxKeyboard () {}
+   ~DxKeyboard () {}
+   
+   bool keyboardInit ( HWND hwnd ) { UNREFERENCED_PARAMETER(hwnd); ZeroMemory(ourKeyboardState, sizeof(ourKeyboardState)); return true; }
+   bool keyboardUpdate () { return true; }
+
 
 private:
-   DxKeyboard();
-	~DxKeyboard();
-   static KeyState ourKeyState[256];
+
+   static KeyState ourKeyboardState[256];
 };
 
 #endif

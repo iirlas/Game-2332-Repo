@@ -29,14 +29,14 @@ protected:
    int startTransHeight()  { return 640; }
 
 private:
-   D3DCOLOR           bgColor;
-   Player             myPlayer;
-   tstring            myGameTitle;
-   TiledBackground    myLevelBgnds;
-   RECT               myBgRect;
-   CollisionManager   myCollisionManager;
+   D3DCOLOR            bgColor;
+   std::vector<Player> myPlayers;
+   tstring             myGameTitle;
+   TiledBackground     myLevelBgnds;
+   RECT                myBgRect;
+   CollisionManager    myCollisionManager;
 
-   GameUI             myGameUI;
+   GameUI              myGameUI;
 
 };
 

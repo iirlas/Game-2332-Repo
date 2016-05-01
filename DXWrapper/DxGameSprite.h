@@ -23,8 +23,6 @@ public:
 
 	void update();
 
-	void shutdown();
-
 	bool create ( const tstring& animationName, float speed = 0, D3DCOLOR transcolor = 0 );
 	bool create( DxTexture* texture, D3DCOLOR transcolor = 0 );
 	void destroy ( void );
@@ -92,7 +90,7 @@ public:
    
    
 private:
-
+   bool           myAnimationIsValid;
 	D3DXVECTOR3    myPosition;
 	D3DXVECTOR3    myLastPosition;
 	D3DXVECTOR3    myVelocity;

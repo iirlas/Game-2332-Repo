@@ -34,7 +34,8 @@ bool Game::gameInit ()
    
 
    bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
-   DxAssetManager::getInstance().init("animations.txt");
+   DxAssetManager::getInstance().init();
+   DxAssetManager::getInstance().load("animations.txt");
 
    myBgRect = Rect( 0, 0, startTransWidth(), startTransHeight() );
 
@@ -44,7 +45,12 @@ bool Game::gameInit ()
 
    result &= Penguin::initPenguinMovement( "Penguin.config" );
 
-   result &= myPlayer.init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
+   myPlayers.push_back( Player() );
+
+   for ( unsigned int index = 0; index < myPlayers.size(); index++ )
+   {
+      result &= myPlayers[index].init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
+   }
    return result;
 }
 
@@ -56,8 +62,10 @@ void Game::gameRun ()
    // clear the backbuffer
    device()->ColorFill( backBuffer(), NULL, bgColor );
    myLevelBgnds.update();
-   myPlayer.update( levelRef );
-
+   for ( unsigned int index = 0; index < myPlayers.size(); index ++ )
+   {
+      myPlayers[index].update( levelRef );
+   }
    myGameUI.update();
 
    //myPlayer.resolveCollisions( levelRef );
@@ -70,7 +78,10 @@ void Game::gameRun ()
       {
          // sprite rendering...       
          myLevelBgnds.drawMySpriteMap( spriteInterface() );
-         myPlayer.draw( spriteInterface() );
+         for ( unsigned int index = 0; index < myPlayers.size(); index ++ )
+         {
+            myPlayers[index].draw( spriteInterface() );
+         }
          myGameUI.draw( spriteInterface() );
          
          // stop rendering
@@ -86,4 +97,11 @@ void Game::gameRun ()
 //=======================================================================
 void Game::gameExit ()
 {
+   for ( unsigned int index = 0; index < myPlayers.size(); index++ )
+   {
+      myPlayers[index].shutdown();
+   }
+   myGameUI.destroy();
+   myLevelBgnds.shutdown();
+   DxAssetManager::getInstance().shutdown();
 }
