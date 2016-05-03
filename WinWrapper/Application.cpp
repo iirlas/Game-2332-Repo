@@ -97,12 +97,12 @@ bool Application::registerClass ()
     wcex.cbClsExtra	        = resourceCLSExtra();
     wcex.cbWndExtra	        = resourceWndExtra();
     wcex.hInstance		    = instance();
-    wcex.hIcon			    = resourceIcon();//LoadIcon( instance(), MAKEINTRESOURCE(  ) );
-    wcex.hCursor		    = resourceCursor();//LoadCursor( NULL, MAKEINTRESOURCE(  ) );
+    wcex.hIcon			    = (resourceIconID() == -1 ? resourceIcon() : LoadIcon( instance(), MAKEINTRESOURCE( resourceIconID() )));
+    wcex.hCursor		    = (resourceCursorID() == -1 ? resourceIcon() : LoadCursor( NULL, MAKEINTRESOURCE( resourceIconID() )));
     wcex.hbrBackground	    = resourceBackground();
-    wcex.lpszMenuName	    = resourceMenu();//MAKEINTRESOURCE(  );
+    wcex.lpszMenuName	    = (resourceMenuID() == -1 ? resourceMenu() : MAKEINTRESOURCE( resourceMenuID() ));
     wcex.lpszClassName      = resourceClassName();
-    wcex.hIconSm		    = resourceIconSmall();//LoadIcon( instance(), MAKEINTRESOURCE(  ) );
+    wcex.hIconSm		    = (resourceIconSmallID() == -1 ? resourceIcon() : LoadIcon( instance(), MAKEINTRESOURCE( resourceIconSmallID() ) ));
     return (RegisterClassEx(&wcex) != NULL);
 }
 

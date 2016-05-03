@@ -245,6 +245,11 @@ protected:
    { 
       return 0; 
    }
+   //=======================================================================
+   virtual inline int resourceIconID ()
+   { 
+      return -1;
+   }
 
    //=======================================================================
    // The resource for the mouse's cursor.
@@ -253,6 +258,11 @@ protected:
    virtual inline HCURSOR resourceCursor ()
    { 
       return LoadCursor( NULL, IDC_ARROW );
+   }
+   //=======================================================================
+   virtual inline int resourceCursorID ()
+   { 
+      return -1;
    }
 
    //=======================================================================
@@ -270,7 +280,12 @@ protected:
    // For more information view Win32 API WNDCLASS structure: lpszMenuName.
    virtual inline LPCTSTR resourceMenu ()
    { 
-      return 0;
+      return NULL;
+   }
+   //=======================================================================
+   virtual inline int resourceMenuID ()
+   { 
+      return -1;
    }
 
    //=======================================================================
@@ -290,6 +305,11 @@ protected:
    virtual inline HICON resourceIconSmall ()
    { 
       return 0;
+   }
+   //=======================================================================
+   virtual inline int resourceIconSmallID ()
+   { 
+      return -1;
    }
 
    //=======================================================================
