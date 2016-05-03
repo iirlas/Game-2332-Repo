@@ -24,7 +24,8 @@ protected:
    bool gameInit ();
    void gameRun ();
    void gameExit ();
-   int resourceIconID() { return IDI_SMALL; }
+   int resourceIconID () { return IDI_ATOMICPENGUINSMACKDOWN; }
+   int resourceIconSmallID () { return IDI_SMALL; }
    int startTransWidth ()  { return 880; }
    int startTransHeight()  { return 640; }
 
