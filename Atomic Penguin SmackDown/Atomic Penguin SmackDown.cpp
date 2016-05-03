@@ -29,7 +29,7 @@ Game::~Game ()
 bool Game::gameInit ()
 {
    bool result = true;
-   myGameTitle.append("Atomic Penguin Smackdown");
+   myGameTitle.append("Atomic Penguin Warfare");
    winSetTitle ( myGameTitle );
    
 

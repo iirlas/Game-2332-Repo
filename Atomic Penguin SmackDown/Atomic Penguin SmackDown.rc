@@ -68,11 +68,11 @@ END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About Atomic Penguin SmackDown"
+CAPTION "About Atomic Penguin Warfare"
 FONT 8, "MS Shell Dlg"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
-    LTEXT           "Atomic Penguin SmackDown, Version 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Atomic Penguin Warfare, Version 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2016",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "OK",IDOK,113,41,50,14,WS_GROUP
 END
@@ -132,7 +132,7 @@ END
 STRINGTABLE
 BEGIN
    IDC_ATOMICPENGUINSMACKDOWN   "ATOMICPENGUINSMACKDOWN"
-   IDS_APP_TITLE       "Atomic Penguin SmackDown"
+   IDS_APP_TITLE       "Atomic Penguin Warfare"
 END
 
 #endif
