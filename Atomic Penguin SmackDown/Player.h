@@ -47,7 +47,7 @@ public:
    bool penguinCollision ( int column, int row );
    bool canMove ();
    void moveSelectedPenguinTo ( int horz, int vert );
-   void clearMoves() { myMoveCount = 0; }
+   void clearMoves();
 
    unsigned int maxMoves () { return myMaxMoves; }
    unsigned int moveCount () { return myMoveCount; }
@@ -65,6 +65,7 @@ private:
    unsigned int             mySackCount;
    unsigned int             myTurnIndex;
    std::vector<Penguin*>    myPenguins;
+   std::map<Penguin*,bool>  myPenguinMoveFlag;
    Penguin*                 mySelectedPenguin;
    Penguin::Direction       myStartDirection;
    CollisionManager         myCollisionManager;

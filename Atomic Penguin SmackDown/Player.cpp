@@ -69,8 +69,9 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
          }
          Penguin* penguin = new Penguin();
          penguin->create( (Penguin::Type)type, c * tileWidth, r * tiltHeight, myTurnIndex, myStartDirection );
-         penguin->setScale( (float)tileWidth  / (float)penguin->getWidth(), 
+         penguin->setScale( (float)tileWidth  / (float)penguin->getWidth(),
                             (float)tiltHeight / (float)penguin->getHeight() );
+         myPenguinMoveFlag[penguin] = true;
          myPenguins.push_back( penguin );
       }
    }
@@ -105,6 +106,7 @@ void Player::update ( TiledBackground& tiledBackground )
                mySelectedPenguin->create( Penguin::HULK, mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), myTurnIndex, myStartDirection );
             }
          }
+         myPenguinMoveFlag[mySelectedPenguin] = false;
          mySelectedPenguin = NULL;
       }
       else if ( DxKeyboard::keyPressed( VK_BACK ) && !myMovements.empty() )// move penguin to prev position
@@ -171,7 +173,7 @@ bool Player::penguinCollision ( int column, int row )
 bool Player::canMove ()
 {
    return myMovements.size() < mySelectedPenguin->moveCount() &&
-          (myMoveCount + myMovements.size()) < myMaxMoves;
+          (myMoveCount + myMovements.size()) < myMaxMoves && myPenguinMoveFlag[mySelectedPenguin];
 }
 
 //=======================================================================
@@ -185,6 +187,17 @@ void Player::moveSelectedPenguinTo ( int horz, int vert )
       myMovements.push_back( movement );
       mySelectedPenguin->setXPosition(nextX);
       mySelectedPenguin->setYPosition(nextY);
+   }
+}
+
+//=======================================================================
+void Player::clearMoves() 
+{ 
+   myMoveCount = 0;
+   std::map<Penguin*,bool>::iterator item = myPenguinMoveFlag.begin();
+   for ( ; item != myPenguinMoveFlag.end(); item++ )
+   {
+      item->second = true;
    }
 }
 
