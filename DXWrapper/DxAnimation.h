@@ -100,6 +100,8 @@ public:
       myFrameCount++;
    }
 
+   void setFrame ( int frame ) { frame = frame % myFrameCount; frame = myCurrentFrame; }
+
    int getCurrentFrame() const { return myCurrentFrame; }
 
    inline const tstring& name () { return myName; }
