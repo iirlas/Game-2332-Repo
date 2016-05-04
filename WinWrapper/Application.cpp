@@ -87,6 +87,14 @@ Any allocation number < {nnn} can be ignored\n") );
 }
 
 //=======================================================================
+void Application::breakOnCRTAlloc ( int n )
+{
+#ifdef _DEBUG
+   _CrtSetBreakAlloc( n ); 
+#endif
+}
+
+//=======================================================================
 //private
 bool Application::registerClass ()
 {
@@ -222,12 +230,12 @@ void Application::end ()
 {
     if ( myHWnd != NULL )
     {
-        preEnd();
+        preDestroy();
         SetWindowLongPtr( myHWnd, GWLP_USERDATA, NULL );
         DestroyWindow( myHWnd );
         myHWnd = NULL;
         UnregisterClass( resourceClassName(), instance() );
-        postEnd();
+        postDestroy();
     }
 }
 
@@ -301,13 +309,13 @@ void Application::update ()
 
 //=======================================================================
 //protected
-void Application::preEnd ()
+void Application::preDestroy ()
 {
 }
 
 //=======================================================================
 //protected
-void Application::postEnd ()        
+void Application::postDestroy ()        
 {
 }
 

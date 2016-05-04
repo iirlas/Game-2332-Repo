@@ -21,6 +21,8 @@ public:
 //WINDOW
 protected:
    LPCTSTR resourceMenu (){return MAKEINTRESOURCE(IDC_ATOMICPENGUINSMACKDOWN); }//MAKEINTRESOURCE() creates a string ID from a resourcce ID
+   bool initPlayers ( const tstring& configFilename );
+   void resolveCollisions ();
    bool gameInit ();
    void gameRun ();
    void gameExit ();
@@ -30,12 +32,13 @@ protected:
    int startTransHeight()  { return 640; }
 
 private:
-   D3DCOLOR            bgColor;
-   std::vector<Player> myPlayers;
-   tstring             myGameTitle;
-   TiledBackground     myLevelBgnds;
-   RECT                myBgRect;
-   CollisionManager    myCollisionManager;
+   int                  myPlayerIndex;
+   D3DCOLOR             bgColor;
+   std::vector<Player*> myPlayers;
+   tstring              myGameTitle;
+   TiledBackground      myLevelBgnds;
+   RECT                 myBgRect;
+   CollisionManager     myCollisionManager;
 
    GameUI              myGameUI;
 

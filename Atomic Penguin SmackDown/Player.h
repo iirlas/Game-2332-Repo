@@ -21,7 +21,12 @@ struct Movement
 class Player
 {
 public:
-   Player () { myPenguinCount = 0; myPenguins = NULL; mySelectedPenguin = NULL; myPrevMoveTexture = NULL; myTurnIndex = 0; mySackCount = 0; }
+   Player () 
+   { 
+      myPenguinCount = 0; myPenguins = NULL; mySelectedPenguin = NULL; 
+      myPrevMoveTexture = NULL; myTurnIndex = 0; mySackCount = 0; myMaxMoves = 0;
+      myMoveCount = 0;
+   }
    ~Player () { shutdown(); }
 
    bool init ( tstring playerConfigFile, int tileWidth, int tiltHeight );
@@ -30,10 +35,18 @@ public:
    void shutdown ();
 
    void resolveCollisions ( TiledBackground& tiledBackground );
+   bool penguinCollision ( int column, int row );
+   bool canMove ();
+   void moveSelectedPenguinTo ( int horz, int vert );
 
-   const Penguin* selectedPenguin () { return mySelectedPenguin; }
+   Penguin* selectedPenguin () { return mySelectedPenguin; }
 
 private:
+   void getSelectedPenguin ();
+
+private:
+   unsigned int             myMoveCount;
+   unsigned int             myMaxMoves;
    unsigned int             mySackCount;
    unsigned int             myTurnIndex;
    unsigned int             myPenguinCount;

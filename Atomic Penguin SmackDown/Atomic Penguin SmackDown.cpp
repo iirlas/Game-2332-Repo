@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "Utilities/ConfigParser.h"
 #include "DxWrapper/DxAssetManager.h"
 #include "Atomic Penguin SmackDown.h"
 
@@ -10,6 +11,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                          LPTSTR    lpCmdLine, int       nCmdShow)
 {
    Application::enableCRTHeapDebugging( false );
+   //Application::breakOnCRTAlloc( 3061 );
    Game penguinGame;
    return penguinGame.winMain( hInstance, hPrevInstance, lpCmdLine, nCmdShow );
 }
@@ -18,11 +20,68 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 Game::Game ()
 //:myHulkPenguin(NULL)
 {
+   myPlayerIndex = 0;
 }
 
 //=======================================================================
 Game::~Game ()
 {
+}
+
+//=======================================================================
+bool Game::initPlayers ( const tstring& configFilename )
+{
+   tifstream playerConfigFile( DxAssetManager::getInstance().getAssetPath( configFilename ).c_str() );
+   if ( !playerConfigFile.is_open() || playerConfigFile.bad() )
+   {
+      return false;
+   }
+
+   ConfigParser parser;
+   tstring line;
+   while ( parser.getNextLine( playerConfigFile, line ) )
+   {
+      myPlayers.push_back( new Player() );
+      if (  !myPlayers.back()->init( line, myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() ) )
+      {
+         return false;
+      }
+   }
+
+   playerConfigFile.close();
+   return true;
+}
+
+//=======================================================================
+void Game::resolveCollisions ()
+{
+   Player* currentPlayer = myPlayers[myPlayerIndex];
+   Penguin* currentPenguin = currentPlayer->selectedPenguin();
+   int horz = DxKeyboard::keyPressed( VK_RIGHT ) - DxKeyboard::keyPressed( VK_LEFT );
+   int vert = DxKeyboard::keyPressed( VK_DOWN ) - DxKeyboard::keyPressed( VK_UP );
+
+   if ( currentPenguin && XOR( horz, vert ) )
+   {
+      int column = (int)(currentPenguin->getXPosition() / currentPenguin->getWidth()) + horz;
+      int row = (int)(currentPenguin->getYPosition() / currentPenguin->getHeight()) + vert;
+      bool isFreeFromCollision = true;
+      for ( unsigned int index = 0; index < myPlayers.size(); index++ )
+      {
+         if ( myPlayers[index]->penguinCollision( column, row ) )
+         {
+            isFreeFromCollision = false;
+            break;
+         }
+      }
+      bool canMoveFrom = currentPenguin->canMoveFrom( myLevelBgnds.tileAt( *currentPenguin )->type() );
+      bool canMoveTo = currentPenguin->canMoveTo( myLevelBgnds.tileAt( column, row )->type() );
+      if ( currentPlayer->canMove() && canMoveFrom && canMoveTo && isFreeFromCollision )
+      {
+         currentPlayer->moveSelectedPenguinTo( horz, vert );
+         currentPenguin->direction( Penguin::makeDirection( horz, vert ) );
+      }
+      
+   }
 }
 
 //=======================================================================
@@ -45,12 +104,8 @@ bool Game::gameInit ()
 
    result &= Penguin::initPenguinMovement( "Penguin.config" );
 
-   myPlayers.push_back( Player() );
+   result &= initPlayers("Player.config");
 
-   for ( unsigned int index = 0; index < myPlayers.size(); index++ )
-   {
-      result &= myPlayers[index].init( "Player1.config", myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() );
-   }
    return result;
 }
 
@@ -62,10 +117,14 @@ void Game::gameRun ()
    // clear the backbuffer
    device()->ColorFill( backBuffer(), NULL, bgColor );
    myLevelBgnds.update();
-   for ( unsigned int index = 0; index < myPlayers.size(); index ++ )
+   for ( unsigned int index = 0; index < myPlayers.size(); index++ )
    {
-      myPlayers[index].update( levelRef );
+      if ( index == myPlayerIndex )
+      {
+         myPlayers[index]->update( levelRef );
+      }
    }
+   resolveCollisions();
    myGameUI.update();
 
    //myPlayer.resolveCollisions( levelRef );
@@ -80,7 +139,7 @@ void Game::gameRun ()
          myLevelBgnds.drawMySpriteMap( spriteInterface() );
          for ( unsigned int index = 0; index < myPlayers.size(); index ++ )
          {
-            myPlayers[index].draw( spriteInterface() );
+            myPlayers[index]->draw( spriteInterface() );
          }
          myGameUI.draw( spriteInterface() );
          
@@ -99,9 +158,13 @@ void Game::gameExit ()
 {
    for ( unsigned int index = 0; index < myPlayers.size(); index++ )
    {
-      myPlayers[index].shutdown();
+      myPlayers[index]->shutdown();
+      delete myPlayers[index];
+      myPlayers[index] = NULL;
    }
+   myPlayers.clear();
    myGameUI.destroy();
    myLevelBgnds.shutdown();
    DxAssetManager::getInstance().shutdown();
 }
+

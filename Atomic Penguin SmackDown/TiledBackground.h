@@ -66,8 +66,8 @@ public:
 
    inline Tile* tileAt ( Penguin& penguin )
    {
-      return tileAt( (float)penguin.getXPosition(), (float)penguin.getWidth(), 
-                     (float)penguin.getYPosition(), (float)penguin.getHeight() );
+      return tileAt( (float)penguin.getXPosition(),(float)penguin.getYPosition(), 
+                     (float)penguin.getWidth(), (float)penguin.getHeight() );
    }
 
    std::vector<Tile> mySpriteMap;

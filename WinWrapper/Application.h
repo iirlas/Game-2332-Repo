@@ -45,6 +45,10 @@ public:
    static void enableCRTHeapDebugging ( bool maxImpact );
 
    //=======================================================================
+   //
+   static void breakOnCRTAlloc ( int n );
+
+   //=======================================================================
    // Default Constructor.
    Application ();
 
@@ -132,11 +136,11 @@ protected:
 
    //=======================================================================
    // An overridable method that is called prior to the application exiting.
-   virtual void preEnd ();
+   virtual void preDestroy ();
 
    //=======================================================================
    // An overridable method that is called after the application exited.
-   virtual void postEnd ();
+   virtual void postDestroy ();
 
    //=======================================================================
    // Binds a message processor method to a window's message.
