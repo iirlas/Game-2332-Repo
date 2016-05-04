@@ -41,20 +41,35 @@ private:
    DxText            myPlayerTwo;
    DxText            myMovesCounter;
 
-   DxGameSprite      p1General;
-   DxGameSprite      p1Bazooka;
-   DxGameSprite      p1Slider; 
-   DxGameSprite      p1Pawn1;
-   DxGameSprite      p1Pawn2;
-   DxGameSprite      p1Hulk;
 
-   
+   DxGameSprite      p1Header;
+   DxGameSprite      p1General;
+   DxGameSprite      p1GeneralHealth;
+   DxGameSprite      p1Bazooka;
+   DxGameSprite      p1BazookaHealth;
+   DxGameSprite      p1Slider; 
+   DxGameSprite      p1SliderHealth;
+   DxGameSprite      p1Pawn1;
+   DxGameSprite      p1Pawn1Health;
+   DxGameSprite      p1Pawn2;
+   DxGameSprite      p1Pawn2Health;
+   DxGameSprite      p1Hulk;
+   DxGameSprite      p1HulkHealth;
+
+
+   DxGameSprite      p2Header;
    DxGameSprite      p2General;
+   DxGameSprite      p2GeneralHealth;
    DxGameSprite      p2Bazooka;
+   DxGameSprite      p2BazookaHealth;
    DxGameSprite      p2Slider; 
+   DxGameSprite      p2SliderHealth;
    DxGameSprite      p2Pawn1;
+   DxGameSprite      p2Pawn1Health;
    DxGameSprite      p2Pawn2;
+   DxGameSprite      p2Pawn2Health;
    DxGameSprite      p2Hulk;
+   DxGameSprite      p2HulkHealth;
 
    D3DCOLOR          myTextColor;
 

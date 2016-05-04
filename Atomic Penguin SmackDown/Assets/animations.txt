@@ -141,6 +141,37 @@ GRADIENT        3       1265 545    80 80
 
 INVISIBLOCK     0       545	905	80	80
 
+
+
+
+
+#name of file
+@Image GUI   gui.png
+
+#type of animation refers to style. 
+#           0 is looping 
+#           1 is a rocking animation
+#           2 is single loop 
+#           3 is a new texture
+
+#ALL LINES MUST BE IN FOLLOWING FORMAT:
+# symbol		type	x	y	width	height etc.
+
+P1HEADER                 0      1276     4       120    80            4   652    120   80
+P2HEADER                 0       132     4       120    80            4     4    120   80
+
+HEALTH                   2         4   144       100    20         1472   116    100   20         1364  116    100  20       1256  116    100  20       1148  116    100  20     112   116   100  20     4  116   100  20     1404  88  100 20     1404  60   100  20      1404  32   100 20      1404   4    100  20
+
+
+PRESSENTER               0         4  1300       880    69            4  1377    880   69
+
+
+SPLASH                   0      1580     4       880   640
+
+
+STALEMATE                0       892   652       880   640         
+
+
 	
 
 
