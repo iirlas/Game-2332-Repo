@@ -26,11 +26,11 @@ Military pawnguin civil war, scientist just discovered the Atomic Pawnguin, thei
     pawnguin **pawn**
         movements: moves in any direction 3 spaces
         attack: light damage (10 atk)
-        health: light health (20hp)
+        health: light health (30hp)
     pawnguin **hulk** 
         movements: moves in any direction 2 spaces
         attack: high damage  (40atk)
-        health: light health (40hp)
+        health: light health (50hp)
     pawnguin **bazookas** 
         movements: move in any direction 1 space
         attack: medium damage  (30 atk)
@@ -38,7 +38,7 @@ Military pawnguin civil war, scientist just discovered the Atomic Pawnguin, thei
     pawnguin **the puck** 
         movements: slides across the map up to 5 spaces
         attack: medium damage (20 atk)
-        health: light health (30hp)
+        health: light health (40hp)
     pawnguin **the general** 
         movements: moves in any direction 1 space
         attack: light damage (10 atk)
