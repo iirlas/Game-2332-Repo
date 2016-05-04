@@ -3,7 +3,7 @@
 #include "Utilities/ConfigParser.h"
 #include "DxWrapper/DxAssetManager.h"
 #include "Atomic Penguin SmackDown/Penguin.h"
-std::map<unsigned int, unsigned int> Penguin::ourPenguinMaxMoves;
+std::map<Penguin::Type, Penguin::Info> Penguin::ourPenguinInfo;
 float Penguin::ourAnimationSpeed = 10.0f;
 
 
@@ -20,23 +20,23 @@ bool Penguin::initPenguinMovement ( const tstring& filename )
    while ( parser.getNextLine( file, line ) )
    {
       tstringstream ss( line );
-      int penguinType = 0, speed = -1;
-      ss >> penguinType >> speed;
+      int penguinType = 0, speed = -1, health = -1;
+      ss >> penguinType >> speed >> health;
       if ( ss.fail() )
       {
          return false;
       }
-
-      ourPenguinMaxMoves[penguinType] = speed;
+      Info info = { speed, health };
+      ourPenguinInfo[(Type)penguinType] = info;
    }
    return true;
 }
 
 //=======================================================================
-bool Penguin::create ( Penguin::Type type, float x ,float y, int playerTurnIndex )
+bool Penguin::create ( Penguin::Type type, float x ,float y, int playerTurnIndex, Penguin::Direction direction )
 {
    bool result = false;
-   myDirection = SOUTH;
+   myDirection = direction;
 
    switch ( type )
    {
@@ -68,9 +68,28 @@ bool Penguin::create ( Penguin::Type type, float x ,float y, int playerTurnIndex
    myLeftAnim  = "P" + Util::intToString(playerTurnIndex) + "-" + myLeftAnim; 
    myRightAnim = "P" + Util::intToString(playerTurnIndex) + "-" + myRightAnim;
    myType = type;
-   myMaxMoves = ourPenguinMaxMoves[type];
-   
-   result = DxGameSprite::create( myFrontAnim, ourAnimationSpeed );
+   myHealth = ourPenguinInfo[type].maxHealth;
+
+   tstring startAnim;
+   switch ( myDirection )
+   {
+   case Direction::NORTH:
+      startAnim = myBackAnim;
+      break;
+
+   case Direction::SOUTH:
+      startAnim = myFrontAnim;
+      break;
+
+   case Direction::EAST:
+      startAnim = myRightAnim;
+      break;
+
+   case Direction::WEST:
+      startAnim = myLeftAnim;
+      break;
+   }
+   result = DxGameSprite::create( startAnim, ourAnimationSpeed );
    setPosition( x, y );
    return result;
 }

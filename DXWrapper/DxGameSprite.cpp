@@ -64,6 +64,7 @@ void DxGameSprite::destroy ( )
 {
    myAnimation.shutdown();
    myCollisionArea.set( 0, 0, 0, 0 );
+   myAnimationIsValid = false;
 }
 
 //=======================================================================

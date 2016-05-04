@@ -34,7 +34,7 @@ public:
    //pass in group of animations ????
 
    //MUST have working animation copy constructor/assignment operator
-   bool changeAnimation( const tstring& animationName, float speed, D3DCOLOR excludeColor = 0 );
+   bool changeAnimation( const tstring& animationName, float speed = 0, D3DCOLOR excludeColor = 0 );
    bool changeAnimation( DxAnimation& newAnimation );
    DxAnimation& getAnimation( );
 
@@ -87,6 +87,7 @@ public:
    bool radialCollidesWith ( const DxGameSprite& otherSprite  );
    void toggleVisible();
    bool isVisible(){return myVisible;}
+   bool isValid (){ return myAnimationIsValid; }
    
    
 private:

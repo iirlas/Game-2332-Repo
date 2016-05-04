@@ -23,9 +23,9 @@ class Player
 public:
    Player () 
    { 
-      myPenguinCount = 0; myPenguins = NULL; mySelectedPenguin = NULL; 
-      myPrevMoveTexture = NULL; myTurnIndex = 0; mySackCount = 0; myMaxMoves = 0;
-      myMoveCount = 0;
+      mySelectedPenguin = NULL; myPrevMoveTexture = NULL; 
+      myTurnIndex = 0; mySackCount = 0; myMaxMoves = 0; myMoveCount = 0;
+      myStartDirection = Penguin::Direction::NONE;
    }
    ~Player () { shutdown(); }
 
@@ -34,13 +34,28 @@ public:
    void draw ( IDXSPRITE spriteInterface );
    void shutdown ();
 
+   inline Penguin* at ( unsigned int index )
+   {
+      if ( index < myPenguins.size() )
+      {
+         return myPenguins[index];
+      }
+      return NULL;
+   }
+
    void resolveCollisions ( TiledBackground& tiledBackground );
    bool penguinCollision ( int column, int row );
    bool canMove ();
    void moveSelectedPenguinTo ( int horz, int vert );
+   void clearMoves() { myMoveCount = 0; }
 
+   unsigned int maxMoves () { return myMaxMoves; }
+   unsigned int moveCount () { return myMoveCount; }
+   unsigned int penguinCount () { return myPenguins.size(); }
+   unsigned int turnIndex () { return myTurnIndex; }
    Penguin* selectedPenguin () { return mySelectedPenguin; }
 
+ 
 private:
    void getSelectedPenguin ();
 
@@ -49,9 +64,9 @@ private:
    unsigned int             myMaxMoves;
    unsigned int             mySackCount;
    unsigned int             myTurnIndex;
-   unsigned int             myPenguinCount;
-   Penguin*                 myPenguins;
+   std::vector<Penguin*>    myPenguins;
    Penguin*                 mySelectedPenguin;
+   Penguin::Direction       myStartDirection;
    CollisionManager         myCollisionManager;
    DxTexture*               myPrevMoveTexture;
    DxGameSprite             myCursor;

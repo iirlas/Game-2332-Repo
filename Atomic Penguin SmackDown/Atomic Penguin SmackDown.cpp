@@ -32,6 +32,7 @@ Game::~Game ()
 bool Game::initPlayers ( const tstring& configFilename )
 {
    tifstream playerConfigFile( DxAssetManager::getInstance().getAssetPath( configFilename ).c_str() );
+
    if ( !playerConfigFile.is_open() || playerConfigFile.bad() )
    {
       return false;
@@ -41,8 +42,21 @@ bool Game::initPlayers ( const tstring& configFilename )
    tstring line;
    while ( parser.getNextLine( playerConfigFile, line ) )
    {
+      tstringstream ss(line);
+      tstring filename;
+      int guiX = 0, guiY = 0;
+      ss >> filename >> guiX >> guiY;
+      if ( ss.fail() )
+      {
+         return false;
+      }
       myPlayers.push_back( new Player() );
-      if (  !myPlayers.back()->init( line, myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() ) )
+      if (  !myPlayers.back()->init( filename, myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() ) )
+      {
+         return false;
+      }
+      myGUIs.push_back( new GameUI() );
+      if ( !myGUIs.back()->init( fontInterface(), guiX, guiY, *myPlayers.back(), D3DCOLOR_XRGB(255, 255, 255) ) )
       {
          return false;
       }
@@ -64,23 +78,25 @@ void Game::resolveCollisions ()
    {
       int column = (int)(currentPenguin->getXPosition() / currentPenguin->getWidth()) + horz;
       int row = (int)(currentPenguin->getYPosition() / currentPenguin->getHeight()) + vert;
-      bool isFreeFromCollision = true;
-      for ( unsigned int index = 0; index < myPlayers.size(); index++ )
+      if ( column < myLevelBgnds.numColumns() && column >= 0 && row < myLevelBgnds.numRows() && row >= 0 )
       {
-         if ( myPlayers[index]->penguinCollision( column, row ) )
+         bool isFreeFromCollision = true;
+         for ( unsigned int index = 0; index < myPlayers.size(); index++ )
          {
-            isFreeFromCollision = false;
-            break;
+            if ( myPlayers[index]->penguinCollision( column, row ) )
+            {
+               isFreeFromCollision = false;
+               break;
+            }
+         }
+         bool canMoveFrom = currentPenguin->canMoveFrom( myLevelBgnds.tileAt( *currentPenguin )->type() );
+         bool canMoveTo = currentPenguin->canMoveTo( myLevelBgnds.tileAt( column, row )->type() );
+         if ( currentPlayer->canMove() && canMoveFrom && canMoveTo && isFreeFromCollision )
+         {
+            currentPlayer->moveSelectedPenguinTo( horz, vert );
+            currentPenguin->direction( Penguin::makeDirection( horz, vert ) );
          }
       }
-      bool canMoveFrom = currentPenguin->canMoveFrom( myLevelBgnds.tileAt( *currentPenguin )->type() );
-      bool canMoveTo = currentPenguin->canMoveTo( myLevelBgnds.tileAt( column, row )->type() );
-      if ( currentPlayer->canMove() && canMoveFrom && canMoveTo && isFreeFromCollision )
-      {
-         currentPlayer->moveSelectedPenguinTo( horz, vert );
-         currentPenguin->direction( Penguin::makeDirection( horz, vert ) );
-      }
-      
    }
 }
 
@@ -100,8 +116,6 @@ bool Game::gameInit ()
 
    result &= myLevelBgnds.init( device(), _T("16x16.config") );
    
-   result &= myGameUI.init( fontInterface(), 0, 0, D3DCOLOR_XRGB(255, 255, 255) );
-
    result &= Penguin::initPenguinMovement( "Penguin.config" );
 
    result &= initPlayers("Player.config");
@@ -117,15 +131,22 @@ void Game::gameRun ()
    // clear the backbuffer
    device()->ColorFill( backBuffer(), NULL, bgColor );
    myLevelBgnds.update();
+
    for ( unsigned int index = 0; index < myPlayers.size(); index++ )
    {
       if ( index == myPlayerIndex )
       {
          myPlayers[index]->update( levelRef );
       }
+      myGUIs[index]->update( (myPlayers[index]->turnIndex()-1) == myPlayerIndex );
+
+      if ( myPlayers[index]->moveCount() == myPlayers[index]->maxMoves() )
+      {
+         myPlayerIndex = (myPlayerIndex + 1) % myPlayers.size();
+         myPlayers[index]->clearMoves();
+      }
    }
    resolveCollisions();
-   myGameUI.update();
 
    //myPlayer.resolveCollisions( levelRef );
 
@@ -140,8 +161,8 @@ void Game::gameRun ()
          for ( unsigned int index = 0; index < myPlayers.size(); index ++ )
          {
             myPlayers[index]->draw( spriteInterface() );
+            myGUIs[index]->draw( spriteInterface() );
          }
-         myGameUI.draw( spriteInterface() );
          
          // stop rendering
          spriteInterface()->End();
@@ -162,8 +183,13 @@ void Game::gameExit ()
       delete myPlayers[index];
       myPlayers[index] = NULL;
    }
+   for ( unsigned int index = 0; index < myGUIs.size(); index++ )
+   {
+      myGUIs[index]->destroy();
+      delete myGUIs[index];
+      myGUIs[index] = NULL;
+   }
    myPlayers.clear();
-   myGameUI.destroy();
    myLevelBgnds.shutdown();
    DxAssetManager::getInstance().shutdown();
 }

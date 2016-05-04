@@ -12,7 +12,7 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
    ConfigParser parser;
    tifstream file( DxAssetManager::getInstance().getConfigAssetPath( playerConfigFile ).c_str() );
    tstring line;
-   unsigned int penguinIndex = 0;
+   unsigned int penguinIndex = 0;   
 
    if ( !file.is_open() || file.bad() )
    {
@@ -30,10 +30,10 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
          ss.clear();
          tstring token;
          ss >> token;
-         if ( token == "@NUMBER" && myPenguinCount == 0  )
+         if ( token == "@NUMBER" && penguinCount() == 0  )
          {
-            ss >> myPenguinCount;
-            myPenguins = new Penguin[myPenguinCount];
+            //ss >> myPenguinCount;
+            //myPenguins = new Penguin[myPenguinCount];
          }
          else if ( token == "@PLAYER" )
          {
@@ -43,31 +43,35 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
          {
             ss >> myMaxMoves;
          }
+         else if ( token == "@DIRECTION" )
+         {
+            tstring strDir;
+            ss >> strDir;
+            myStartDirection = Penguin::makeDirection( strDir );
+         }
          else
+         {
+            return false;
+         }
+         if ( ss.fail() )
          {
             return false;
          }
       }
       else 
       {
-         if ( myPenguinCount == 0 || penguinIndex >= myPenguinCount )
-         {
-            return false;
-         }
-
-         float c, r;
+         float c = 0, r = 0;
          ss >> c >> r;
 
          if ( ss.fail() )
          {
             return false;
          }
-
-         myPenguins[penguinIndex].create( (Penguin::Type)type, c * tileWidth, r * tiltHeight, myTurnIndex );
-         myPenguins[penguinIndex].setScale( (float)tileWidth  / (float)myPenguins[penguinIndex].getWidth(), 
-            (float)tiltHeight / (float)myPenguins[penguinIndex].getHeight() );
-         myPenguins[penguinIndex].resizeCollisionArea();
-         penguinIndex++;
+         Penguin* penguin = new Penguin();
+         penguin->create( (Penguin::Type)type, c * tileWidth, r * tiltHeight, myTurnIndex, myStartDirection );
+         penguin->setScale( (float)tileWidth  / (float)penguin->getWidth(), 
+                            (float)tiltHeight / (float)penguin->getHeight() );
+         myPenguins.push_back( penguin );
       }
    }
 
@@ -86,8 +90,7 @@ void Player::update ( TiledBackground& tiledBackground )
    // penguin movement
    if ( mySelectedPenguin )
    {
-      Tile* tile =   tiledBackground.tileAt( (float)mySelectedPenguin->getXPosition(), (float)mySelectedPenguin->getYPosition(),
-                                             (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
+      Tile* tile =   tiledBackground.tileAt( *mySelectedPenguin );
 
       if ( DxKeyboard::keyPressed( VK_RETURN ) )// set penguin position 
       {
@@ -99,7 +102,7 @@ void Player::update ( TiledBackground& tiledBackground )
             mySelectedPenguin->destroy();
             if ( mySackCount == 2 )
             {   
-               mySelectedPenguin->create( Penguin::HULK, mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), myTurnIndex );
+               mySelectedPenguin->create( Penguin::HULK, mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), myTurnIndex, myStartDirection );
             }
          }
          mySelectedPenguin = NULL;
@@ -129,9 +132,9 @@ void Player::draw ( IDXSPRITE spriteInterface )
       myCursor.draw( spriteInterface );
    }
 
-   for ( unsigned int index = 0; index < myPenguinCount; index++ )
+   for ( unsigned int index = 0; index < penguinCount(); index++ )
    {
-      myPenguins[index].draw( spriteInterface );
+      myPenguins[index]->draw( spriteInterface );
    }
 
 }
@@ -140,21 +143,23 @@ void Player::draw ( IDXSPRITE spriteInterface )
 //=======================================================================
 void Player::shutdown ()
 {
-   if ( myPenguins )
+   for ( unsigned int index = 0; index < myPenguins.size(); index++ )
    {
-      delete[] myPenguins;
-      myPenguins = NULL;
+      myPenguins[index]->destroy();
+      delete myPenguins[index];
+      myPenguins[index] = NULL;
    }
+   myPenguins.clear();
 }
 
 //=======================================================================
 bool Player::penguinCollision ( int column, int row )
 {
-   for ( unsigned int index = 0; index < myPenguinCount; index++ )
+   for ( unsigned int index = 0; index < penguinCount(); index++ )
    {
-      float x = (float)(column * myPenguins[index].getWidth());
-      float y = (float)(row * myPenguins[index].getHeight());
-      if ( x == myPenguins[index].getXPosition() && y == myPenguins[index].getYPosition() )
+      float x = (float)(column * myPenguins[index]->getWidth());
+      float y = (float)(row * myPenguins[index]->getHeight());
+      if ( x == myPenguins[index]->getXPosition() && y == myPenguins[index]->getYPosition() )
       {
          return true;
       }
@@ -187,27 +192,27 @@ void Player::moveSelectedPenguinTo ( int horz, int vert )
 void Player::getSelectedPenguin ()
 {
    // penguin selection
-   for ( unsigned int index = 0; index < myPenguinCount; index++ )
+   for ( unsigned int index = 0; index < penguinCount(); index++ )
    {
-      myPenguins[index].update();
+      myPenguins[index]->update();
 
       if ( DxWrapper::mouse().mouseButton(0) )
       {
          int mouse_x = DxWrapper::mouse().mouseX(), mouse_y = DxWrapper::mouse().mouseY();
-         if ( myMovements.empty() && myPenguins[index].getCollisionArea().contains( mouse_x, mouse_y ) )
+         if ( myMovements.empty() && myPenguins[index]->getCollisionArea().contains( mouse_x, mouse_y ) )
          {
-            mySelectedPenguin = &myPenguins[index];
+            mySelectedPenguin = myPenguins[index];
          }
       }
 
-      if ( &myPenguins[index] != mySelectedPenguin )
+      if ( myPenguins[index] != mySelectedPenguin )
       {
-         myPenguins[index].getAnimation().stop();
-         myPenguins[index].getAnimation().reset();
+         myPenguins[index]->getAnimation().stop();
+         myPenguins[index]->getAnimation().reset();
       }
-      else if ( !myPenguins[index].getAnimation().isPlaying() )
+      else if ( !myPenguins[index]->getAnimation().isPlaying() )
       {
-         myPenguins[index].getAnimation().play();
+         myPenguins[index]->getAnimation().play();
       }
    }
 }

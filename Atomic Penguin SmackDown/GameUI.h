@@ -3,18 +3,19 @@
 #if !defined(_GAMEUI_H_)
 #define _GAMEUI_H_
 
-#include <d3d9.h>
-#include <d3dx9.h>
+#include <vector>
 #include "Utilities/NonCopyable.h"
 #include "Utilities/TTypes.h"
 #include "Utilities/Rect.h"
 #include "Utilities/Point.h"
+#include "DxWrapper/DxCommon.h"
 #include "DxWrapper/DxTexture.h"
 #include "DxWrapper/DxTypes.h"
 #include "DxWrapper/DxGameSprite.h"
 #include "DxWrapper/DxText.h"
 #include "Utilities/Timer.h"
 #include "DxWrapper/DxAssetManager.h"
+#include "Atomic Penguin SmackDown/Player.h"
 
 
 
@@ -25,8 +26,8 @@ public:
 	~GameUI ( void );
 
 public:
-   bool init( IDXFONT font, int xPos, int yPos, D3DCOLOR color );
-   bool update();
+   bool init( IDXFONT font, int xPos, int yPos, Player& player, D3DCOLOR color );
+   bool update( bool isPlayerTurn );
    bool destroy();
 
    bool draw( IDXSPRITE spriteObj );
@@ -37,39 +38,15 @@ public:
 
  
 private:
+   Player*           myPlayer;
    DxText            myPlayerOne;
    DxText            myPlayerTwo;
    DxText            myMovesCounter;
 
-
-   DxGameSprite      p1Header;
-   DxGameSprite      p1General;
-   DxGameSprite      p1GeneralHealth;
-   DxGameSprite      p1Bazooka;
-   DxGameSprite      p1BazookaHealth;
-   DxGameSprite      p1Slider; 
-   DxGameSprite      p1SliderHealth;
-   DxGameSprite      p1Pawn1;
-   DxGameSprite      p1Pawn1Health;
-   DxGameSprite      p1Pawn2;
-   DxGameSprite      p1Pawn2Health;
-   DxGameSprite      p1Hulk;
-   DxGameSprite      p1HulkHealth;
-
-
-   DxGameSprite      p2Header;
-   DxGameSprite      p2General;
-   DxGameSprite      p2GeneralHealth;
-   DxGameSprite      p2Bazooka;
-   DxGameSprite      p2BazookaHealth;
-   DxGameSprite      p2Slider; 
-   DxGameSprite      p2SliderHealth;
-   DxGameSprite      p2Pawn1;
-   DxGameSprite      p2Pawn1Health;
-   DxGameSprite      p2Pawn2;
-   DxGameSprite      p2Pawn2Health;
-   DxGameSprite      p2Hulk;
-   DxGameSprite      p2HulkHealth;
+   std::vector<DxGameSprite*> myPenguins;
+   std::vector<Penguin::Type> myPenguinTypes;
+   std::vector<DxGameSprite*> myHealthBars;
+   DxGameSprite               myPlayerHeader;
 
    D3DCOLOR          myTextColor;
 

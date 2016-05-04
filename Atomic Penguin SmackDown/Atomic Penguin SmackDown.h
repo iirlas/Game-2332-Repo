@@ -35,12 +35,13 @@ private:
    int                  myPlayerIndex;
    D3DCOLOR             bgColor;
    std::vector<Player*> myPlayers;
+   std::vector<GameUI*> myGUIs;
    tstring              myGameTitle;
    TiledBackground      myLevelBgnds;
    RECT                 myBgRect;
    CollisionManager     myCollisionManager;
 
-   GameUI              myGameUI;
+   //GameUI              myGameUI;
 
 };
 
