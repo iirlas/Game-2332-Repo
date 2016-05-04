@@ -15,6 +15,7 @@
 #include "DxWrapper/DxAnimation.h"
 #include "DxWrapper/DxGameSprite.h"
 #include "Utilities/Point.h"
+#include "Atomic Penguin SmackDown/Penguin.h"
 #include "Atomic Penguin SmackDown/Tile.h"
 
 
@@ -63,7 +64,11 @@ public:
       return tileAt( (int)(x/width), (int)(y/height) );
    }
 
-
+   inline Tile* tileAt ( Penguin& penguin )
+   {
+      return tileAt( (float)penguin.getXPosition(), (float)penguin.getWidth(), 
+                     (float)penguin.getYPosition(), (float)penguin.getHeight() );
+   }
 
    std::vector<Tile> mySpriteMap;
    

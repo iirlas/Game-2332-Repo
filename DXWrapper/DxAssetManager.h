@@ -14,10 +14,6 @@
 
 class DxAssetManager : private NonCopyable
 {
-private:
-   template<typename AssetType> struct Asset;
-   struct RawAsset;
-
 public:
    static const unsigned ourMaxCachedItemsCount = 256;
 
@@ -28,7 +24,7 @@ public:
    bool init ( const TCHAR* rootAssetPath = NULL,  bool createRootAssetDir = false );
    
    // load from current asset path, unless specifilced.
-   bool load ( const tstring& configFilename, bool build = true );
+   bool load ( const tstring& configFilename );
 
 
    void shutdown ();
@@ -42,28 +38,20 @@ public:
    DxAnimation getAnimationCopy ( const tstring& name, float speed, D3DCOLOR excludeColor = D3DCOLOR_ARGB( 0, 0, 0, 0 ) );
 
 private:
-   bool parseConfig ( const tstring& name, bool build );
-   RawAsset* getAssetRaw ( const tstring& name );
+   bool parseConfig ( const tstring& name );
+   bool loadTextureFile( tstring name, tstring filename, D3DCOLOR excludeColor );
+   bool loadTexture ( tstring name, DxTexture* fileTexture, Rect& srcRect );
+   bool loadSurface ( tstring name, DxTexture* fileTexture, Rect& srcRect );
+   bool loadAnimation ( tstring name, DxTexture* fileTexture, tstring animationDescr );
 
-   bool buildFileAsset ( const tstring& rawAsset );
-   bool buildTexturetAsset ( const tstring& rawAsset, DxTexture* texture );
-
-   bool addTextureFromFile ( const tstring& name, const tstring& filename, D3DCOLOR excludeColor );
-   bool addTexture ( const tstring& name, DxTexture* texture, int x, int y, int width, int height );
-   bool addSurface ( const tstring& name, DxTexture* texture, int x, int y, int width, int height );
-   bool addAnimation ( const tstring& name, DxTexture* texture, const tstring& animationDescr  );
 
    DxAssetManager ();
    ~DxAssetManager ();
-   //bool parse ( const tstring& configFile );
 
-   
-   tstring                                myAssetPath;
-   DxTexture*                             myCurrentBuildingTexture;
-   std::vector<RawAsset>                  myRawAssets;
-   std::vector<Asset<DxTexture>>          myTextures;
-   std::vector<Asset<DxSurface>>          mySurfaces;
-   std::vector<Asset<DxAnimation>>        myAnimations;
+   tstring                               myAssetPath;
+   std::map<tstring, DxTexture>          myTextures;
+   std::map<tstring, DxSurface>          mySurfaces;
+   std::map<tstring, DxAnimation>        myAnimations;
 };
 
 #endif

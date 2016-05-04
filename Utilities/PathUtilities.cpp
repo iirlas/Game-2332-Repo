@@ -5,6 +5,7 @@ PtrPathAddBackslash PathUtilities::_pathAddBackslash = NULL;
 PtrPathAppend       PathUtilities::_pathAppend = NULL;
 PtrPathCanonicalize PathUtilities::_pathCanonicalize = NULL;
 PtrPathIsDirectory  PathUtilities::_pathIsDirectory = NULL;
+PtrPathIsRelative   PathUtilities::_pathIsRelative = NULL;
 PtrPathFileExists   PathUtilities::_pathFileExists = NULL;
 PtrPathStripPath    PathUtilities::_pathStripPath = NULL;
 
@@ -18,13 +19,15 @@ bool PathUtilities::init ( )
    _pathAppend =        (PtrPathAppend)GetProcAddress( ourDllHandle, "PathAppendA" );
    _pathCanonicalize =  (PtrPathCanonicalize)GetProcAddress( ourDllHandle, "PathCanonicalizeA" ); 
    _pathIsDirectory =   (PtrPathIsDirectory)GetProcAddress( ourDllHandle, "PathIsDirectoryA" );
+   _pathIsRelative =    (PtrPathIsRelative)GetProcAddress( ourDllHandle, "PathIsRelativeA" );
    _pathFileExists =    (PtrPathFileExists)GetProcAddress( ourDllHandle, "PathFileExistsA" );
    _pathStripPath =     (PtrPathStripPath)GetProcAddress( ourDllHandle, "PathStripPathA" );
    
    return _pathAddBackslash != NULL && 
           _pathAppend != NULL &&
           _pathCanonicalize != NULL &&
-          _pathIsDirectory != NULL && 
+          _pathIsDirectory != NULL &&
+          _pathIsRelative != NULL &&
           _pathFileExists != NULL &&
           _pathStripPath != NULL;
 }
@@ -119,6 +122,18 @@ bool PathUtilities::pathIsDirectory ( const tstring& path )
    BOOL result = (*_pathIsDirectory)( path.c_str() );
    return !!result;
 }
+
+//=======================================================================
+bool PathUtilities::pathIsRelative ( const tstring& path )
+{
+   if ( _pathIsRelative == NULL )
+   {
+      return false;
+   }
+   BOOL result = (*_pathIsRelative)( path.c_str() );
+   return !!result;
+}
+
 
 //=======================================================================
 bool PathUtilities::pathFileExists ( const tstring& path )

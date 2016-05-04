@@ -13,6 +13,7 @@ typedef LPTSTR (STDAPICALLTYPE *PtrPathAddBackslash)( LPTSTR path );
 typedef BOOL (STDAPICALLTYPE *PtrPathAppend)( LPTSTR path, LPCTSTR more );
 typedef BOOL (STDAPICALLTYPE *PtrPathCanonicalize)( LPTSTR dstPath, LPCTSTR srcPath );
 typedef BOOL (STDAPICALLTYPE *PtrPathIsDirectory)( LPCTSTR path );
+typedef BOOL (STDAPICALLTYPE *PtrPathIsRelative)( LPCTSTR path );
 typedef BOOL (STDAPICALLTYPE *PtrPathFileExists)( LPCTSTR path );
 typedef void (STDAPICALLTYPE *PtrPathStripPath) ( LPTSTR path );
 class PathUtilities : NonCopyable
@@ -37,6 +38,9 @@ public:
    static bool pathIsDirectory ( const tstring& path );
 
    //=======================================================================
+   static bool pathIsRelative ( const tstring& path );
+
+   //=======================================================================
    static bool pathFileExists ( const tstring& path );
 
    //=======================================================================
@@ -50,6 +54,7 @@ private:
    static PtrPathAppend       _pathAppend;
    static PtrPathCanonicalize _pathCanonicalize;
    static PtrPathIsDirectory  _pathIsDirectory;
+   static PtrPathIsRelative   _pathIsRelative;
    static PtrPathFileExists   _pathFileExists;
    static PtrPathStripPath    _pathStripPath;
    //static FARPROC _pathCanonicalize;

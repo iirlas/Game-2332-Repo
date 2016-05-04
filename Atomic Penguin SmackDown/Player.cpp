@@ -105,6 +105,9 @@ void Player::update ( TiledBackground& tiledBackground )
    // penguin movement
    if ( mySelectedPenguin )
    {
+      Tile* tile =   tiledBackground.tileAt( (float)mySelectedPenguin->getXPosition(), (float)mySelectedPenguin->getYPosition(),
+                                             (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
+
       int horz = DxKeyboard::keyPressed( VK_RIGHT ) - DxKeyboard::keyPressed( VK_LEFT );
       int vert = DxKeyboard::keyPressed( VK_DOWN ) - DxKeyboard::keyPressed( VK_UP );
 
@@ -112,14 +115,20 @@ void Player::update ( TiledBackground& tiledBackground )
       {  
          float nextX = mySelectedPenguin->getXPosition() + horz * mySelectedPenguin->getWidth();
          float nextY = mySelectedPenguin->getYPosition() + vert * mySelectedPenguin->getHeight();
-
-
          Tile* nextTile = tiledBackground.tileAt( (float)nextX, (float)nextY, (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
-         Tile* tile =     tiledBackground.tileAt( (float)mySelectedPenguin->getXPosition(), (float)mySelectedPenguin->getYPosition(), 
-                                                  (float)mySelectedPenguin->getWidth(), (float)mySelectedPenguin->getHeight() );
+
          if ( nextTile && tile )
          {
-            if ( mySelectedPenguin->canMoveFrom( tile->type() ) && mySelectedPenguin->canMoveTo( nextTile->type() ) )
+            bool penguinCollision = false;
+            for ( unsigned int index = 0; index < myPenguinCount; index++ )
+            {
+               if ( mySelectedPenguin != &myPenguins[index] && nextX == myPenguins[index].getXPosition() && nextY == myPenguins[index].getYPosition() )
+               {
+                  penguinCollision = true;
+                  break;
+               }
+            }
+            if ( mySelectedPenguin->canMoveFrom( tile->type() ) && mySelectedPenguin->canMoveTo( nextTile->type() ) && !penguinCollision )
             {
                Movement movement = { mySelectedPenguin->direction(), D3DXVECTOR3( mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), 0 ) };
                myMovements.push_back( movement );
@@ -127,14 +136,13 @@ void Player::update ( TiledBackground& tiledBackground )
                mySelectedPenguin->setYPosition(nextY);
             }
          }
-
          mySelectedPenguin->direction( Penguin::makeDirection( horz, vert ) );
 
       }
       else if ( DxKeyboard::keyPressed( VK_RETURN ) )
       {
          myMovements.clear();
-         if ( mySelectedPenguin->type() == Penguin::PAWN )
+         if ( mySelectedPenguin->type() == Penguin::PAWN && tile->type() == Tile::SLIME )
          {
             mySackCount++;
             mySelectedPenguin->destroy();

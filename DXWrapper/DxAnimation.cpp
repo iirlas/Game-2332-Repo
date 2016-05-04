@@ -65,8 +65,7 @@ bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float
       }
       frame.rect.set( pos, width, height );
       frame.texture = texture;
-      myFrames[myFrameCount] = frame;
-      myFrameCount++;
+      addFrame( frame );
    }
    mySpeed = speed;
    myExcludeColor = excludeColor;
@@ -80,8 +79,7 @@ bool DxAnimation::init ( DxTexture* texture, D3DCOLOR excludeColor )
    DxAnimationFrame frame;
    frame.rect.set( 0, 0, texture->width(), texture->height() );
    frame.texture = texture;
-   myFrames[myFrameCount] = frame;
-   myFrameCount++; 
+   addFrame( frame ); 
    mySpeed = 0;
    myExcludeColor = excludeColor;
    return myTimer.start();
@@ -96,15 +94,16 @@ void DxAnimation::update ()
    if ( mySpeed == 0 || myTimer.elapsedTime() < 1000 / mySpeed )
       return;
 
-   myCurrentFrame = (myCurrentFrame + myFrameDirection) % myFrameCount;
+   int nextFrame = myCurrentFrame + myFrameDirection;
 
    switch ( myAnimation )
    {
    case ANIMATION::SINGLE:
       {
          myFrameDirection = 1;
-         if ( myCurrentFrame == (myFrameCount - 1) )
+         if ( nextFrame >= ((int)myFrameCount - 1) )
          {
+            nextFrame = (myFrameCount - 1);
             myTimer.stop();
          }
       }
@@ -113,17 +112,20 @@ void DxAnimation::update ()
    case ANIMATION::LOOP:
       {
          myFrameDirection = 1;
+         nextFrame = nextFrame % myFrameCount;
       }
       break;
 
    case ANIMATION::ROCKER:
       {
-         if ( myCurrentFrame == (myFrameCount - 1) && myFrameDirection > 0)
+         if ( nextFrame >= ((int)myFrameCount - 1) )
          {
+            nextFrame = (myFrameCount - 1);
             myFrameDirection = -1;
          }
-         else if ( myCurrentFrame == 0 && myFrameDirection < 0 )
+         else if ( nextFrame <= 0 )
          {
+            nextFrame = 0;
             myFrameDirection = 1;
          }
       }
@@ -132,7 +134,7 @@ void DxAnimation::update ()
       myFrameDirection = 0;
       break;
    } 
-
+   myCurrentFrame = nextFrame;
    myTimer.restart();
 }
 

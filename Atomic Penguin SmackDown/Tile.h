@@ -11,6 +11,11 @@
 class Tile : public DxGameSprite
 {
 public:
+   friend bool operator== ( Tile& tile1, Tile& tile2 )
+   {
+      return tile1.myType == tile2.myType;
+   }
+
 
    typedef enum
    {
