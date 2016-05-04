@@ -90,19 +90,19 @@ Any allocation number < {nnn} can be ignored\n") );
 //private
 bool Application::registerClass ()
 {
-    WNDCLASSEX wcex;
-    wcex.cbSize             = sizeof(WNDCLASSEX);
-    wcex.style			    = resourceStyle();
-    wcex.lpfnWndProc	    = WndProc;
-    wcex.cbClsExtra	        = resourceCLSExtra();
-    wcex.cbWndExtra	        = resourceWndExtra();
-    wcex.hInstance		    = instance();
-    wcex.hIcon			    = (resourceIconID() == -1 ? resourceIcon() : LoadIcon( instance(), MAKEINTRESOURCE( resourceIconID() )));
-    wcex.hCursor		    = (resourceCursorID() == -1 ? resourceIcon() : LoadCursor( NULL, MAKEINTRESOURCE( resourceIconID() )));
-    wcex.hbrBackground	    = resourceBackground();
-    wcex.lpszMenuName	    = (resourceMenuID() == -1 ? resourceMenu() : MAKEINTRESOURCE( resourceMenuID() ));
-    wcex.lpszClassName      = resourceClassName();
-    wcex.hIconSm		    = (resourceIconSmallID() == -1 ? resourceIcon() : LoadIcon( instance(), MAKEINTRESOURCE( resourceIconSmallID() ) ));
+   WNDCLASSEX wcex;
+   wcex.cbSize          = sizeof(WNDCLASSEX);
+   wcex.style			   = resourceStyle();
+   wcex.lpfnWndProc	   = WndProc;
+   wcex.cbClsExtra	   = resourceCLSExtra();
+   wcex.cbWndExtra	   = resourceWndExtra();
+   wcex.hInstance		   = instance();
+   wcex.hIcon			   = (resourceIconID() == -1 ? resourceIcon() : LoadIcon( instance(), MAKEINTRESOURCE( resourceIconID() )));
+   wcex.hCursor		   = (resourceCursorID() == -1 ? resourceCursor() : LoadCursor( NULL, MAKEINTRESOURCE( resourceCursorID() )));
+   wcex.hbrBackground	= resourceBackground();
+   wcex.lpszMenuName	   = (resourceMenuID() == -1 ? resourceMenu() : MAKEINTRESOURCE( resourceMenuID() ));
+   wcex.lpszClassName   = resourceClassName();
+   wcex.hIconSm		   = (resourceIconSmallID() == -1 ? resourceIconSmall() : LoadIcon( instance(), MAKEINTRESOURCE( resourceIconSmallID() ) ));
     return (RegisterClassEx(&wcex) != NULL);
 }
 
