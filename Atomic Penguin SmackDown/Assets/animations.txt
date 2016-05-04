@@ -146,7 +146,7 @@ INVISIBLOCK     0       545	905	80	80
 
 
 #name of file
-#@Image GUI   gui.png
+@Image GUI   gui.png
 
 #type of animation refers to style. 
 #           0 is looping 
