@@ -100,7 +100,7 @@ public:
       myFrameCount++;
    }
 
-   void setFrame ( int frame ) { frame = frame % myFrameCount; frame = myCurrentFrame; }
+   void setFrame ( int frame ) { frame = frame % myFrameCount; myCurrentFrame = frame; }
 
    int getCurrentFrame() const { return myCurrentFrame; }
 
