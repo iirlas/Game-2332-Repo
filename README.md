@@ -2,7 +2,7 @@
 
 
 ## *Concept*
-It's a tale as old as time: Two families fight for--well, no one knows  quit for sure; they say it started with a fish (how did it end up like this?), but now these militaristic penguins have a secret weapon to end their feud: Mutation via atomic waste.
+It's a tale as old as time: Two families fight for--well, no one knows  quite for sure; they say it started with a fish (how did it end up like this?), but now these militaristic penguins have a secret weapon to end their feud: Mutation via atomic waste.
 
 ## Team Background
 ##### 
@@ -59,6 +59,7 @@ It's a tale as old as time: Two families fight for--well, no one knows  quit for
     Penguins might get their suits wet!
 #### ROCK
     Unpassable.
+    It's like stepping on legos!
 #### GROUND
     No movement effects.
 #### ICE
