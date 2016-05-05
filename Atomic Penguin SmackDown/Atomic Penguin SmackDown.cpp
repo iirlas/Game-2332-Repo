@@ -91,7 +91,7 @@ void Game::resolveCollisions ()
          }
          bool canMoveFrom = currentPenguin->canMoveFrom( myLevelBgnds.tileAt( *currentPenguin )->type() );
          bool canMoveTo = currentPenguin->canMoveTo( myLevelBgnds.tileAt( column, row )->type() );
-         if ( currentPlayer->canMove() && canMoveFrom && canMoveTo && isFreeFromCollision )
+         if ( currentPlayer->canMoveSelected() && canMoveFrom && canMoveTo && isFreeFromCollision )
          {
             currentPlayer->moveSelectedPenguinTo( horz, vert );
             currentPenguin->direction( Penguin::makeDirection( horz, vert ) );
@@ -140,13 +140,31 @@ void Game::gameRun ()
       }
       myGUIs[index]->update( (myPlayers[index]->turnIndex()-1) == myPlayerIndex );
 
-      if ( myPlayers[index]->moveCount() == myPlayers[index]->maxMoves() )
+      if ( myPlayers[index]->attacking() )
       {
-         myPlayerIndex = (myPlayerIndex + 1) % myPlayers.size();
-         myPlayers[index]->clearMoves();
+         float x = 0, y = 0;
+         myPlayers[index]->selectedPenguin()->getFacingPosition( &x, &y );
+         for ( unsigned int j = 0; j < myPlayers.size(); j++ )
+         {
+            if ( j != index )
+            {
+               myPlayers[j]->attackPenguin( x, y, myPlayers[index]->selectedPenguin()->attackPower() );
+
+            }
+         }
+         myPlayers[index]->toggleAttacking();
+         myPlayers[index]->deselectPenguin();      
+         if ( !myPlayers[index]->canMove() )
+         {
+            myPlayerIndex = (myPlayerIndex + 1) % myPlayers.size();
+            myPlayers[myPlayerIndex]->clearMoves();
+         }
+         // check for game over
       }
    }
    resolveCollisions();
+
+
 
    //myPlayer.resolveCollisions( levelRef );
 

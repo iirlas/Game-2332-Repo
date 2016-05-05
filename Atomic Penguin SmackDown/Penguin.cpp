@@ -20,13 +20,13 @@ bool Penguin::initPenguinMovement ( const tstring& filename )
    while ( parser.getNextLine( file, line ) )
    {
       tstringstream ss( line );
-      int penguinType = 0, speed = -1, health = -1;
-      ss >> penguinType >> speed >> health;
+      int penguinType = 0, speed = -1, health = -1, attackPower = -1;
+      ss >> penguinType >> speed >> health >> attackPower;
       if ( ss.fail() )
       {
          return false;
       }
-      Info info = { speed, health };
+      Info info = { speed, health, attackPower };
       ourPenguinInfo[(Type)penguinType] = info;
    }
    return true;
@@ -69,6 +69,7 @@ bool Penguin::create ( Penguin::Type type, float x ,float y, int playerTurnIndex
    myRightAnim = "P" + Util::intToString(playerTurnIndex) + "-" + myRightAnim;
    myType = type;
    myHealth = ourPenguinInfo[type].maxHealth;
+   myAttackPower = ourPenguinInfo[type].attackPower;
 
    tstring startAnim;
    switch ( myDirection )
@@ -114,6 +115,31 @@ Penguin::Direction Penguin::direction ( Penguin::Direction direction )
       break;
    }
    return (myDirection = direction);
+}
+
+//=======================================================================
+void Penguin::getFacingPosition( float* x, float* y )
+{
+   if ( x && y )
+   {
+      (*x) = getXPosition();
+      (*y) = getYPosition();
+      switch ( myDirection )
+      {
+      case Direction::NORTH:
+         (*y) -= getHeight();
+         break;
+      case Direction::SOUTH:
+         (*y) += getHeight();
+         break;
+      case Direction::EAST:
+         (*x) += getWidth();
+         break;
+      case Direction::WEST:
+         (*x) -= getWidth();
+         break;
+      }
+   }
 }
 
 //=======================================================================

@@ -16,6 +16,7 @@ public:
    {
       unsigned int maxMoves;
       unsigned int maxHealth;
+      unsigned int attackPower;
    };
 
    typedef enum 
@@ -65,12 +66,16 @@ public:
    Direction direction () { return myDirection; }
    Direction direction ( Direction direction );
 
-   unsigned int health () { return myHealth; }
-   unsigned int health ( unsigned int health ) { return (myHealth = health); }
+   void getFacingPosition( float* x, float* y );
 
-   bool isAlive() { return myHealth > 0 && isValid(); }
+   void kill () { myHealth = 0; destroy(); }
+   int health () { return myHealth; }
+   int health ( int health ) { return (myHealth = health); }
+   bool isAlive() { return myHealth > 0; }
 
    Type type () { return myType; }
+   unsigned int attackPower () { return myAttackPower; }
+
    inline tstring typeToString ()
    {
       switch ( myType )
@@ -98,6 +103,7 @@ private:
    static float ourAnimationSpeed;
 
    int          myHealth;
+   int          myAttackPower;
    tstring      myFrontAnim;
    tstring      myBackAnim;
    tstring      myLeftAnim;

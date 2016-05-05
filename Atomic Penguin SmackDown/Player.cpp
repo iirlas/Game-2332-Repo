@@ -71,6 +71,7 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
          penguin->create( (Penguin::Type)type, c * tileWidth, r * tiltHeight, myTurnIndex, myStartDirection );
          penguin->setScale( (float)tileWidth  / (float)penguin->getWidth(),
                             (float)tiltHeight / (float)penguin->getHeight() );
+         penguin->resizeCollisionArea();
          myPenguinMoveFlag[penguin] = true;
          myPenguins.push_back( penguin );
       }
@@ -97,17 +98,18 @@ void Player::update ( TiledBackground& tiledBackground )
       {
          myMoveCount += myMovements.size();
          myMovements.clear();
+         toggleAttacking();
+
          if ( mySelectedPenguin->type() == Penguin::PAWN && tile->type() == Tile::SLIME )
          {
             mySackCount++;
-            mySelectedPenguin->destroy();
+            mySelectedPenguin->kill();
             if ( mySackCount == 2 )
             {   
                mySelectedPenguin->create( Penguin::HULK, mySelectedPenguin->getXPosition(), mySelectedPenguin->getYPosition(), myTurnIndex, myStartDirection );
             }
          }
          myPenguinMoveFlag[mySelectedPenguin] = false;
-         mySelectedPenguin = NULL;
       }
       else if ( DxKeyboard::keyPressed( VK_BACK ) && !myMovements.empty() )// move penguin to prev position
       {
@@ -161,7 +163,7 @@ bool Player::penguinCollision ( int column, int row )
    {
       float x = (float)(column * myPenguins[index]->getWidth());
       float y = (float)(row * myPenguins[index]->getHeight());
-      if ( x == myPenguins[index]->getXPosition() && y == myPenguins[index]->getYPosition() )
+      if ( myPenguins[index]->isAlive() && x == myPenguins[index]->getXPosition() && y == myPenguins[index]->getYPosition() )
       {
          return true;
       }
@@ -170,11 +172,23 @@ bool Player::penguinCollision ( int column, int row )
 }
 
 //=======================================================================
-bool Player::canMove ()
+bool Player::canMoveSelected ()
 {
    return myMovements.size() < mySelectedPenguin->moveCount() &&
           (myMoveCount + myMovements.size()) < myMaxMoves && myPenguinMoveFlag[mySelectedPenguin];
 }
+
+//=======================================================================
+bool Player::canMove()
+{
+   bool aPenguinCanMove = false;
+   for ( unsigned int index = 0; index < myPenguins.size(); index++ )
+   {
+      aPenguinCanMove |= myPenguinMoveFlag[myPenguins[index]] && myPenguins[index]->isAlive();
+   }
+   return myMoveCount < myMaxMoves && aPenguinCanMove;
+}
+
 
 //=======================================================================
 void Player::moveSelectedPenguinTo ( int horz, int vert )
@@ -202,6 +216,25 @@ void Player::clearMoves()
 }
 
 //=======================================================================
+void Player::attackPenguin( float x, float y, int damage )
+{
+   for ( unsigned int index = 0; index < penguinCount(); index++ )
+   {
+      if ( myPenguins[index]->isAlive() && myPenguins[index]->getXPosition() == x && myPenguins[index]->getYPosition() == y )
+      {
+         myPenguins[index]->health( myPenguins[index]->health() - damage );
+         if ( myPenguins[index]->health() <= 0 )
+         {
+            myPenguins[index]->destroy();
+            myPenguins[index]->health(0);
+         }
+         break;
+      }
+   }
+   
+}
+
+//=======================================================================
 void Player::getSelectedPenguin ()
 {
    // penguin selection
@@ -212,7 +245,7 @@ void Player::getSelectedPenguin ()
       if ( DxWrapper::mouse().mouseButton(0) )
       {
          int mouse_x = DxWrapper::mouse().mouseX(), mouse_y = DxWrapper::mouse().mouseY();
-         if ( myMovements.empty() && myPenguins[index]->getCollisionArea().contains( mouse_x, mouse_y ) )
+         if ( myPenguinMoveFlag[myPenguins[index]] && myMovements.empty() && myPenguins[index]->getCollisionArea().contains( mouse_x, mouse_y ) )
          {
             mySelectedPenguin = myPenguins[index];
          }

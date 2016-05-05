@@ -26,6 +26,7 @@ public:
       mySelectedPenguin = NULL; myPrevMoveTexture = NULL; 
       myTurnIndex = 0; mySackCount = 0; myMaxMoves = 0; myMoveCount = 0;
       myStartDirection = Penguin::Direction::NONE;
+      isAttacking = false;
    }
    ~Player () { shutdown(); }
 
@@ -45,21 +46,26 @@ public:
 
    void resolveCollisions ( TiledBackground& tiledBackground );
    bool penguinCollision ( int column, int row );
+   bool canMoveSelected ();
    bool canMove ();
    void moveSelectedPenguinTo ( int horz, int vert );
    void clearMoves();
+   void attackPenguin( float x, float y, int damage );
 
    unsigned int maxMoves () { return myMaxMoves; }
    unsigned int moveCount () { return myMoveCount; }
    unsigned int penguinCount () { return myPenguins.size(); }
    unsigned int turnIndex () { return myTurnIndex; }
    Penguin* selectedPenguin () { return mySelectedPenguin; }
+   bool attacking () { return isAttacking; } 
+   void toggleAttacking () { isAttacking = !isAttacking; }
+   void deselectPenguin () { mySelectedPenguin = NULL; }
 
- 
 private:
    void getSelectedPenguin ();
 
 private:
+   bool                     isAttacking;
    unsigned int             myMoveCount;
    unsigned int             myMaxMoves;
    unsigned int             mySackCount;
