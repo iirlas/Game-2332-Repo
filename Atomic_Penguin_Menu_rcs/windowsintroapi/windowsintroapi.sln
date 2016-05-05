@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "windowsintroapi", "windowsintroapi\windowsintroapi.vcproj", "{F2ACDA51-D308-456C-B677-9B0984A8287F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2ACDA51-D308-456C-B677-9B0984A8287F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F2ACDA51-D308-456C-B677-9B0984A8287F}.Debug|Win32.Build.0 = Debug|Win32
+		{F2ACDA51-D308-456C-B677-9B0984A8287F}.Release|Win32.ActiveCfg = Release|Win32
+		{F2ACDA51-D308-456C-B677-9B0984A8287F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
