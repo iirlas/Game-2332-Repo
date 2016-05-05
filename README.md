@@ -2,7 +2,7 @@
 
 
 ## *Concept*
-It's a tale as old as time: Montagues and Capulets, Sharks and Jets, Hatfields and McCoys. Blue and Green Penguin Families. They say it started with a fish (how did it end up like this?), but now these militaristic penguins have a secret weapon to end their fued: Mutation via atomic waste.
+It's a tale as old as time: Two families fight for--well, no one knows  quit for sure; they say it started with a fish (how did it end up like this?), but now these militaristic penguins have a secret weapon to end their feud: Mutation via atomic waste.
 
 ## Team Background
 ##### 
@@ -12,16 +12,34 @@ It's a tale as old as time: Montagues and Capulets, Sharks and Jets, Hatfields a
     Menu System by Nicholas Pastrano.
     Game Requirements set by class assigment.
     Game Design group developed and implemented.
+    
+    
+## Game Run Requirements
+####
+    1. Only runs on Windows machines
+    2. Directx9 must be installed to run
+    3. Working keyboard and mouse/trackpad are required for controls
 
-## Mechanics
-
-##### Gameplay Overview
+## Gameplay Overview
+####
     Board is selected via internal randomization.
     Players take turns moving penguins their alotted spaces and attacking until:
          1. One player has no more units alive.
          2. Neither player has taken damage in 10 rounds.
+    The active player will have their name (green or blue) highlighted.
+    Attacking is automatically applied to the penguin you are facing at the end of movement.
+
+    
+## Controls
+####
+    For each move, click the desired penguin to move it.
+    Move with the **arrow keys**.
+    To undo a move, press **backspace**
+    To commit your move, press **enter/return**
+    
          
-#### Tile Types
+## Tile Types
+####
 ![alt text] (Atomic Penguin SmackDown/Assets/Environment/radioactive.png "should it be glowing?")
 ![alt text] (Atomic Penguin SmackDown/Assets/Environment/water2.png "splish splash")
 ![alt text] (Atomic Penguin SmackDown/Assets/Environment/rock1.png "Where's Bullwinkle?")
@@ -31,57 +49,58 @@ It's a tale as old as time: Montagues and Capulets, Sharks and Jets, Hatfields a
 
 
  
-##### Atomic Waste
+#### ATOMIC WASTE
     **Special Tile**
     Only **PAWNS** can enter the waste.
     The first pawn that enters from each team will automatically be **SACRIFICED**
     The second pawn will then turn into a **HULK**. Health and Damage increasing
-##### Water
+#### WATER
     Unpassable.
     Penguins might get their suits wet!
-##### Rock
+#### ROCK
     Unpassable.
-##### Ground
+#### GROUND
     No movement effects.
-##### Ice
+#### ICE
     No movement effects.
-##### Snow
+#### SNOW
     No movement effects.
 
     
-#### Penguins
+## Penguins
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/01PawnFRONT.png "It's a stick!") 
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02PawnFRONT.png "It's another stick!")
-##### PAWN
+#### PAWN
     **See Radiocative Tile for Sacrifice Information**
     movements: moves in any direction 3 spaces
     attack: light damage (10 atk)
     health: light health (30hp)
 
+
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/01SliderLEFT.png "Could you imagine hockey with a squawking puck?")
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02SliderRIGHT.png "Squawk Squawk")
-##### SLIDER(Puck)
+#### SLIDER(Puck)
     movements: slides across the map up to 5 spaces
     attack: medium damage (20 atk)
     health: light health (40hp)
     
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/01BazookaFRONT.png "Boom Boom")
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02BazookaFRONT.png "Bang Bang")
-##### BAZOOKA(Joe)
+#### BAZOOKA(Joe)
     movements: move in any direction 1 space
     attack: medium damage  (30 atk)
     health: medium health (60hp)
  
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/01GeneralFRONT.png "Here comes the General!")
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02GeneralFRONT.png "I'm a general General.")
-##### THE GENERAL
+#### THE GENERAL
     movements: moves in any direction 1 space
     attack: light damage (10 atk)
     health: high health (80hp)
     
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/01HulkFRONT.png "Hulk Smash?")
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02HulkFRONT.png "Hulk Smash.")
-##### HULK
+#### HULK
     **See Radiocative Tile for Sacrifice Information**
     movements: moves in any direction 2 spaces
     attack: high damage  (40atk)
@@ -90,7 +109,7 @@ It's a tale as old as time: Montagues and Capulets, Sharks and Jets, Hatfields a
 
 
 
-#### Programming Structure (Classes)
+## Programming Structure (Classes)
 **Penguin**
     Game pieces and their attributes are held here
     
