@@ -13,6 +13,26 @@
 #include "Atomic Penguin SmackDown/GameStalemate.h"
 #include "Atomic Penguin SmackDown/Atomic Penguin SmackDown.h"
 
+LRESULT CALLBACK DlgProc(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+	switch(Msg)
+	{
+	case WM_INITDIALOG:
+		return TRUE;
+
+	case WM_COMMAND:
+		switch(wParam)
+		{
+		case ID_OK:
+			EndDialog(hWndDlg, 0);
+			return TRUE;
+		}
+		break;
+	}
+
+	return FALSE;
+}
+
 //=======================================================================
 int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                          LPTSTR    lpCmdLine, int       nCmdShow)
@@ -57,12 +77,30 @@ void Game::loadPrevLevel ()
 }
 
 //=======================================================================
+LRESULT Game::onCommand ( WPARAM wParam, LPARAM lParam  )
+{
+   switch ( LOWORD(wParam) )
+   {
+
+   case IDM_ABOUT:
+      DialogBox(instance(), MAKEINTRESOURCE(IDD_DIALOG_GUIDE), window(), reinterpret_cast<DLGPROC>(DlgProc));
+      break;
+   case IDM_EXIT:
+      quit();
+      break;
+   default:
+      return DefWindowProc( window(), WM_COMMAND, wParam, lParam );
+   }
+   return 0;
+}
+
+//=======================================================================
 bool Game::gameInit ()
 {
    bool result = true;
    myGameTitle.append("Atomic Penguin Warfare");
    winSetTitle ( myGameTitle );
-   
+   bind( (Application::MsgProc)(&Game::onCommand), WM_COMMAND );
 
    bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
    result &= DxAssetManager::getInstance().init();

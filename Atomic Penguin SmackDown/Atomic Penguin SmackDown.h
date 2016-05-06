@@ -28,6 +28,7 @@ public:
 
 //WINDOW
 protected:
+   LRESULT onCommand ( WPARAM wParam, LPARAM lParam );
    LPCTSTR resourceMenu (){return MAKEINTRESOURCE(IDC_ATOMICPENGUINSMACKDOWN); }//MAKEINTRESOURCE() creates a string ID from a resourcce ID
    bool initPlayers ( const tstring& configFilename );
    void resolveCollisions ();

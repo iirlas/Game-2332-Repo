@@ -148,3 +148,61 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
+
+#include <windows.h>
+#include <commctrl.h>
+#include <richedit.h>
+#include "resource.h"
+
+
+
+
+//
+// Bitmap resources
+//
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDB_BITMAP1        BITMAP         ".\\01PawnFRONT03.bmp"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDB_BITMAP2        BITMAP         ".\\01SliderFRONT.bmp"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDB_BITMAP3        BITMAP         ".\\01BazookaFRONT01.bmp"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDB_BITMAP4        BITMAP         ".\\01HulkFRONT03.bmp"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDB_BITMAP5        BITMAP         ".\\01GeneralFRONT01.bmp"
+
+
+
+//
+// Dialog resources
+//
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_DIALOG_GUIDE DIALOG 0, 0, 381, 364
+STYLE DS_3DLOOK | DS_CENTER | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_THICKFRAME
+EXSTYLE WS_EX_WINDOWEDGE
+CAPTION "Dialog"
+FONT 8, "Ms Shell Dlg"
+{
+    DEFPUSHBUTTON   "OK", ID_OK, 320, 342, 50, 14
+    CONTROL         IDB_BITMAP1, IDC_STATIC_PAWN, WC_STATIC, SS_BITMAP, 7, 6, 53, 49
+    CONTROL         IDB_BITMAP2, IDC_STATIC_SLIDER, WC_STATIC, SS_BITMAP, 7, 64, 53, 49
+    CONTROL         IDB_BITMAP3, IDC_STATIC_BAZOOKA, WC_STATIC, SS_BITMAP, 7, 124, 53, 49
+    CONTROL         IDB_BITMAP4, IDC_STATIC_HULK, WC_STATIC, SS_BITMAP, 7, 183, 53, 49
+    CONTROL         IDB_BITMAP5, IDC_STATIC_GENERAL, WC_STATIC, SS_BITMAP, 6, 237, 53, 49
+    LTEXT           "Pawn - Moves in any direction 5 spaces \nAttack: 10\nHealth: 30",        IDC_STATIC, 67, 9, 161, 45, WS_BORDER | SS_LEFT
+    LTEXT           "Slider - Moves in any direction 6 spaces \nAttack: 20\nHealth: 40",      IDC_STATIC, 67, 67, 161, 45, WS_BORDER | SS_LEFT
+    LTEXT           "Bazooka - Moves in any direction 4 spaces \nAttack: 30\nHealth: 60",     IDC_STATIC, 67, 127, 161, 45, WS_BORDER | SS_LEFT
+    LTEXT           "Hulk - Moves in any direction 2 spaces \nAttack: 40\nHealth: 50",        IDC_STATIC, 67, 186, 161, 45, WS_BORDER | SS_LEFT
+    LTEXT           "The General - Moves in any direction 3 spaces \nAttack: 10\nHealth: 80", IDC_STATIC, 67, 240, 161, 45, WS_BORDER | SS_LEFT
+    LTEXT           "For Instructions goto: https://github.com/iirlas/Game-2332-Repo",        IDC_STATIC, 67, 285, 161, 45, WS_BORDER | SS_LEFT
+
+}
