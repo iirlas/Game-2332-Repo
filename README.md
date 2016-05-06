@@ -137,5 +137,14 @@ It's a tale as old as time: Two families fight for--well, no one knows  quite fo
 **Collision Manager**
     dictates how objects interact with each other
     
+**Game Interface**
+    States manager
+    
+**Game Run**
+    States driver
+    
+**Game Win Conditions**
+    Three classes that control end screens for stalemate, blue, or green victory.
+    
 **Other programming notes**
     Levels are created through parse of a config file, file choice is randomised. An animation file controls all items by looking at their location on the sprite sheets.
