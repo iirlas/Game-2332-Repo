@@ -5,7 +5,7 @@
 
 
 //=======================================================================
-void log ( LPCTSTR format, ... )
+void Logger::message ( LPCTSTR format, ... )
 {
     TCHAR cstrMessage[UCHAR_MAX] = {0};
 
@@ -15,17 +15,4 @@ void log ( LPCTSTR format, ... )
     va_end( listArgs );
  
     OutputDebugString( cstrMessage );
-}
-
-//=======================================================================
-void logln ( LPCTSTR format, ... )
-{
-    TCHAR cstrMessage[UCHAR_MAX] = {0};
-
-    va_list listArgs;
-    va_start( listArgs, format );
-    VTSPRINTF_S( cstrMessage, UCHAR_MAX, format, listArgs );
-    va_end( listArgs );
- 
-    OutputDebugString( (cstrMessage + tstring("\n")).c_str() );
 }

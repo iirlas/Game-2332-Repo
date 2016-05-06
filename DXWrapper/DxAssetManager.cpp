@@ -71,7 +71,7 @@ bool DxAssetManager::init ( const TCHAR* rootPath,  bool createRootAssetDir )
       }
       else
       {
-         logln( "Unable to find specified Assets directory!" );
+         Logger::message( "Unable to find specified Assets directory!" );
          return false;
       }
       return false;
@@ -101,7 +101,7 @@ bool DxAssetManager::load ( const tstring& configFilename )
       }
       else
       {
-         logln( "Unable to find config file: [%s]!", configFilename.c_str() );
+         Logger::message( "Unable to find config file: [%s]!", configFilename.c_str() );
          return false;
       }
    }
@@ -165,7 +165,7 @@ DxTexture* DxAssetManager::getTexture ( const tstring& name )
    {
       return &item->second;
    }
-   logln( _T("Unable to find Texture:\"%s\""), name.c_str() );
+   Logger::message( _T("Unable to find Texture:\"%s\""), name.c_str() );
    return NULL;
 }
 
@@ -178,7 +178,7 @@ DxAnimation* DxAssetManager::getAnimation ( const tstring& name )
    {
       return &item->second;
    }
-   logln( _T("Unable to find Animation:\"%s\""), name.c_str() );
+   Logger::message( _T("Unable to find Animation:\"%s\""), name.c_str() );
    assert(false);
    return NULL;
 }
@@ -206,7 +206,7 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
 
    if ( !script.is_open() || script.bad() )
    {
-      logln( _T("Unable to load Asset Configuration File:\"%s\""), filename.c_str() );
+      Logger::message( _T("Unable to load Asset Configuration File:\"%s\""), filename.c_str() );
       return false;
    }
 

@@ -41,7 +41,7 @@ bool DxWrapper::postInit ()
 
    if ( dxInterface() == NULL )
    {
-      log( _T("Error when initailizing DirectX.") );
+      Logger::message( _T("Error when initailizing DirectX.") );
       return false;
    }
 
@@ -64,35 +64,35 @@ bool DxWrapper::postInit ()
 
    if ( FAILED(result) || ourDevice == NULL )
    {
-      log( _T("Could not create DirectX device.") );
+      Logger::message( _T("Could not create DirectX device.") );
       return false;
    }
 
    result = D3DXCreateSprite( device(), &ourSpriteInterface );
    if ( FAILED(result) || ourSpriteInterface == NULL )
    {
-      log( _T("Unable to create sprite Interface!") );
+      Logger::message( _T("Unable to create sprite Interface!") );
       return false;
    }
 
    result = D3DXCreateFont( device(), 42, 0, FW_BOLD, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial", &ourFontInterface );
    if( FAILED( result ) )
    {
-      log( _T("Unable to create font!") );
+      Logger::message( _T("Unable to create font!") );
       return false;
    };
 
    result = device()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &myBackBuffer );
    if ( FAILED(result) || myBackBuffer == NULL )
    {
-      log( _T("Could not retrieve back buffer.") );
+      Logger::message( _T("Could not retrieve back buffer.") );
       return false;
    }
 
 
    if ( !ourMouse.mouseInit( window(), device() ) )
    {
-      log( _T("Could not retrieve mouse.") );
+      Logger::message( _T("Could not retrieve mouse.") );
       return false;
    }
 

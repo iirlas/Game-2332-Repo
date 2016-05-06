@@ -52,7 +52,7 @@ bool DxSurface::createEmpty ( IDXDEVICE device, unsigned width, unsigned height 
    HRESULT result = device->CreateOffscreenPlainSurface( width, height, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &mySurface, NULL );
    if ( FAILED( result ) )
    {
-      log( _T("Error: Could not create Surface!\n") );
+      Logger::message( _T("Error: Could not create Surface!\n") );
       return false;
    }
    result = mySurface->GetDesc( &mySurfaceDescription );
@@ -67,7 +67,7 @@ bool DxSurface::createFromFile ( IDXDEVICE device, const tstring& filepath, cons
 
    if ( !getInfoFromFile( filepath ) )
    {
-      log( _T("Error: Could not load file!\n") );
+      Logger::message( _T("Error: Could not load file!\n") );
       return false;
    }
    if ( !createEmpty( device, 
