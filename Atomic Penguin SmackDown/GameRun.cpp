@@ -161,7 +161,7 @@ void GameRun::run ( Game* window )
       if ( !myPlayers[index]->penguinIsAlive() )
       {
          state( State::RESET );
-         window->loadLevel( (index == 0 ? 3 : 2) );
+         window->loadLevel( (index == 0 ? 2 : 3) );
          return;
       }
    }
