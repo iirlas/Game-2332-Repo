@@ -1,12 +1,13 @@
+#include "Utilities/Point.h"
 #include "Utilities/Rect.h"
 
 //=======================================================================
 Rect::Rect ( )
 {
-    left = 
-        top = 
-        right = 
-        bottom = 0;
+   left = 
+      top = 
+      right = 
+      bottom = 0;
 }
 
 //=======================================================================
@@ -22,70 +23,57 @@ Rect::Rect ( POINT topLeft, LONG width, LONG height )
 }
 
 //=======================================================================
-Rect::~Rect ( )
+Rect::~Rect ()
 {
 }
 
 //=======================================================================
-LONG Rect::area ( ) const
+LONG Rect::area () const
 {
-    return (width( ) * height( ));
+   return (width() * height());
 }
 
 //=======================================================================
 bool Rect::collidesWith ( const RECT& other ) const
 {
-    Rect intersect;
-    return collidesWith( other, intersect );
+   Rect intersect;
+   return collidesWith( other, intersect );
 }
 
 //=======================================================================
 bool Rect::collidesWith ( const RECT& other, Rect& intersect ) const
 {
-    intersect.left =    max( left, other.left );
-    intersect.top =     max( top, other.top );
-    intersect.right =   min( right, other.right );
-    intersect.bottom =  min( bottom, other.bottom );
-
-    if ( intersect.left < intersect.right &&
-         intersect.top < intersect.bottom )
-    {
-        intersect.normalize( );
-        return true;
-    }
-
-    intersect;
-    return false;
+   return !!IntersectRect( &intersect, this, &other );
 }
 
 //=======================================================================
 bool Rect::contains ( const POINT& point ) const
 {
-    return contains( point.x, point.y );
+   return !!PtInRect( this, point );
 }
 
 //=======================================================================
 bool Rect::contains ( LONG x, LONG y ) const
 {
-    return ( x >= left && x < right && 
-             y >= top && y < bottom );
+   Point point( x, y );
+   return contains( point );
 }
 
 //=======================================================================
 void Rect::normalize ( )
 {
-    if ( left > right )
-    {
-        left ^= right;
-        right^= left;
-        left ^= right;
-    }
-    if ( top > bottom )
-    {
-        top   ^= bottom;
-        bottom^= top;
-        top   ^= bottom;
-    }
+   if ( left > right )
+   {
+      left ^= right;
+      right^= left;
+      left ^= right;
+   }
+   if ( top > bottom )
+   {
+      top   ^= bottom;
+      bottom^= top;
+      top   ^= bottom;
+   }
 }
 
 //=======================================================================
@@ -111,33 +99,33 @@ void Rect::set ( POINT topLeft, LONG width, LONG height )
 //=======================================================================
 LONG Rect::x ( LONG value, bool relative )
 {
-    right += (relative)? (value):(value - left);
-    left = (relative)? (left + value):(value);
-    normalize( );
-    return left;
+   right += (relative)? (value):(value - left);
+   left = (relative)? (left + value):(value);
+   normalize( );
+   return left;
 }
 
 //=======================================================================
 LONG Rect::y ( LONG value, bool relative )
 {
-    bottom += (relative)? (value):(value - top);
-    top = (relative)? (top + value):(value);
-    normalize( );
-    return top;
+   bottom += (relative)? (value):(value - top);
+   top = (relative)? (top + value):(value);
+   normalize( );
+   return top;
 }
 
 //=======================================================================
 LONG Rect::width ( LONG value )
 {
-    right = left + value;
-    normalize( );
-    return (right - left);
+   right = left + value;
+   normalize( );
+   return (right - left);
 }
 
 //=======================================================================
 LONG Rect::height ( LONG value )
 {    
-    bottom = top + value;
-    normalize( );
-    return (bottom - top);
+   bottom = top + value;
+   normalize( );
+   return (bottom - top);
 }
