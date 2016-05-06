@@ -1,8 +1,12 @@
 ![alt text] (Atomic Penguin SmackDown/Assets/GUIset/splash.png "Putting the Pawn in Pawnguin.")
 
 
-## *Concept*
+## Concept
 It's a tale as old as time: Two families fight for--well, no one knows  quite for sure; they say it started with a fish (how did it end up like this?), but now these militaristic penguins have a secret weapon to end their feud: Mutation via atomic waste.
+
+## Game Description
+####
+    2 player, 1v1, turn-based strategy game
 
 ## Team Background
 ##### 
@@ -19,6 +23,7 @@ It's a tale as old as time: Two families fight for--well, no one knows  quite fo
     1. Only runs on Windows machines
     2. Directx9 must be installed to run
     3. Working keyboard and mouse/trackpad are required for controls
+    4. Game is built for TWO(2) players.
 
 ## Gameplay Overview
 ####
