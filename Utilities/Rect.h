@@ -26,6 +26,16 @@ public:
       return *this;
    }
 
+   bool operator== ( const Rect& other ) {
+      return (top == other.top) && (left == other.left) && (bottom == other.bottom) && (right == other.right);
+   }
+
+   bool operator!= ( const Rect& other ) {
+      return !(operator==( other ));
+   }
+
+
+
    LONG area ( ) const;
 
    //todo GET RID OF THESE (for now)

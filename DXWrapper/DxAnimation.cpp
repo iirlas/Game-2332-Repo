@@ -55,6 +55,8 @@ bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float
 
    animation( (ANIMATION)type );
 
+   Rect  texRect( 0,0, texture->width(), texture->height() );
+
    while ( true )
    {
       DxAnimationFrame frame;
@@ -65,6 +67,15 @@ bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float
       }
       frame.rect.set( pos, width, height );
       frame.texture = texture;
+      
+      Rect intersection;
+      ::IntersectRect( &intersection, &frame.rect, &texRect );
+      if ( intersection != frame.rect )
+      {
+         frame.rect = texRect;
+         Logger::message( _T(__FUNCTION__) _T(": frame dimensions are out of texture bounds: %s. Using Texture bounds instead!"), myName.c_str() );
+      }
+
       addFrame( frame );
    }
    mySpeed = speed;

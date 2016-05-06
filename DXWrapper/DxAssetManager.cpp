@@ -93,17 +93,10 @@ bool DxAssetManager::load ( const tstring& configFilename )
    // configfilename, absolute path vs relative path? 
    // check configfile is exists.
    PathUtilities::pathAppend( configFilepath, configFilename );
-   if ( !PathUtilities::pathFileExists( configFilepath ) )  // relative path check
+   if ( !PathUtilities::pathFileExists( configFilepath ) )
    {
-      if ( PathUtilities::pathFileExists( configFilename ) )// absolute path check
-      {
-         configFilepath = configFilename;
-      }
-      else
-      {
-         Logger::message( "Unable to find config file: [%s]!", configFilename.c_str() );
-         return false;
-      }
+      Logger::message( "Unable to find config file: [%s]!", configFilename.c_str() );
+      return false;
    }
 
    return parseConfig( configFilepath );
@@ -258,7 +251,7 @@ bool DxAssetManager::parseConfig ( const tstring& filename )
 }
 
 //=======================================================================
-bool DxAssetManager::loadTextureFile ( tstring name, tstring filename, D3DCOLOR excludeColor )
+bool DxAssetManager::loadTextureFile ( const tstring& name, const tstring& filename, D3DCOLOR excludeColor )
 {
    DxTexture texture;
    if ( texture.create( DxWrapper::device(), getAssetPath(filename), excludeColor ) )
@@ -270,7 +263,7 @@ bool DxAssetManager::loadTextureFile ( tstring name, tstring filename, D3DCOLOR 
 }
 
 //=======================================================================
-bool DxAssetManager::loadTexture ( tstring name, DxTexture* fileTexture, Rect& srcRect )
+bool DxAssetManager::loadTexture ( const tstring& name, DxTexture* fileTexture, Rect& srcRect )
 {
    DxTexture texture;
    if ( texture.create( DxWrapper::device(), srcRect.width(), srcRect.height(), D3DUSAGE_RENDERTARGET ) )
@@ -283,7 +276,7 @@ bool DxAssetManager::loadTexture ( tstring name, DxTexture* fileTexture, Rect& s
 }
 
 //=======================================================================
-bool DxAssetManager::loadSurface ( tstring name, DxTexture* fileTexture, Rect& srcRect )
+bool DxAssetManager::loadSurface ( const tstring& name, DxTexture* fileTexture, Rect& srcRect )
 {
    DxSurface surface;
    if ( surface.createFromFile( DxWrapper::device(), fileTexture->filename(), &srcRect ) )
@@ -295,7 +288,7 @@ bool DxAssetManager::loadSurface ( tstring name, DxTexture* fileTexture, Rect& s
 }
 
 //=======================================================================
-bool DxAssetManager::loadAnimation ( tstring name, DxTexture* fileTexture, tstring animationDescr )
+bool DxAssetManager::loadAnimation ( const tstring& name, DxTexture* fileTexture, const tstring& animationDescr )
 {
    DxAnimation animation;
    if ( !animation.init( fileTexture, animationDescr, 0 ) )

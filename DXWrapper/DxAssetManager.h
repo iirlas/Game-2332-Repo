@@ -39,10 +39,10 @@ public:
 
 private:
    bool parseConfig ( const tstring& name );
-   bool loadTextureFile( tstring name, tstring filename, D3DCOLOR excludeColor );
-   bool loadTexture ( tstring name, DxTexture* fileTexture, Rect& srcRect );
-   bool loadSurface ( tstring name, DxTexture* fileTexture, Rect& srcRect );
-   bool loadAnimation ( tstring name, DxTexture* fileTexture, tstring animationDescr );
+   bool loadTextureFile( const tstring& name, const tstring& filename, D3DCOLOR excludeColor );
+   bool loadTexture ( const tstring& name, DxTexture* fileTexture, Rect& srcRect );
+   bool loadSurface ( const tstring& name, DxTexture* fileTexture, Rect& srcRect );
+   bool loadAnimation ( const tstring& name, DxTexture* fileTexture, const tstring& animationDescr );
 
 
    DxAssetManager ();
