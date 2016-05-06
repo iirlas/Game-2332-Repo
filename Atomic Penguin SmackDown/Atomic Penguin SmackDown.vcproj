@@ -179,6 +179,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GameMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GameRun.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GameUI.cpp"
 				>
 			</File>
@@ -230,6 +238,18 @@
 			</File>
 			<File
 				RelativePath=".\CollisionManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameInterface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameMenu.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameRun.h"
 				>
 			</File>
 			<File

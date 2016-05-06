@@ -2,9 +2,13 @@
 //
 
 #include "stdafx.h"
+
+#include <cassert>
 #include "Utilities/ConfigParser.h"
 #include "DxWrapper/DxAssetManager.h"
-#include "Atomic Penguin SmackDown.h"
+#include "Atomic Penguin SmackDown/GameMenu.h"
+#include "Atomic Penguin SmackDown/GameRun.h"
+#include "Atomic Penguin SmackDown/Atomic Penguin SmackDown.h"
 
 //=======================================================================
 int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -18,9 +22,8 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 //=======================================================================
 Game::Game ()
-//:myHulkPenguin(NULL)
 {
-   myPlayerIndex = 0;
+   myGameIndex = 0;
 }
 
 //=======================================================================
@@ -29,75 +32,25 @@ Game::~Game ()
 }
 
 //=======================================================================
-bool Game::initPlayers ( const tstring& configFilename )
+void Game::loadLevel ( unsigned int index )
 {
-   tifstream playerConfigFile( DxAssetManager::getInstance().getAssetPath( configFilename ).c_str() );
-
-   if ( !playerConfigFile.is_open() || playerConfigFile.bad() )
+   myGameIndex = index;
+   if ( myGameIndex >= 0 && myGameIndex < myGameInterfaces.size() )
    {
-      return false;
+      myCurrentGameInterface = myGameInterfaces[myGameIndex];
    }
-
-   ConfigParser parser;
-   tstring line;
-   while ( parser.getNextLine( playerConfigFile, line ) )
-   {
-      tstringstream ss(line);
-      tstring filename;
-      int guiX = 0, guiY = 0;
-      ss >> filename >> guiX >> guiY;
-      if ( ss.fail() )
-      {
-         return false;
-      }
-      myPlayers.push_back( new Player() );
-      if (  !myPlayers.back()->init( filename, myLevelBgnds.tileWidth(), myLevelBgnds.tileHeight() ) )
-      {
-         return false;
-      }
-      myGUIs.push_back( new GameUI() );
-      if ( !myGUIs.back()->init( fontInterface(), guiX, guiY, *myPlayers.back(), D3DCOLOR_XRGB(255, 255, 255) ) )
-      {
-         return false;
-      }
-   }
-
-   playerConfigFile.close();
-   return true;
 }
 
 //=======================================================================
-void Game::resolveCollisions ()
+void Game::loadNextLevel ()
 {
-   Player* currentPlayer = myPlayers[myPlayerIndex];
-   Penguin* currentPenguin = currentPlayer->selectedPenguin();
-   int horz = DxKeyboard::keyPressed( VK_RIGHT ) - DxKeyboard::keyPressed( VK_LEFT );
-   int vert = DxKeyboard::keyPressed( VK_DOWN ) - DxKeyboard::keyPressed( VK_UP );
+   loadLevel( myGameIndex + 1 );
+}
 
-   if ( currentPenguin && XOR( horz, vert ) )
-   {
-      int column = (int)(currentPenguin->getXPosition() / currentPenguin->getWidth()) + horz;
-      int row = (int)(currentPenguin->getYPosition() / currentPenguin->getHeight()) + vert;
-      if ( column < myLevelBgnds.numColumns() && column >= 0 && row < myLevelBgnds.numRows() && row >= 0 )
-      {
-         bool isFreeFromCollision = true;
-         for ( unsigned int index = 0; index < myPlayers.size(); index++ )
-         {
-            if ( myPlayers[index]->penguinCollision( column, row ) )
-            {
-               isFreeFromCollision = false;
-               break;
-            }
-         }
-         bool canMoveFrom = currentPenguin->canMoveFrom( myLevelBgnds.tileAt( *currentPenguin )->type() );
-         bool canMoveTo = currentPenguin->canMoveTo( myLevelBgnds.tileAt( column, row )->type() );
-         if ( currentPlayer->canMoveSelected() && canMoveFrom && canMoveTo && isFreeFromCollision )
-         {
-            currentPlayer->moveSelectedPenguinTo( horz, vert );
-            currentPenguin->direction( Penguin::makeDirection( horz, vert ) );
-         }
-      }
-   }
+//=======================================================================
+void Game::loadPrevLevel ()
+{
+   loadLevel( myGameIndex - 1 );
 }
 
 //=======================================================================
@@ -109,16 +62,13 @@ bool Game::gameInit ()
    
 
    bgColor = D3DCOLOR_XRGB( 0, 0, 100 );
-   DxAssetManager::getInstance().init();
-   DxAssetManager::getInstance().load("animations.txt");
+   result &= DxAssetManager::getInstance().init();
+   result &= DxAssetManager::getInstance().load("animations.txt");
 
-   myBgRect = Rect( 0, 0, startTransWidth(), startTransHeight() );
+   myGameInterfaces.push_back( new GameMenu() );
+   myGameInterfaces.push_back( new GameRun() );
 
-   result &= myLevelBgnds.init( device(), _T("16x16.config") );
-   
-   result &= Penguin::initPenguinMovement( "Penguin.config" );
-
-   result &= initPlayers("Player.config");
+   myCurrentGameInterface = myGameInterfaces[myGameIndex];
 
    return result;
 }
@@ -126,89 +76,46 @@ bool Game::gameInit ()
 //=======================================================================
 void Game::gameRun ()
 {
-   // pre-render
-   TiledBackground&  levelRef = myLevelBgnds;
-   // clear the backbuffer
-   device()->ColorFill( backBuffer(), NULL, bgColor );
-   myLevelBgnds.update();
-
-   for ( unsigned int index = 0; index < myPlayers.size(); index++ )
+   switch ( myCurrentGameInterface->state() )
    {
-      if ( index == myPlayerIndex )
+   case GameInterface::NONE:
+      assert(false);
+      break;
+   case GameInterface::INIT:
+      if ( !myCurrentGameInterface->init( this ) )
       {
-         myPlayers[index]->update( levelRef );
+         quit();
       }
-      myGUIs[index]->update( (myPlayers[index]->turnIndex()-1) == myPlayerIndex );
-
-      if ( myPlayers[index]->attacking() )
-      {
-         float x = 0, y = 0;
-         myPlayers[index]->selectedPenguin()->getFacingPosition( &x, &y );
-         for ( unsigned int j = 0; j < myPlayers.size(); j++ )
-         {
-            if ( j != index )
-            {
-               myPlayers[j]->attackPenguin( x, y, myPlayers[index]->selectedPenguin()->attackPower() );
-
-            }
-         }
-         myPlayers[index]->toggleAttacking();
-         myPlayers[index]->deselectPenguin();      
-         if ( !myPlayers[index]->canMove() )
-         {
-            myPlayerIndex = (myPlayerIndex + 1) % myPlayers.size();
-            myPlayers[myPlayerIndex]->clearMoves();
-         }
-         // check for game over
-      }
+      break;
+   case GameInterface::RUN:
+      // clear the backbuffer
+      device()->ColorFill( backBuffer(), NULL, bgColor );
+      myCurrentGameInterface->run( this );
+      break;
+   case GameInterface::SHUTDOWN:
+      myCurrentGameInterface->shutdown( this );
+      break;
+   default:
+      break;
    }
-   resolveCollisions();
 
-
-
-   //myPlayer.resolveCollisions( levelRef );
-
-
-   // start rendering
-   if ( SUCCEEDED(device()->BeginScene()) )
+   //if the escape key is pressed, destroy
+   if ( DxKeyboard::keyPressed( VK_ESCAPE ) )
    {
-      if ( SUCCEEDED(spriteInterface()->Begin( D3DXSPRITE_ALPHABLEND )) )
-      {
-         // sprite rendering...       
-         myLevelBgnds.drawMySpriteMap( spriteInterface() );
-         for ( unsigned int index = 0; index < myPlayers.size(); index ++ )
-         {
-            myPlayers[index]->draw( spriteInterface() );
-            myGUIs[index]->draw( spriteInterface() );
-         }
-         
-         // stop rendering
-         spriteInterface()->End();
-      }
-
-      // End rendering:
-      device()->EndScene();
-      device()->Present( NULL, NULL, NULL, NULL );
+      quit();
    }
+
 }
 
 //=======================================================================
 void Game::gameExit ()
 {
-   for ( unsigned int index = 0; index < myPlayers.size(); index++ )
+   for ( unsigned int index = 0; index < myGameInterfaces.size(); index++ )
    {
-      myPlayers[index]->shutdown();
-      delete myPlayers[index];
-      myPlayers[index] = NULL;
+      myGameInterfaces[index]->shutdown( this );
+      delete myGameInterfaces[index];
+      myGameInterfaces[index] = NULL;
    }
-   for ( unsigned int index = 0; index < myGUIs.size(); index++ )
-   {
-      myGUIs[index]->destroy();
-      delete myGUIs[index];
-      myGUIs[index] = NULL;
-   }
-   myPlayers.clear();
-   myLevelBgnds.shutdown();
    DxAssetManager::getInstance().shutdown();
 }
 

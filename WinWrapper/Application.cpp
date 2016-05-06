@@ -164,6 +164,12 @@ int Application::winMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 }
 
 //=======================================================================
+void Application::quit ()
+{
+    myAppIsRunning = false;
+}
+
+//=======================================================================
 //protected
 bool Application::init ( HINSTANCE hInstance, DWORD style )
 {
@@ -355,13 +361,6 @@ void Application::resizeViewportTo ( int x, int y, int width, int height )
     GetWindowRect( window(), &myTransform );
     GetClientRect( window(), &myViewport );
     resizeViewportToTransform();
-}
-
-//=======================================================================
-//protected
-void Application::quit ()
-{
-    myAppIsRunning = false;
 }
 
 //=======================================================================

@@ -172,7 +172,7 @@ SPLASH                   0      1580     4       880   640
 STALEMATE                0       892   652       880   640         
 
 
-@IMAGE BLOCK block.png
+@Image BLOCK block.png
 BLOCK                    0       0     0         80     40	
 
 

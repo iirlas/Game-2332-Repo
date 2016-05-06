@@ -75,7 +75,7 @@ bool DxWrapper::postInit ()
       return false;
    }
 
-   result = D3DXCreateFont( device(), 18, 0, FW_BOLD, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial", &ourFontInterface );
+   result = D3DXCreateFont( device(), 42, 0, FW_BOLD, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial", &ourFontInterface );
    if( FAILED( result ) )
    {
       log( _T("Unable to create font!") );

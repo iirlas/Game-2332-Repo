@@ -64,6 +64,12 @@ public:
    int winMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, 
       LPTSTR    lpCmdLine, int       nCmdShow );
 
+   //=======================================================================
+   // Used to exit the message loop and quit the application.
+   // Note: Use this instead of DestoryWindow beause the window is destroyed 
+   //       before preExit is called.
+   void quit ();
+
 protected:
    //=======================================================================
    // A type definition for the message processor member function pointer.
@@ -161,12 +167,6 @@ protected:
    // Resizes the viewport to the given position and size.
    // Note: This also resizes the transform to the current window size.
    void resizeViewportTo ( int x, int y, int width, int height );
-
-   //=======================================================================
-   // Used to exit the message loop and quit the application.
-   // Note: Use this instead of DestoryWindow beause the window is destroyed 
-   //       before preExit is called.
-   void quit ();
 
    //=======================================================================
    // An overridable method that is call on the WM_CLOSE window's message.

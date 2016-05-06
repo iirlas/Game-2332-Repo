@@ -90,6 +90,12 @@ void DxText::setText( float number )
 }
 
 //=======================================================================
+void DxText::setColor ( D3DCOLOR color )
+{
+   myColor = color;
+}
+
+//=======================================================================
 void DxText::setPosition ( float x, float y )
 {
 	setXPosition( x );

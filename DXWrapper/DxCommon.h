@@ -43,7 +43,7 @@
 
 //Company wide allow warning disablers...
 //  warning C4482: nonstandard extension used: enum 'Kitty::Direction' used in qualified name : DISABLE ALLOW
-//    DISABLE THIS WARNING GLOBALLY FOR ALL DxFramework work.  Why? STUPID C++ rule.  That's Why.
+//    DISABLE THIS WARNING GLOBALLY FOR ALL DxWrapper work.  Why? STUPID C++ rule.  That's Why.
 #pragma warning( disable : 4482 )
 
 

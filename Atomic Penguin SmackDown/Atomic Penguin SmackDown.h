@@ -13,11 +13,19 @@
 #include "Atomic Penguin SmackDown/TiledBackground.h"
 #include "Atomic Penguin SmackDown/Player.h"
 #include "Atomic Penguin SmackDown/GameUI.h"
+#include "Atomic Penguin SmackDown/GameInterface.h"
+
+
 class Game : public DxWrapper
 {
 public:
    Game ();
    ~Game ();
+   
+   void loadLevel ( unsigned int index );
+   void loadNextLevel ();
+   void loadPrevLevel ();
+
 //WINDOW
 protected:
    LPCTSTR resourceMenu (){return MAKEINTRESOURCE(IDC_ATOMICPENGUINSMACKDOWN); }//MAKEINTRESOURCE() creates a string ID from a resourcce ID
@@ -32,16 +40,11 @@ protected:
    int startTransHeight()  { return 640; }
 
 private:
-   int                  myPlayerIndex;
-   D3DCOLOR             bgColor;
-   std::vector<Player*> myPlayers;
-   std::vector<GameUI*> myGUIs;
-   tstring              myGameTitle;
-   TiledBackground      myLevelBgnds;
-   RECT                 myBgRect;
-   CollisionManager     myCollisionManager;
-
-   //GameUI              myGameUI;
+   unsigned int                myGameIndex;
+   std::vector<GameInterface*> myGameInterfaces;
+   GameInterface*              myCurrentGameInterface;
+   tstring                     myGameTitle;
+   D3DCOLOR                    bgColor;
 
 };
 

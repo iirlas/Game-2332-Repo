@@ -30,6 +30,8 @@ public:
    void setText ( int number );
    void setText ( float number );
 
+   void setColor ( D3DCOLOR color );
+
    void setPosition ( float x, float y );
    void setXPosition ( float value );
    void setYPosition ( float value );
