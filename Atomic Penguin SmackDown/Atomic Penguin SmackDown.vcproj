@@ -179,11 +179,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GameBlueVictory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GameGreenVictory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GameMenu.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\GameRun.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GameStalemate.cpp"
 				>
 			</File>
 			<File
@@ -241,6 +253,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GameBlueVictory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameGreenVictory.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GameInterface.h"
 				>
 			</File>
@@ -250,6 +270,10 @@
 			</File>
 			<File
 				RelativePath=".\GameRun.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameStalemate.h"
 				>
 			</File>
 			<File

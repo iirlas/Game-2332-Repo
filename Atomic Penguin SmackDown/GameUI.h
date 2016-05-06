@@ -47,6 +47,8 @@ private:
    std::vector<Penguin::Type> myPenguinTypes;
    std::vector<DxGameSprite*> myHealthBars;
    DxGameSprite               myPlayerHeader;
+   DxGameSprite               myRoundCounter;
+   DxGameSprite               myPlayCounter;
 
    D3DCOLOR          myTextColor;
 

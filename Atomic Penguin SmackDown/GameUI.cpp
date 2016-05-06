@@ -18,8 +18,15 @@ GameUI::~GameUI()
 //=======================================================================
 bool GameUI::init( IDXFONT font, int xPos, int yPos, Player& player, D3DCOLOR color )
 {
+
    myPlayer = &player;
    myTextColor = color;
+
+   myRoundCounter.create("BLOCKY");
+   myRoundCounter.setPosition(400.0f, 0.0f);
+
+   myPlayCounter.create("BLOCKY");
+   myPlayCounter.setPosition(400.0f, 600.0f);
 
    if ( !myPlayerHeader.create( "P" + Util::intToString( myPlayer->turnIndex() ) + "HEADER" ) ) 
    {
@@ -96,7 +103,7 @@ bool GameUI::destroy()
 bool GameUI::draw( IDXSPRITE spriteObj )
 {
    myPlayerHeader.draw( spriteObj );
-   
+
    for ( unsigned int index = 0; index < myPenguins.size(); index++ )
    {
       D3DCOLOR color = ( myPlayer->at( index )->isAlive() ? D3DCOLOR_XRGB( 255, 255, 255 ) : D3DCOLOR_XRGB( 0, 0, 0 ) );
@@ -107,7 +114,12 @@ bool GameUI::draw( IDXSPRITE spriteObj )
       myHealthBars[index]->draw( spriteObj );
 
    }
+
+   myRoundCounter.draw( spriteObj );
+   myPlayCounter.draw( spriteObj );
    return true;
+
+
 }
 
 void GameUI::updateMovesCounter( int movesCounter )
