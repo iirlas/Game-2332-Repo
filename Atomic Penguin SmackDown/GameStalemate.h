@@ -4,23 +4,17 @@
 #define _GAMESTALEMATE_
 
 #include "DxWrapper/DxGameSprite.h"
+#include "Atomic Penguin SmackDown/GameInterface.h"
 
-class GameStalemate
+class GameStalemate : public GameInterface
 {
 public:
    bool init ( Game* window);
    void run ( Game* window );
-   //void stop( Game* window);
+   void reset ( Game* window ) {}
    void shutdown( Game* window);
 
 private:
    DxGameSprite  staleEnd;
-
-
-
-
-
-
-
 };
 #endif

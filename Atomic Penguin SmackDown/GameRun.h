@@ -18,6 +18,7 @@ public:
 
    bool init ( Game* window );
    void run ( Game* window );
+   void reset ( Game* window ) ;
    void shutdown ( Game* window );
 
 protected:
@@ -25,12 +26,16 @@ protected:
    void resolveCollisions ();
 
 private:
+   bool                 hasPlayerAttacked;
+   int                  myRoundCount;
+   int                  myRoundCountSinceAttack;
    int                  myPlayerIndex;
    std::vector<Player*> myPlayers;
    std::vector<GameUI*> myGUIs;
    TiledBackground      myLevelBgnds;
    CollisionManager     myCollisionManager;
-
+   DxText               myRoundText;
+   DxText               myMoveText;
 };
 
 #endif //_GAMERUN_H_

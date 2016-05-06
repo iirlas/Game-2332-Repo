@@ -19,6 +19,7 @@ public:
 
    bool init ( Game* window );
    void run ( Game* window );
+   void reset ( Game* window ) { myIndex = 0; }
    void shutdown ( Game* window );
 
 protected:

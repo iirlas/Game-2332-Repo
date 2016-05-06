@@ -47,10 +47,11 @@ public:
    void resolveCollisions ( TiledBackground& tiledBackground );
    bool penguinCollision ( int column, int row );
    bool canMoveSelected ();
+   bool penguinIsAlive ();
    bool canMove ();
    void moveSelectedPenguinTo ( int horz, int vert );
    void clearMoves();
-   void attackPenguin( float x, float y, int damage );
+   bool attackPenguin( float x, float y, int damage );
 
    unsigned int maxMoves () { return myMaxMoves; }
    unsigned int moveCount () { return myMoveCount; }

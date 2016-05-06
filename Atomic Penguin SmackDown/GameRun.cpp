@@ -8,6 +8,9 @@ GameRun::GameRun ()
 //:myHulkPenguin(NULL)
 {
    myPlayerIndex = 0;
+   myRoundCount = 0;
+   myRoundCountSinceAttack = 0;
+   hasPlayerAttacked = false;
    state( State::INIT );
 }
 
@@ -95,10 +98,14 @@ bool GameRun::init ( Game* window )
    bool result = true;
 
    result &= myLevelBgnds.init( window->device(), _T("16x16.config") );
-   
+
    result &= Penguin::initPenguinMovement( "Penguin.config" );
 
    result &= initPlayers("Player.config", window);
+
+   result &= myMoveText.create( window->fontInterface(), "0", 350, 0, 100, 100 );
+
+   result &= myRoundText.create( window->fontInterface(), "0", 350, 600, 100, 100 );
 
    return result;
 }
@@ -128,22 +135,43 @@ void GameRun::run ( Game* window )
          {
             if ( j != index )
             {
-               myPlayers[j]->attackPenguin( x, y, myPlayers[index]->selectedPenguin()->attackPower() );
-
+               if ( myPlayers[j]->attackPenguin( x, y, myPlayers[index]->selectedPenguin()->attackPower() ) )
+               {
+                  hasPlayerAttacked = true;
+                  myRoundCountSinceAttack = 0;
+               }
             }
          }
          myPlayers[index]->toggleAttacking();
          myPlayers[index]->deselectPenguin();      
          if ( !myPlayers[index]->canMove() )
          {
+            myRoundCount++;
+            if ( !hasPlayerAttacked )
+            {
+               myRoundCountSinceAttack++;
+            }
+            hasPlayerAttacked = false;
+            myRoundText.setText( myRoundCount );
             myPlayerIndex = (myPlayerIndex + 1) % myPlayers.size();
             myPlayers[myPlayerIndex]->clearMoves();
          }
          // check for game over
       }
+      if ( !myPlayers[index]->penguinIsAlive() )
+      {
+         state( State::RESET );
+         window->loadLevel( (index == 0 ? 3 : 2) );
+         return;
+      }
    }
    resolveCollisions();
-
+   
+   if ( myRoundCountSinceAttack >= 10 )
+   {
+      state( State::RESET );
+      window->loadLevel( 4 );
+   }
 
 
    //myPlayer.resolveCollisions( levelRef );
@@ -162,6 +190,9 @@ void GameRun::run ( Game* window )
             myGUIs[index]->draw( window->spriteInterface() );
          }
          
+         myMoveText.draw( window->spriteInterface() );
+         myRoundText.draw( window->spriteInterface() );
+         
          // stop rendering
          window->spriteInterface()->End();
       }
@@ -173,8 +204,20 @@ void GameRun::run ( Game* window )
 }
 
 //=======================================================================
+void GameRun::reset ( Game* window )
+{ 
+   myRoundCount = 0; 
+   myRoundCountSinceAttack = 0; 
+   hasPlayerAttacked = false;
+   shutdown(window);
+   init(window);
+}
+
+//=======================================================================
 void GameRun::shutdown ( Game* window )
 {
+   myMoveText.destroy();
+   myRoundText.destroy();
    for ( unsigned int index = 0; index < myPlayers.size(); index++ )
    {
       myPlayers[index]->shutdown();
@@ -188,6 +231,7 @@ void GameRun::shutdown ( Game* window )
       myGUIs[index] = NULL;
    }
    myPlayers.clear();
+   myGUIs.clear();
    myLevelBgnds.shutdown();
 }
 

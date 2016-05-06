@@ -8,6 +8,9 @@
 #include "DxWrapper/DxAssetManager.h"
 #include "Atomic Penguin SmackDown/GameMenu.h"
 #include "Atomic Penguin SmackDown/GameRun.h"
+#include "Atomic Penguin SmackDown/GameBlueVictory.h"
+#include "Atomic Penguin SmackDown/GameGreenVictory.h"
+#include "Atomic Penguin SmackDown/GameStalemate.h"
 #include "Atomic Penguin SmackDown/Atomic Penguin SmackDown.h"
 
 //=======================================================================
@@ -65,8 +68,12 @@ bool Game::gameInit ()
    result &= DxAssetManager::getInstance().init();
    result &= DxAssetManager::getInstance().load("animations.txt");
 
-   myGameInterfaces.push_back( new GameMenu() );
-   myGameInterfaces.push_back( new GameRun() );
+   myGameInterfaces.push_back( new GameMenu() );         // 0
+   myGameInterfaces.push_back( new GameRun() );          // 1
+   myGameInterfaces.push_back( new GameBlueVictory() );  // 2
+   myGameInterfaces.push_back( new GameGreenVictory() ); // 3
+   myGameInterfaces.push_back( new GameStalemate() );    // 4
+
 
    myCurrentGameInterface = myGameInterfaces[myGameIndex];
 
@@ -91,6 +98,9 @@ void Game::gameRun ()
       // clear the backbuffer
       device()->ColorFill( backBuffer(), NULL, bgColor );
       myCurrentGameInterface->run( this );
+      break;
+   case GameInterface::RESET:
+      myCurrentGameInterface->reset( this );
       break;
    case GameInterface::SHUTDOWN:
       myCurrentGameInterface->shutdown( this );

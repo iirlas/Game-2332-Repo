@@ -30,7 +30,7 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
          ss.clear();
          tstring token;
          ss >> token;
-         if ( token == "@NUMBER" && penguinCount() == 0  )
+         if ( token == "@NUMBER" )
          {
             //ss >> myPenguinCount;
             //myPenguins = new Penguin[myPenguinCount];
@@ -76,7 +76,6 @@ bool Player::init ( tstring playerConfigFile, int tileWidth, int tiltHeight )
          myPenguins.push_back( penguin );
       }
    }
-
    myCursor.create( "CURSOR", 10 );
    myCursor.setScale( (float)tileWidth  / (float)myCursor.getWidth(), 
       (float)tiltHeight / (float)myCursor.getHeight() );
@@ -179,6 +178,17 @@ bool Player::canMoveSelected ()
 }
 
 //=======================================================================
+bool Player::penguinIsAlive()
+{
+   bool aPenguinIsAlive = false;
+   for ( unsigned int index = 0; index < myPenguins.size(); index++ )
+   {
+      aPenguinIsAlive |= myPenguins[index]->isAlive();
+   }
+   return aPenguinIsAlive;
+}
+
+//=======================================================================
 bool Player::canMove()
 {
    bool aPenguinCanMove = false;
@@ -216,7 +226,7 @@ void Player::clearMoves()
 }
 
 //=======================================================================
-void Player::attackPenguin( float x, float y, int damage )
+bool Player::attackPenguin( float x, float y, int damage )
 {
    for ( unsigned int index = 0; index < penguinCount(); index++ )
    {
@@ -228,10 +238,10 @@ void Player::attackPenguin( float x, float y, int damage )
             myPenguins[index]->destroy();
             myPenguins[index]->health(0);
          }
-         break;
+         return true;
       }
    }
-   
+   return false;
 }
 
 //=======================================================================
