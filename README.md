@@ -78,7 +78,7 @@ It's a tale as old as time: Two families fight for--well, no one knows  quite fo
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02PawnFRONT.png "It's another stick!")
 #### PAWN
     **See Radiocative Tile for Sacrifice Information**
-    movements: moves in any direction 3 spaces
+    movements: moves in any direction 5 spaces
     attack: light damage (10 atk)
     health: light health (30hp)
 
@@ -86,21 +86,21 @@ It's a tale as old as time: Two families fight for--well, no one knows  quite fo
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/01SliderLEFT.png "Could you imagine hockey with a squawking puck?")
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02SliderRIGHT.png "Squawk Squawk")
 #### SLIDER(Puck)
-    movements: slides across the map up to 5 spaces
+    movements: slides across the map up to 6 spaces
     attack: medium damage (20 atk)
     health: light health (40hp)
     
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/01BazookaFRONT.png "Boom Boom")
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02BazookaFRONT.png "Bang Bang")
 #### BAZOOKA(Joe)
-    movements: move in any direction 1 space
+    movements: move in any direction 4 space
     attack: medium damage  (30 atk)
     health: medium health (60hp)
  
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/01GeneralFRONT.png "Here comes the General!")
 ![alt text] (Atomic Penguin SmackDown/Assets/penguins/02GeneralFRONT.png "I'm a general General.")
 #### THE GENERAL
-    movements: moves in any direction 1 space
+    movements: moves in any direction 3 space
     attack: light damage (10 atk)
     health: high health (80hp)
     
