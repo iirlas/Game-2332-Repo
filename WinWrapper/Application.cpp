@@ -212,9 +212,8 @@ int Application::start ( int nShowCmd )
    myAppIsRunning = true;
    while ( myAppIsRunning )
    {
-      while ( PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) && 
-              !TranslateAccelerator(msg.hwnd, hAccelTable, &msg) && 
-              msg.message != WM_QUIT )
+      while ( PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) && msg.message != WM_QUIT && 
+              !TranslateAccelerator(msg.hwnd, hAccelTable, &msg) )
       {
          preMessage();
          TranslateMessage(&msg);
