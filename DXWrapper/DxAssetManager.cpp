@@ -186,7 +186,6 @@ DxAnimation DxAssetManager::getAnimationCopy ( const tstring& name, float speed,
       animation = item->second;
    }
    animation.speed( speed );
-   animation.excludeColor( excludeColor );
    return animation;
 }
 

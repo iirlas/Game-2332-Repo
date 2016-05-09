@@ -41,12 +41,7 @@ public:
 
    HRESULT drawEx ( IDXSPRITE spriteobj, RECT* srcRect, D3DXVECTOR2* center, D3DXVECTOR3* position, float rotation, 
                   D3DCOLOR color = D3DCOLOR_XRGB( 255, 255, 255 ) , D3DXVECTOR2* scale = NULL );
-
-   inline const tstring& name ( ) { return myName; }
-   inline const tstring& name ( const tstring& name ) { return (myName = name); }
-
-private:  
-   tstring        myName;
+private:
    IDXTEXTURE     myTexture;
    D3DXIMAGE_INFO myTextureInfo;
 };

@@ -10,8 +10,10 @@
 #include "DxWrapper/DxAnimation.h"
 //=======================================================================
 DxAnimation::DxAnimation ()
-:myName(), myCurrentFrame(0), myFrameDirection(0), myFrameCount(0)
-{  
+{
+   myCurrentFrame = 0;
+   myFrameDirection = 0;
+   myFrameCount = 0;
 }
 
 //=======================================================================
@@ -40,14 +42,15 @@ DxAnimation::~DxAnimation ( )
 //}
 
 //=======================================================================
-bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float speed, D3DCOLOR excludeColor )
+bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float speed )
 {
+   tstringstream ss( animationDesc );
    Point pos;
    int width = -1, height = -1;
-   tstringstream ss( animationDesc );
-   int type = -1;  
+   int type = -1;
+   tstring name;
 
-   ss >> myName >> type;
+   ss >> name >> type;
    if ( ss.fail() )
    {
       return false;
@@ -73,26 +76,25 @@ bool DxAnimation::init ( DxTexture* texture, const tstring& animationDesc, float
       if ( intersection != frame.rect )
       {
          frame.rect = texRect;
-         Logger::message( _T(__FUNCTION__) _T(": frame dimensions are out of texture bounds: %s. Using Texture bounds instead!"), myName.c_str() );
+         Logger::message( _T(__FUNCTION__) _T(": frame dimensions are out of texture bounds: %s. Using Texture bounds instead!"), name.c_str() );
       }
 
       addFrame( frame );
    }
    mySpeed = speed;
-   myExcludeColor = excludeColor;
    return myTimer.start();
 }
 
 //=======================================================================
-bool DxAnimation::init ( DxTexture* texture, D3DCOLOR excludeColor )
+bool DxAnimation::init ( DxTexture* texture )
 {
-   Point pos;
    DxAnimationFrame frame;
    frame.rect.set( 0, 0, texture->width(), texture->height() );
    frame.texture = texture;
    addFrame( frame ); 
+
    mySpeed = 0;
-   myExcludeColor = excludeColor;
+
    return myTimer.start();
 }
 
