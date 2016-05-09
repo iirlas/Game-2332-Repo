@@ -49,6 +49,7 @@ public:
    bool canMoveSelected ();
    bool penguinIsAlive ();
    bool canMove ();
+   int movesLeft ();
    void moveSelectedPenguinTo ( int horz, int vert );
    void clearMoves();
    bool attackPenguin( float x, float y, int damage );

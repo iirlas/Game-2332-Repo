@@ -68,7 +68,7 @@ public:
 
    void getFacingPosition( float* x, float* y );
 
-   void kill () { myHealth = 0; destroy(); }
+   void kill ();
    int health () { return myHealth; }
    int health ( int health ) { return (myHealth = health); }
    bool isAlive() { return myHealth > 0; }

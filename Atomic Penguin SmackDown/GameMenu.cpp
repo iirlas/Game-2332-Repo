@@ -51,7 +51,7 @@ void GameMenu::run ( Game* window )
       switch ( myIndex )
       {
       case 0:
-         window->loadNextLevel();
+         window->loadInterface( "Run" );
          break;
       case 1:
          window->quit();

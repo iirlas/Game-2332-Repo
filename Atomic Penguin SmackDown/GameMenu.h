@@ -23,8 +23,7 @@ public:
    void shutdown ( Game* window );
 
 protected:
-   bool initPlayers ( const tstring& configFilename, Game* window);
-   void resolveCollisions ();
+
 
 private:
    int          myIndex;

@@ -135,15 +135,12 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
          {
          case Tile::PASSABLE:
             mySpriteMap[index].create( fileInfo.getTileSkin( row, col ) );
-            mySpriteMap[index].collidable(false);
             break;
          case Tile::BLOCKED:
             mySpriteMap[index].create( fileInfo.getTileSkin( row, col ) );
-            mySpriteMap[index].collidable(true);
             break;
          case Tile::SLIME:
             mySpriteMap[index].create( fileInfo.getTileSkin( row, col ) );
-            mySpriteMap[index].collidable(true);
             break;
          }
 
@@ -153,10 +150,10 @@ bool TiledBackground::buildBackground ( const tstring& configFilename )
          }
 
          mySpriteMap[index].type( (Tile::Type)fileInfo.getTileType( row, col ) );
-         mySpriteMap[index].setScale( (float)myTileWidth / (float)mySpriteMap[index].getWidth(), 
-                                      (float)myTileHeight / (float)mySpriteMap[index].getHeight() );
+         mySpriteMap[index].scale( (float)myTileWidth / (float)mySpriteMap[index].width(), 
+                                   (float)myTileHeight / (float)mySpriteMap[index].height() );
 
-         mySpriteMap[index].setPosition( float(xPos), float(yPos) );
+         mySpriteMap[index].position( float(xPos), float(yPos) );
 
          index++;
       }
@@ -183,11 +180,11 @@ bool TiledBackground::update ( )
 //
 void TiledBackground::shutdown ( )
 {
-   if ( myDevice )
+   for( unsigned int i = 0; i < mySpriteMap.size(); i++)
    {
-      myDevice->Release();    // Utilities::ifRelease( myDevice );
-      myDevice = NULL;
+      mySpriteMap[i].destroy();
    }
+   IfRelease( &myDevice );   
 }
 
 

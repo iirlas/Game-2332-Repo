@@ -23,16 +23,16 @@ bool GameUI::init( IDXFONT font, int xPos, int yPos, Player& player, D3DCOLOR co
    myTextColor = color;
 
    myRoundCounter.create("BLOCKY");
-   myRoundCounter.setPosition(400.0f, 0.0f);
+   myRoundCounter.position(400.0f, 0.0f);
 
    myPlayCounter.create("BLOCKY");
-   myPlayCounter.setPosition(400.0f, 600.0f);
+   myPlayCounter.position(400.0f, 600.0f);
 
    if ( !myPlayerHeader.create( "P" + Util::intToString( myPlayer->turnIndex() ) + "HEADER" ) ) 
    {
       return false;
    }
-   myPlayerHeader.setPosition(xPos + 0.0f, yPos + 0.0f);
+   myPlayerHeader.position(xPos + 0.0f, yPos + 0.0f);
 
    float x = xPos + 10.0f, y = yPos + 90.0f;
    for ( unsigned int index = 0; index < myPlayer->penguinCount(); index++ )
@@ -43,11 +43,11 @@ bool GameUI::init( IDXFONT font, int xPos, int yPos, Player& player, D3DCOLOR co
 
       penguinSprite->create( "P" + Util::intToString( myPlayer->turnIndex() ) + 
                              "-" + penguin->typeToString() + "-FRONT", 2.0f );
-      penguinSprite->setPosition( x, y );
-      penguinSprite->setScale(0.5f, 0.5f);
+      penguinSprite->position( x, y );
+      penguinSprite->scale(0.5f, 0.5f);
 
       penguinHealthBar->create( "HEALTH" );
-      penguinHealthBar->setPosition( x, y + 50.0f );
+      penguinHealthBar->position( x, y + 50.0f );
 
       y += 93.0f;
 

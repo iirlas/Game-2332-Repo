@@ -22,9 +22,8 @@ public:
    Game ();
    ~Game ();
    
-   void loadLevel ( unsigned int index );
-   void loadNextLevel ();
-   void loadPrevLevel ();
+   void loadInterface ( const tstring& name, GameInterface::State state );
+   void loadInterface ( const tstring& name );
 
 //WINDOW
 protected:
@@ -41,11 +40,12 @@ protected:
    int startTransHeight()  { return 640; }
 
 private:
-   unsigned int                myGameIndex;
-   std::vector<GameInterface*> myGameInterfaces;
-   GameInterface*              myCurrentGameInterface;
-   tstring                     myGameTitle;
-   D3DCOLOR                    bgColor;
+   typedef std::map<tstring, GameInterface*> InterfaceMap;
+
+   InterfaceMap myInterfaces;
+   tstring      myCurrentInterfaceName;
+   tstring      myGameTitle;
+   D3DCOLOR     bgColor;
 
 };
 

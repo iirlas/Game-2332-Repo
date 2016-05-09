@@ -46,7 +46,13 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 //=======================================================================
 Game::Game ()
 {
-   myGameIndex = 0;
+   myInterfaces["Menu"] = new GameMenu();
+   myInterfaces["Run"] = new GameRun();
+   myInterfaces["BlueVictory"] = new GameBlueVictory();
+   myInterfaces["GreenVictory"] = new GameGreenVictory();
+   myInterfaces["Stalemate"] = new GameStalemate();
+
+   myCurrentInterfaceName = "Menu";
 }
 
 //=======================================================================
@@ -55,25 +61,24 @@ Game::~Game ()
 }
 
 //=======================================================================
-void Game::loadLevel ( unsigned int index )
+// load a game interface with a given state
+void Game::loadInterface ( const tstring& name, GameInterface::State state )
 {
-   myGameIndex = index;
-   if ( myGameIndex >= 0 && myGameIndex < myGameInterfaces.size() )
+   if ( myInterfaces.find( name ) != myInterfaces.end() )
    {
-      myCurrentGameInterface = myGameInterfaces[myGameIndex];
+      myCurrentInterfaceName = name;
+      myInterfaces[myCurrentInterfaceName]->state( state );
    }
 }
 
 //=======================================================================
-void Game::loadNextLevel ()
+// load a game interface with a current state
+void Game::loadInterface ( const tstring& name )
 {
-   loadLevel( myGameIndex + 1 );
-}
-
-//=======================================================================
-void Game::loadPrevLevel ()
-{
-   loadLevel( myGameIndex - 1 );
+   if ( myInterfaces.find( name ) != myInterfaces.end() )
+   {
+      myCurrentInterfaceName = name;
+   }
 }
 
 //=======================================================================
@@ -106,28 +111,25 @@ bool Game::gameInit ()
    result &= DxAssetManager::getInstance().init();
    result &= DxAssetManager::getInstance().load("animations.txt");
 
-   myGameInterfaces.push_back( new GameMenu() );         // 0
-   myGameInterfaces.push_back( new GameRun() );          // 1
-   myGameInterfaces.push_back( new GameBlueVictory() );  // 2
-   myGameInterfaces.push_back( new GameGreenVictory() ); // 3
-   myGameInterfaces.push_back( new GameStalemate() );    // 4
-
-
-   myCurrentGameInterface = myGameInterfaces[myGameIndex];
-
    return result;
 }
 
 //=======================================================================
 void Game::gameRun ()
 {
-   switch ( myCurrentGameInterface->state() )
+   GameInterface* currentInterface = NULL;
+   if ( myInterfaces.find(myCurrentInterfaceName) != myInterfaces.end() )
+   {
+      currentInterface = myInterfaces[myCurrentInterfaceName];
+   }
+
+   switch ( currentInterface->state() )
    {
    case GameInterface::NONE:
       assert(false);
       break;
    case GameInterface::INIT:
-      if ( !myCurrentGameInterface->init( this ) )
+      if ( !currentInterface->init( this ) )
       {
          quit();
       }
@@ -135,13 +137,13 @@ void Game::gameRun ()
    case GameInterface::RUN:
       // clear the backbuffer
       device()->ColorFill( backBuffer(), NULL, bgColor );
-      myCurrentGameInterface->run( this );
+      currentInterface->run( this );
       break;
    case GameInterface::RESET:
-      myCurrentGameInterface->reset( this );
+      currentInterface->reset( this );
       break;
    case GameInterface::SHUTDOWN:
-      myCurrentGameInterface->shutdown( this );
+      currentInterface->shutdown( this );
       break;
    default:
       break;
@@ -158,11 +160,12 @@ void Game::gameRun ()
 //=======================================================================
 void Game::gameExit ()
 {
-   for ( unsigned int index = 0; index < myGameInterfaces.size(); index++ )
+   InterfaceMap::iterator item = myInterfaces.begin();
+   for ( ; item != myInterfaces.end(); item++ )
    {
-      myGameInterfaces[index]->shutdown( this );
-      delete myGameInterfaces[index];
-      myGameInterfaces[index] = NULL;
+      item->second->shutdown( this );
+      delete item->second;
+      item->second = NULL;
    }
    DxAssetManager::getInstance().shutdown();
 }

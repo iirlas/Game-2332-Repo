@@ -7,10 +7,10 @@
 
 bool GameGreenVictory::init (Game* window)
 {
-
-   greenVictory.create("GREENVICTORY");
    bool result = true;
+   greenVictory.create("GREENVICTORY");
    state( State::RUN );
+
    return result;
 }
 
@@ -18,7 +18,7 @@ void GameGreenVictory::run (Game* window)
 {
    if ( DxKeyboard::keyPressed( VK_RETURN ) )
    {
-      window->loadLevel( 0 );
+      window->loadInterface( "Menu", GameInterface::RUN );
    }
 
    if ( SUCCEEDED (window->device()->BeginScene()) )

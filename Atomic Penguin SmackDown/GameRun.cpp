@@ -54,7 +54,6 @@ bool GameRun::initPlayers ( const tstring& configFilename, Game* window )
    }
 
    playerConfigFile.close();
-   state( State::RUN );
    return true;
 }
 
@@ -68,8 +67,8 @@ void GameRun::resolveCollisions ( )
 
    if ( currentPenguin && XOR( horz, vert ) )
    {
-      int column = (int)(currentPenguin->getXPosition() / currentPenguin->getWidth()) + horz;
-      int row = (int)(currentPenguin->getYPosition() / currentPenguin->getHeight()) + vert;
+      int column = (int)(currentPenguin->x() / currentPenguin->width()) + horz;
+      int row = (int)(currentPenguin->y() / currentPenguin->height()) + vert;
       if ( column < myLevelBgnds.numColumns() && column >= 0 && row < myLevelBgnds.numRows() && row >= 0 )
       {
          bool isFreeFromCollision = true;
@@ -89,6 +88,7 @@ void GameRun::resolveCollisions ( )
             currentPenguin->direction( Penguin::makeDirection( horz, vert ) );
          }
       }
+
    }
 }
 
@@ -96,6 +96,10 @@ void GameRun::resolveCollisions ( )
 bool GameRun::init ( Game* window )
 {
    bool result = true;
+
+   myRoundCount = 0; 
+   myRoundCountSinceAttack = 0; 
+   hasPlayerAttacked = false;
 
    result &= myLevelBgnds.init( window->device(), _T("16x16.config") );
 
@@ -106,6 +110,8 @@ bool GameRun::init ( Game* window )
    result &= myMoveText.create( window->fontInterface(), "0", 350, 0, 100, 100 );
 
    result &= myRoundText.create( window->fontInterface(), "0", 350, 600, 100, 100 );
+
+   state( State::RUN );
 
    return result;
 }
@@ -119,6 +125,8 @@ void GameRun::run ( Game* window )
 
    myLevelBgnds.update();
 
+   myMoveText.setText( myPlayers[myPlayerIndex]->movesLeft() );
+
    for ( unsigned int index = 0; index < myPlayers.size(); index++ )
    {
       if ( index == myPlayerIndex )
@@ -127,15 +135,17 @@ void GameRun::run ( Game* window )
       }
       myGUIs[index]->update( (myPlayers[index]->turnIndex()-1) == myPlayerIndex );
 
-      if ( myPlayers[index]->attacking() )
+      if ( myPlayers[index]->selectedPenguin() && myPlayers[index]->attacking() )
       {
          float x = 0, y = 0;
-         myPlayers[index]->selectedPenguin()->getFacingPosition( &x, &y );
+         Penguin* selected =  myPlayers[index]->selectedPenguin();
+         selected->getFacingPosition( &x, &y );
+
          for ( unsigned int j = 0; j < myPlayers.size(); j++ )
          {
             if ( j != index )
             {
-               if ( myPlayers[j]->attackPenguin( x, y, myPlayers[index]->selectedPenguin()->attackPower() ) )
+               if ( myPlayers[j]->attackPenguin( x, y, selected->attackPower() ) )
                {
                   hasPlayerAttacked = true;
                   myRoundCountSinceAttack = 0;
@@ -161,7 +171,7 @@ void GameRun::run ( Game* window )
       if ( !myPlayers[index]->penguinIsAlive() )
       {
          state( State::RESET );
-         window->loadLevel( (index == 0 ? 2 : 3) );
+         window->loadInterface( ( index != 0 ? "GreenVictory" : "BlueVictory" ), GameInterface::INIT );
          return;
       }
    }
@@ -170,11 +180,16 @@ void GameRun::run ( Game* window )
    if ( myRoundCountSinceAttack >= 10 )
    {
       state( State::RESET );
-      window->loadLevel( 4 );
+      window->loadInterface( "Stalemate", GameInterface::INIT );
+      return;
    }
 
 
-   //myPlayer.resolveCollisions( levelRef );
+   //key test
+   if ( DxKeyboard::keyDown( VK_HOME ) )
+   {
+      myRoundCountSinceAttack = 10;
+   }
 
 
    // start rendering

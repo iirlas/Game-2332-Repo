@@ -67,9 +67,10 @@ bool Penguin::create ( Penguin::Type type, float x ,float y, int playerTurnIndex
    myBackAnim  = "P" + Util::intToString(playerTurnIndex) + "-" + myBackAnim;
    myLeftAnim  = "P" + Util::intToString(playerTurnIndex) + "-" + myLeftAnim; 
    myRightAnim = "P" + Util::intToString(playerTurnIndex) + "-" + myRightAnim;
-   myType = type;
+   
    myHealth = ourPenguinInfo[type].maxHealth;
    myAttackPower = ourPenguinInfo[type].attackPower;
+   myType = type;
 
    tstring startAnim;
    switch ( myDirection )
@@ -91,7 +92,7 @@ bool Penguin::create ( Penguin::Type type, float x ,float y, int playerTurnIndex
       break;
    }
    result = DxGameSprite::create( startAnim, ourAnimationSpeed );
-   setPosition( x, y );
+   position( x, y );
    return result;
 }
 
@@ -122,24 +123,31 @@ void Penguin::getFacingPosition( float* x, float* y )
 {
    if ( x && y )
    {
-      (*x) = getXPosition();
-      (*y) = getYPosition();
+      *x = this->x();
+      *y = this->y();
+
       switch ( myDirection )
       {
       case Direction::NORTH:
-         (*y) -= getHeight();
+         (*y) -= height();
          break;
       case Direction::SOUTH:
-         (*y) += getHeight();
+         (*y) += height();
          break;
       case Direction::EAST:
-         (*x) += getWidth();
+         (*x) += width();
          break;
       case Direction::WEST:
-         (*x) -= getWidth();
+         (*x) -= width();
          break;
       }
    }
+}
+
+//=======================================================================
+void Penguin::kill ()
+{ 
+   myHealth = 0;
 }
 
 //=======================================================================
