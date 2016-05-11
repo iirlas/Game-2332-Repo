@@ -18,12 +18,14 @@
 #define IDC_STATIC				            -1
 
 
+#define IDM_HELP                                1001
 #define IDB_BITMAP1                             1000
 #define IDB_BITMAP2                             1010
 #define IDB_BITMAP3                             1020
 #define IDB_BITMAP4                             1030
 #define IDB_BITMAP5                             1040
 #define IDD_DIALOG_GUIDE                        1070
+#define IDD_DIALOG_HELP                         1071
 #define ID_OK                                   2001
 #define IDC_STATIC_PAWN                         2002
 #define IDC_STATIC_SLIDER                       2003

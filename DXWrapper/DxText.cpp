@@ -62,6 +62,11 @@ bool DxText::destroy()
 //=======================================================================
 bool DxText::draw( IDXSPRITE spriteObj )
 {
+   myRect.left   =  LONG(myPosition.x);
+   myRect.right  =  LONG(myPosition.x + myWidth);
+   myRect.top    =  LONG(myPosition.y);
+   myRect.bottom =  LONG(myPosition.y + myHeight);
+
    myFont->DrawText(spriteObj, myString.c_str(), -1, &myRect, DT_TOP|DT_RIGHT, myColor );
 
    return true;

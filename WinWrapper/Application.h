@@ -70,6 +70,9 @@ public:
    //       before preExit is called.
    void quit ();
 
+   int width () { return myTransform.width(); }
+   int height () { return myTransform.height(); }
+
 protected:
    //=======================================================================
    // A type definition for the message processor member function pointer.

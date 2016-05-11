@@ -45,6 +45,7 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&About ...",           IDM_ABOUT
+        MENUITEM "&Help ...",            IDM_HELP
     END
 END
 
@@ -183,7 +184,7 @@ IDB_BITMAP5        BITMAP         ".\\01GeneralFRONT01.bmp"
 
 
 //
-// Dialog resources
+// Info Dialog resources
 //
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 IDD_DIALOG_GUIDE DIALOG 0, 0, 381, 364
@@ -204,5 +205,24 @@ FONT 8, "Ms Shell Dlg"
     LTEXT           "Hulk - Moves in any direction 2 spaces \nAttack: 40\nHealth: 50",        IDC_STATIC, 67, 186, 161, 45, WS_BORDER | SS_LEFT
     LTEXT           "The General - Moves in any direction 3 spaces \nAttack: 10\nHealth: 80", IDC_STATIC, 67, 240, 161, 45, WS_BORDER | SS_LEFT
     LTEXT           "For Instructions goto: https://github.com/iirlas/Game-2332-Repo",        IDC_STATIC, 67, 285, 161, 45, WS_BORDER | SS_LEFT
+
+}
+
+
+//
+// Help Dialog resources
+//
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_DIALOG_HELP DIALOG 0, 0, 200, 300
+STYLE DS_3DLOOK | DS_CENTER | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_THICKFRAME
+EXSTYLE WS_EX_WINDOWEDGE
+CAPTION "Help"
+FONT 8, "Ms Shell Dlg"
+{
+    DEFPUSHBUTTON   "OK", ID_OK, 100, 0, 50, 14
+    CONTROL         IDB_BITMAP1, IDC_STATIC_PAWN, WC_STATIC, SS_BITMAP, 0, 0, 46, 43
+    LTEXT           "Players take turns moving penguins their alotted spaces and attacking until:\n1. One player has no more units alive.\n2. Neither player has taken damage in 10 rounds.\nThe active player will have their name (green or blue) highlighted.",        IDC_STATIC, 0, 46, 200, 100, WS_BORDER | SS_LEFT
+    LTEXT           "Attacking is automatically applied to the penguin you are facing at the end of movement.\nControls include:\n   Mouse - To Select a Penguin to Move.\n   Arrow Keys - To move the selected penguin.",        IDC_STATIC, 0, 100, 200, 150, WS_BORDER | SS_LEFT
+    LTEXT           "   Backspace - Move a selected penguin to a previous position.\n   Return/Enter - To set a selected Penguin and attack with that Penguin.",        IDC_STATIC, 0, 150, 200, 200, WS_BORDER | SS_LEFT
 
 }

@@ -101,7 +101,7 @@ bool GameRun::init ( Game* window )
    myRoundCountSinceAttack = 0; 
    hasPlayerAttacked = false;
 
-   result &= myLevelBgnds.init( window->device(), _T("16x16.config") );
+   result &= myLevelBgnds.init( window->device(), window->mapName.c_str() );
 
    result &= Penguin::initPenguinMovement( "Penguin.config" );
 

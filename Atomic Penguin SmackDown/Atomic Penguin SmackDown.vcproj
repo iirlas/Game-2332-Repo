@@ -195,6 +195,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GameSelect.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GameStalemate.cpp"
 				>
 			</File>
@@ -270,6 +274,10 @@
 			</File>
 			<File
 				RelativePath=".\GameRun.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameSelect.h"
 				>
 			</File>
 			<File

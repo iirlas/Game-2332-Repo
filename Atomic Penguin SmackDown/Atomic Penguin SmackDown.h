@@ -25,6 +25,8 @@ public:
    void loadInterface ( const tstring& name, GameInterface::State state );
    void loadInterface ( const tstring& name );
 
+   tstring mapName;
+
 //WINDOW
 protected:
    LRESULT onCommand ( WPARAM wParam, LPARAM lParam );

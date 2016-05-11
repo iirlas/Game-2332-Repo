@@ -11,6 +11,7 @@
 #include "Atomic Penguin SmackDown/GameBlueVictory.h"
 #include "Atomic Penguin SmackDown/GameGreenVictory.h"
 #include "Atomic Penguin SmackDown/GameStalemate.h"
+#include "Atomic Penguin SmackDown/GameSelect.h"
 #include "Atomic Penguin SmackDown/Atomic Penguin SmackDown.h"
 
 LRESULT CALLBACK DlgProc(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -47,6 +48,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 Game::Game ()
 {
    myInterfaces["Menu"] = new GameMenu();
+   myInterfaces["Select"] = new GameSelect();
    myInterfaces["Run"] = new GameRun();
    myInterfaces["BlueVictory"] = new GameBlueVictory();
    myInterfaces["GreenVictory"] = new GameGreenVictory();
@@ -89,6 +91,9 @@ LRESULT Game::onCommand ( WPARAM wParam, LPARAM lParam  )
 
    case IDM_ABOUT:
       DialogBox(instance(), MAKEINTRESOURCE(IDD_DIALOG_GUIDE), window(), reinterpret_cast<DLGPROC>(DlgProc));
+      break;
+   case IDM_HELP:
+      DialogBox(instance(), MAKEINTRESOURCE(IDD_DIALOG_HELP), window(), reinterpret_cast<DLGPROC>(DlgProc));
       break;
    case IDM_EXIT:
       quit();
@@ -152,7 +157,14 @@ void Game::gameRun ()
    //if the escape key is pressed, destroy
    if ( DxKeyboard::keyPressed( VK_ESCAPE ) )
    {
-      quit();
+      if ( myCurrentInterfaceName == "Menu" )
+      {
+         quit();
+      }
+      else
+      {
+         loadInterface( "Menu" );
+      }
    }
 
 }
